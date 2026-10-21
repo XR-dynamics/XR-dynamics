@@ -41,7 +41,7 @@ function start(THREE, canvas) {
 
   /* ---------- quality tiers (cols x rows, pixel-ratio cap) ---------- */
   const TIERS = [
-    { cols: 400, rows: 170, dpr: 1.75 },
+    { cols: 400, rows: 170, dpr: 1.5 },
     { cols: 300, rows: 130, dpr: 1.4 },
     { cols: 220, rows: 100, dpr: 1.1 }
   ];
@@ -241,9 +241,9 @@ function start(THREE, canvas) {
         float ph = aRef.x * 0.80 + 0.22 * sin(uTime * 0.35 + rest.y * 0.30 + rest.x * 0.02)
                  + (h1 - 0.5) * 0.30 + hN * 0.20 + en * 0.45;
         ph = clamp(ph, 0.0, 1.0) * 3.0;
-        vec3 c0 = vec3(0.07, 0.14, 0.80), c1 = vec3(0.22, 0.40, 1.00), c2 = vec3(0.56, 0.30, 1.00), c3 = vec3(0.92, 0.42, 1.00);
+        vec3 c0 = vec3(0.30, 0.33, 0.40), c1 = vec3(0.40, 0.44, 0.52), c2 = vec3(0.50, 0.52, 0.58), c3 = vec3(0.60, 0.61, 0.65);   // muted greys with a cool tint
         vec3 col = ph < 1.0 ? mix(c0, c1, ph) : (ph < 2.0 ? mix(c1, c2, ph - 1.0) : mix(c2, c3, ph - 2.0));
-        col = mix(col, vec3(1.0, 0.86, 1.0), clamp(pow(lam, 4.0) * 0.35 + en * 0.45, 0.0, 1.0));
+        col = mix(col, vec3(0.74, 0.76, 0.81), clamp(pow(lam, 4.0) * 0.25 + en * 0.35, 0.0, 1.0));
 
         float lit = 0.16 + 0.85 * pow(lam, 2.4) + 0.30 * hN * hN;
         float tw  = 0.86 + 0.14 * sin(uTime * 1.7 + h1 * 60.0);
@@ -259,7 +259,7 @@ function start(THREE, canvas) {
         float raw  = spPx * uPointScale * (1.0 + en * 0.30);
         float core = clamp(raw, uMinPx, 8.0);
         gl_PointSize = core * 1.25;
-        vA = lit * tw * (1.0 + en * 0.9) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * textZone * 2.1;
+        vA = lit * tw * (1.0 + en * 0.5) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * textZone * 0.80;
         vCol = col;
       }`,
     fragmentShader: /* glsl */`
@@ -412,8 +412,10 @@ function start(THREE, canvas) {
     renderer.render(scene, camera);
   }
 
+  let skip = false;
   function frame(now) {
     raf = requestAnimationFrame(frame);
+    if (scrollY > innerHeight * 1.2) { skip = !skip; if (skip) return; }   // 30 fps is plenty for a faint backdrop
     const dt = Math.min((now - last) / 1000, 1 / 20); last = now;
     if (frames > 45) emaDt += (dt - emaDt) * 0.04;
     frames++;
@@ -422,7 +424,7 @@ function start(THREE, canvas) {
     // scroll
     const sy = scrollY, sc = Math.min(sy / H, 2);
     if (sy !== lastSy || frames % 30 === 0) { readHero(); lastSy = sy; }
-    ptsU.uDim.value = 1 - 0.93 * sstep(0.08, 0.7, sy / H);   // page goes (almost) fully dark once you leave the hero
+    ptsU.uDim.value = 1 - 0.55 * sstep(0.08, 0.7, sy / H);   // fainter once you leave the hero, still just visible
 
     // camera: eased parallax from the real cursor + gentle scroll tilt
     const k = 1 - Math.exp(-dt * 3);
