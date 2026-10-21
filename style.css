@@ -182,6 +182,6 @@ button.view.ghost.off{color:var(--muted)}
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;display:block;pointer-events:none;background:#05080d;opacity:0;transition:opacity 1.6s ease;transform:translateZ(0);contain:strict}
 .has-bg #bg-canvas{opacity:1}
 /* the hero photo now lives inside the canvas and is revealed only where points are pushed away */
-.has-bg .hero-img{opacity:0;transition:opacity 1.4s ease}
+.has-bg .hero-img{display:none}
 .has-bg .hero-shade{background:linear-gradient(90deg,rgba(5,8,13,.72),rgba(5,8,13,.25) 50%,transparent 70%),linear-gradient(0deg,rgba(5,8,13,.65),transparent 40%)}
 .has-bg .hero-copy{text-shadow:0 2px 24px rgba(5,8,13,.85)}

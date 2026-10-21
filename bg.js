@@ -27,6 +27,7 @@ const THREE_URL = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module
 function start(THREE, canvas) {
   THREE.ColorManagement.enabled = false;           // all colours below are display-space values
   const BG = 0x05080d;
+  const SHOW_PHOTO = false;                        // hero photo reveal disabled: pixels simply appear around the cursor
   const root = document.documentElement;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const coarse = matchMedia("(pointer: coarse)").matches || /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
@@ -41,9 +42,9 @@ function start(THREE, canvas) {
 
   /* ---------- quality tiers (cols x rows, pixel-ratio cap) ---------- */
   const TIERS = [
-    { cols: 400, rows: 170, dpr: 1.5 },
-    { cols: 300, rows: 130, dpr: 1.4 },
-    { cols: 220, rows: 100, dpr: 1.1 }
+    { cols: 640, rows: 260, dpr: 1.5 },
+    { cols: 440, rows: 180, dpr: 1.4 },
+    { cols: 300, rows: 120, dpr: 1.1 }
   ];
   let tier = 0;
   const mem = navigator.deviceMemory || 8, cores = navigator.hardwareConcurrency || 8;
@@ -200,7 +201,7 @@ function start(THREE, canvas) {
   const imgMesh = new THREE.Mesh(triGeo, imgMat); imgMesh.frustumCulled = false; imgMesh.renderOrder = 0;
 
   const srcUrl = (heroImgEl && (heroImgEl.currentSrc || heroImgEl.src)) || "assets/hero.jpg";
-  new THREE.TextureLoader().load(srcUrl, t => {
+  if (SHOW_PHOTO) new THREE.TextureLoader().load(srcUrl, t => {
     t.minFilter = THREE.LinearFilter; t.generateMipmaps = false;
     imgTex.dispose(); imgU.tImg.value = t;
     imgU.uImgSize.value.set(t.image.naturalWidth || t.image.width, t.image.naturalHeight || t.image.height);
@@ -246,6 +247,7 @@ function start(THREE, canvas) {
         col = mix(col, vec3(0.74, 0.76, 0.81), clamp(pow(lam, 4.0) * 0.25 + en * 0.35, 0.0, 1.0));
 
         float lit = 0.16 + 0.85 * pow(lam, 2.4) + 0.30 * hN * hN;
+        float vis = 0.035 + 0.965 * smoothstep(0.02, 0.45, en);   // hidden at rest, appears under the cursor
         float tw  = 0.86 + 0.14 * sin(uTime * 1.7 + h1 * 60.0);
         float fog  = 1.0 - smoothstep(55.0, 170.0, dist);
         float near = smoothstep(3.0, 11.0, dist);
@@ -259,7 +261,7 @@ function start(THREE, canvas) {
         float raw  = spPx * uPointScale * (1.0 + en * 0.30);
         float core = clamp(raw, uMinPx, 8.0);
         gl_PointSize = core * 1.25;
-        vA = lit * tw * (1.0 + en * 0.5) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * textZone * 0.80;
+        vA = lit * tw * vis * (1.0 + en * 0.6) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * textZone * 1.15;
         vCol = col;
       }`,
     fragmentShader: /* glsl */`
@@ -301,7 +303,7 @@ function start(THREE, canvas) {
       }`
   });
 
-  const scene = new THREE.Scene(); scene.add(imgMesh);
+  const scene = new THREE.Scene(); if (SHOW_PHOTO) scene.add(imgMesh);
   const maskScene = new THREE.Scene();
   let points = null, maskPoints = null, geo = null, rtA = null, rtB = null;
 
@@ -351,7 +353,7 @@ function start(THREE, canvas) {
     const sp = shared.uWidth.value / TIERS[tier].cols;
     ptsU.uSpacing.value = maskU.uSpacing.value = sp;
     const mw = Math.ceil(W / 4), mh = Math.ceil(H / 4);
-    maskRT.setSize(mw, mh);
+    if (SHOW_PHOTO) maskRT.setSize(mw, mh);
     maskU.uFocalPx.value = mh / (2 * tanHalf);
     ptsU.uFocalPx.value = renderer.domElement.height / (2 * tanHalf);
     ptsU.uMinPx.value = 0.9 + 0.5 * dpr;
@@ -405,10 +407,6 @@ function start(THREE, canvas) {
   const radiusPx = coarse ? 120 : 190;
 
   function draw() {
-    renderer.setRenderTarget(maskRT);
-    renderer.setClearColor(0x000000, 1); renderer.clear();
-    if (physics) renderer.render(maskScene, camera);
-    renderer.setRenderTarget(null); renderer.setClearColor(BG, 1);
     renderer.render(scene, camera);
   }
 
@@ -482,9 +480,11 @@ function start(THREE, canvas) {
           simAcc -= 1 / 60; steps++;
         }
         if (steps === 3) simAcc = 0;
-        renderer.setRenderTarget(maskRT); renderer.setClearColor(0x000000, 1); renderer.clear();
-        renderer.render(maskScene, camera);
-        renderer.setRenderTarget(null); renderer.setClearColor(BG, 1);
+        if (SHOW_PHOTO) {
+          renderer.setRenderTarget(maskRT); renderer.setClearColor(0x000000, 1); renderer.clear();
+          renderer.render(maskScene, camera);
+          renderer.setRenderTarget(null); renderer.setClearColor(BG, 1);
+        }
       }
     }
     renderer.render(scene, camera);
