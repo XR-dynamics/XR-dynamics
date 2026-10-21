@@ -210,7 +210,7 @@ function start(THREE, canvas) {
   /* ---------- points ---------- */
   const camera = new THREE.PerspectiveCamera(BASE_FOV, 1, 1, 400);
   const ptsU = U({
-    uFocalPx: { value: 1000 }, uSpacing: { value: 0.4 }, uPointScale: { value: 0.30 },
+    uFocalPx: { value: 1000 }, uSpacing: { value: 0.4 }, uPointScale: { value: 0.19 },
     uMinPx: { value: 1.6 }, uDim: { value: 1 }, uEnergyScale: { value: 5 }
   });
   const ptsMat = new THREE.ShaderMaterial({
@@ -237,32 +237,39 @@ function start(THREE, canvas) {
         float h1  = hash12(floor(aRef * uGrid));
         float en  = smoothstep(0.02, 0.9, length(d) / uEnergyScale);
 
-        float lit = 0.20 + 0.95 * pow(lam, 2.6) + 0.35 * hN * hN;
-        float tw  = 0.84 + 0.16 * sin(uTime * 1.7 + h1 * 60.0);
-        vec3 ice = vec3(0.56, 0.76, 1.0), silver = vec3(0.82, 0.86, 0.92);
-        vec3 col = mix(ice, silver, clamp(h1 * 0.8 + hN * 0.3, 0.0, 1.0));
-        col = mix(col, vec3(1.0), clamp(pow(lam, 3.0) * 0.55 + en * 0.7, 0.0, 1.0));
+        // each pixel drifts through the palette: deep blue -> blue -> violet -> magenta
+        float ph = aRef.x * 0.80 + 0.22 * sin(uTime * 0.35 + rest.y * 0.30 + rest.x * 0.02)
+                 + (h1 - 0.5) * 0.30 + hN * 0.20 + en * 0.45;
+        ph = clamp(ph, 0.0, 1.0) * 3.0;
+        vec3 c0 = vec3(0.07, 0.14, 0.80), c1 = vec3(0.22, 0.40, 1.00), c2 = vec3(0.56, 0.30, 1.00), c3 = vec3(0.92, 0.42, 1.00);
+        vec3 col = ph < 1.0 ? mix(c0, c1, ph) : (ph < 2.0 ? mix(c1, c2, ph - 1.0) : mix(c2, c3, ph - 2.0));
+        col = mix(col, vec3(1.0, 0.86, 1.0), clamp(pow(lam, 4.0) * 0.35 + en * 0.45, 0.0, 1.0));
 
+        float lit = 0.16 + 0.85 * pow(lam, 2.4) + 0.30 * hN * hN;
+        float tw  = 0.86 + 0.14 * sin(uTime * 1.7 + h1 * 60.0);
         float fog  = 1.0 - smoothstep(55.0, 170.0, dist);
         float near = smoothstep(3.0, 11.0, dist);
         float edge = 1.0 - smoothstep(0.80, 1.0, abs(aRef.x - 0.5) * 2.0);
 
+        // keep the hero copy (left side) readable: calm the field behind it
+        vec2 sc = gl_Position.xy / gl_Position.w * 0.5 + 0.5;
+        float textZone = mix(1.0, 0.42, (1.0 - smoothstep(0.30, 0.66, sc.x)) * smoothstep(0.05, 0.40, sc.y) * (1.0 - smoothstep(0.62, 0.95, sc.y)));
+
         float spPx = uSpacing * uFocalPx / dist;
-        float raw  = spPx * uPointScale * (1.0 + en * 0.25);
-        float core = clamp(raw, uMinPx, 14.0);
-        gl_PointSize = core * 1.9;
-        vA = lit * tw * (1.0 + en * 1.1) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * 0.9;
+        float raw  = spPx * uPointScale * (1.0 + en * 0.30);
+        float core = clamp(raw, uMinPx, 8.0);
+        gl_PointSize = core * 1.25;
+        vA = lit * tw * (1.0 + en * 0.9) * fog * near * edge * min(raw / uMinPx, 1.0) * uDim * textZone * 2.1;
         vCol = col;
       }`,
     fragmentShader: /* glsl */`
       varying vec3 vCol; varying float vA;
       void main(){
-        vec2 c = gl_PointCoord * 2.0 - 1.0;
-        float r = length(c);
-        if (r > 1.0) discard;
-        float core = 1.0 - smoothstep(0.40, 0.54, r);
-        float halo = exp(-r * r * 7.0) * 0.30;
-        gl_FragColor = vec4(vCol, clamp(core + halo * (1.0 - core), 0.0, 1.0) * vA);
+        // crisp square pixel with a hair of edge softness
+        vec2 c = abs(gl_PointCoord * 2.0 - 1.0);
+        float m = max(c.x, c.y);
+        float box = 1.0 - smoothstep(0.72, 0.80, m);
+        gl_FragColor = vec4(vCol, box * vA);
       }`
   });
   const maskU = U({ uFocalPx: { value: 300 }, uSpacing: { value: 0.4 }, uEnergyScale: { value: 5 } });
@@ -347,7 +354,7 @@ function start(THREE, canvas) {
     maskRT.setSize(mw, mh);
     maskU.uFocalPx.value = mh / (2 * tanHalf);
     ptsU.uFocalPx.value = renderer.domElement.height / (2 * tanHalf);
-    ptsU.uMinPx.value = 1.0 + 0.6 * dpr;
+    ptsU.uMinPx.value = 0.9 + 0.5 * dpr;
     imgU.uView.value.set(W, H);
     imgU.uObjX.value = W <= 820 ? 0.75 : 0.7;
     readHero();
@@ -415,7 +422,7 @@ function start(THREE, canvas) {
     // scroll
     const sy = scrollY, sc = Math.min(sy / H, 2);
     if (sy !== lastSy || frames % 30 === 0) { readHero(); lastSy = sy; }
-    ptsU.uDim.value = 1 - 0.62 * sstep(0.15, 1.2, sy / H);
+    ptsU.uDim.value = 1 - 0.93 * sstep(0.08, 0.7, sy / H);   // page goes (almost) fully dark once you leave the hero
 
     // camera: eased parallax from the real cursor + gentle scroll tilt
     const k = 1 - Math.exp(-dt * 3);
