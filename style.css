@@ -200,17 +200,21 @@ footer p{margin-top:22px;font-size:13px;color:var(--muted);letter-spacing:.06em}
   .js .project,.js .stats div,.js .projects-head,.panel{opacity:1;transform:none}
 }
 
-/* ---------- live projects: Unreal Engine logo -> Fab ---------- */
-.live{max-width:var(--max);margin:0 auto;padding:clamp(40px,6vw,80px) clamp(20px,4vw,48px) 0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(18px,2.4vw,30px)}
-.live-link{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
-.ue-orb{position:relative;display:grid;place-items:center;width:clamp(130px,14vw,180px);aspect-ratio:1/1.04;animation:ueBreath 3.4s ease-in-out infinite;will-change:transform}
-.ue-orb img{position:relative;z-index:1;width:100%;height:auto;display:block;filter:drop-shadow(0 0 2px #7ffcf4) drop-shadow(0 0 10px rgba(39,227,220,.85)) drop-shadow(0 0 26px rgba(58,160,255,.55));animation:ueGlow 3.4s ease-in-out infinite}
-.ue-orb canvas{position:absolute;left:50%;top:50%;width:clamp(340px,40vw,460px);height:clamp(340px,40vw,460px);transform:translate(-50%,-50%);pointer-events:none}
-.live-label{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.28em;color:#fff;border:1px solid rgba(39,227,220,.55);border-radius:999px;padding:11px 22px;background:rgba(0,0,0,.5);transition:box-shadow .3s,background .3s,transform .3s}
-.live-label svg{width:13px;height:13px}
-.live-link:hover .live-label{background:rgba(39,227,220,.12);box-shadow:0 0 30px -6px rgba(39,227,220,.7);transform:translateY(-2px)}
-.live-link:hover .ue-orb{animation-duration:1.8s}
-.biz{max-width:760px;font-size:clamp(16px,1.7vw,22px);font-weight:400;line-height:1.45;color:#d5d9dd;letter-spacing:-.01em}
-@keyframes ueBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@keyframes ueGlow{0%,100%{filter:drop-shadow(0 0 2px #7ffcf4) drop-shadow(0 0 8px rgba(39,227,220,.7)) drop-shadow(0 0 20px rgba(58,160,255,.4))}50%{filter:drop-shadow(0 0 3px #b8fffa) drop-shadow(0 0 14px rgba(39,227,220,1)) drop-shadow(0 0 36px rgba(58,160,255,.75))}}
-@media(max-width:820px){.cat-tab{padding:16px 9px;font-size:14px}}
+/* ---------- live projects: small Unreal Engine logo (hero, bottom right) -> Fab ---------- */
+.live{max-width:var(--max);margin:0 auto;padding:clamp(28px,4vw,48px) clamp(20px,4vw,48px) 0;text-align:center}
+.biz{max-width:760px;margin:0 auto;font-size:clamp(16px,1.7vw,22px);font-weight:400;line-height:1.45;color:#d5d9dd;letter-spacing:-.01em}
+.live-link{position:absolute;z-index:3;right:clamp(20px,4vw,48px);bottom:clamp(28px,5vh,56px);display:flex;align-items:center;gap:6px;animation:rise 1.2s cubic-bezier(.2,.7,.2,1) .8s both}
+.ue-orb{position:relative;display:block;width:clamp(46px,4.4vw,58px);flex:none;animation:ueBreath 3.2s ease-in-out infinite;will-change:transform}
+.ue-orb img{position:relative;z-index:1;width:100%;height:auto;display:block;filter:drop-shadow(0 0 1.5px #7ffcf4) drop-shadow(0 0 6px rgba(39,227,220,.85)) drop-shadow(0 0 14px rgba(58,160,255,.55));animation:ueGlow 3.2s ease-in-out infinite}
+.ue-orb canvas{position:absolute;left:50%;top:50%;width:150px;height:150px;transform:translate(-50%,-50%);pointer-events:none}
+.live-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.22em;white-space:nowrap;color:#fff;border:1px solid rgba(39,227,220,.55);border-radius:999px;padding:8px 14px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 16px -6px rgba(39,227,220,.6);animation:labelGlow 3.2s ease-in-out infinite;transition:background .3s,transform .3s}
+.live-label svg{width:11px;height:11px}
+.live-link:hover .live-label{background:rgba(39,227,220,.14);transform:translateY(-2px)}
+.live-link:hover .ue-orb{animation-duration:1.6s}
+@keyframes ueBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+@keyframes ueGlow{0%,100%{filter:drop-shadow(0 0 1.5px #7ffcf4) drop-shadow(0 0 5px rgba(39,227,220,.7)) drop-shadow(0 0 10px rgba(58,160,255,.4))}50%{filter:drop-shadow(0 0 2px #b8fffa) drop-shadow(0 0 9px rgba(39,227,220,1)) drop-shadow(0 0 20px rgba(58,160,255,.75))}}
+@keyframes labelGlow{0%,100%{box-shadow:0 0 10px -6px rgba(39,227,220,.4)}50%{box-shadow:0 0 20px -4px rgba(39,227,220,.8)}}
+@media(max-width:820px){
+  .cat-tab{padding:16px 9px;font-size:14px}
+  .live-link{position:relative;right:auto;bottom:auto;align-self:flex-end;margin:0 20px 26px}
+}

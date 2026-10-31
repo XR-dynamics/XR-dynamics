@@ -465,11 +465,11 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) stage
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
   const spawn = (fresh) => {
-    const a = Math.random() * Math.PI * 2, base = Math.min(W, H) * (0.2 + Math.random() * 0.06);
-    return { a, r: base, sp: 8 + Math.random() * 22, spin: (Math.random() - 0.5) * 0.5, s: 0.7 + Math.random() * 1.7,
+    const a = Math.random() * Math.PI * 2, base = Math.min(W, H) * (0.19 + Math.random() * 0.05);
+    return { a, r: base, sp: 4 + Math.random() * 9, spin: (Math.random() - 0.5) * 0.5, s: 0.5 + Math.random() * 1.0,
       life: fresh ? Math.random() * 3 : 0, max: 2.2 + Math.random() * 2.6, c: COLORS[(Math.random() * COLORS.length) | 0] };
   };
-  const init = () => { size(); parts = Array.from({ length: 70 }, () => spawn(true)); };
+  const init = () => { size(); parts = Array.from({ length: 36 }, () => spawn(true)); };
   const frame = t => {
     const dt = Math.min(0.05, (t - last) / 1000 || 0.016); last = t;
     ctx.clearRect(0, 0, W, H);
