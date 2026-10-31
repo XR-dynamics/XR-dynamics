@@ -18,6 +18,27 @@ const D = id => `https://drive.google.com/file/d/${id}/view?usp=sharing`;
 const V = (name, label) => ({ mp4: `assets/video/${name}.mp4`, poster: `assets/poster/${name}.jpg`, label });
 
 const CATEGORIES = [
+  /* --------------------------------------------------------------- XR / VR
+     VR projects listed again (refs point at the projects above by id). */
+  {
+    id: "xr-vr", title: "XR/VR",
+    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
+    projects: [
+      {
+        id: "xr-hand",
+        name: "XR-Hand Interaction",
+        videos: [
+          { drive: D("1oO1HlS4X2-zaKDroDjpj-x6dZXU4AzEj"), label: "VR grab" },
+          { drive: D("1jPPjp5t2ClBpTmdOhGW_wnuh8heItwB0"), label: "Physics hand" }
+        ],
+        description: "VR grabbing looks simple until you try to make it feel real: virtual hands that behave like real hands.",
+        explain: "Moving beyond traditional grab-and-attach interactions, using Meta XR Hand Tracking so that objects respond to the hands through physics. The challenge is balancing physics accuracy, stability and real-time VR performance. Still experimenting, testing and improving.",
+        tech: ["Meta XR Hand Tracking", "Physics-Based Grabbing", "Unreal Engine 5", "Meta Quest 2 / 3", "C++"],
+        badge: true, link: null
+      }
+    ]
+  },
+
   /* ------------------------------------------------------------ ROBOTICS */
   {
     id: "robotics", title: "Robotics",
@@ -163,27 +184,6 @@ const CATEGORIES = [
         link: "https://www.fab.com/listings/2fe19cdf-d7ae-4ebb-a93a-5735a8c1915e"
       }
     ]
-  },
-
-  /* --------------------------------------------------------------- XR / VR
-     VR projects listed again (refs point at the projects above by id). */
-  {
-    id: "xr-vr", title: "XR/VR",
-    refs: ["xr-keypad", "vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle"],
-    projects: [
-      {
-        id: "xr-hand",
-        name: "XR-Hand Interaction",
-        videos: [
-          { drive: D("1oO1HlS4X2-zaKDroDjpj-x6dZXU4AzEj"), label: "VR grab" },
-          { drive: D("1jPPjp5t2ClBpTmdOhGW_wnuh8heItwB0"), label: "Physics hand" }
-        ],
-        description: "VR grabbing looks simple until you try to make it feel real: virtual hands that behave like real hands.",
-        explain: "Moving beyond traditional grab-and-attach interactions, using Meta XR Hand Tracking so that objects respond to the hands through physics. The challenge is balancing physics accuracy, stability and real-time VR performance. Still experimenting, testing and improving.",
-        tech: ["Meta XR Hand Tracking", "Physics-Based Grabbing", "Unreal Engine 5", "Meta Quest 2 / 3", "C++"],
-        badge: true, link: null
-      }
-    ]
   }
 ];
 
@@ -276,7 +276,7 @@ function projectHTML(p, i, total, cid) {
 }
 
 const PBYID = {};
-CATEGORIES.forEach(c => c.projects.forEach(p => { if (!PBYID[p.id]) PBYID[p.id] = { p, cid: c.id }; }));
+CATEGORIES.forEach(c => c.projects.forEach(p => { if (p._home === c.id) PBYID[p.id] = { p, cid: c.id }; }));
 
 document.getElementById("catTabs").innerHTML =
   CATEGORIES.map((c, k) => `${k ? '<span class="sep" aria-hidden="true"></span>' : ""}<button type="button" class="cat-tab" role="tab" id="tab-${c.id}" aria-controls="panel-${c.id}" data-cat="${c.id}">${esc(c.title)}</button>`).join("")
