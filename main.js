@@ -26,11 +26,9 @@ const CATEGORIES = [
         id: "physical-ai",
         name: "Physical AI Simulation",
         videos: [
-          V("physical-ai", "Physical AI"),
           { drive: D("1cVFG8WzHtzukPZVMValO16xI6PgRUE5t"), label: "Physical AI Gym" },
           { drive: D("15MAT5rJu8l7O7wZy522v2h_79KndFe_P"), label: "Physics Simulation 01" },
-          { drive: D("16Yu1kFCJESCnyLA3o7ElbS2UpScsxNbu"), label: "Physics Simulation 02" },
-          { drive: D("1YfiNn-AmFuifenn84SmFhLRVKYZ91Qot"), label: "Physics Simulation 03" }
+          { drive: D("16Yu1kFCJESCnyLA3o7ElbS2UpScsxNbu"), label: "Physics Simulation 02" }
         ],
         description: "Physics, sensors and reinforcement learning in Unreal Engine, for training and testing intelligent robotic systems.",
         explain: "Sensor simulation provides the perception layer, and physics-based robots learn control policies through reinforcement learning in the same environment, before they meet real hardware.",
@@ -55,7 +53,6 @@ const CATEGORIES = [
         name: "Dexterous Teleoperation",
         videos: [
           { drive: D("1FOTBxnNngUYJk-DSxXA9gC8yhTWqyl16"), label: "Dexterous Teleoperation" },
-          { drive: D("1jPPjp5t2ClBpTmdOhGW_wnuh8heItwB0"), label: "Teleoperation Plugin" },
           { drive: D("1vmRYNudguLOO_R8Z1Q4nknEGmol8VhfK"), label: "Dexterous 01" },
           { drive: D("1XhelwKwoSRyTek3e2uUjMV487Ms9RCpv"), label: "Dexterous 02" }
         ],
@@ -86,13 +83,14 @@ const CATEGORIES = [
         name: "Vehicle Dynamics",
         videos: [
           { drive: D("1D3R4ixz7J1wrKvfpiLh5fyy_gbX7LJaa"), label: "Plugin demo" },
-          { drive: D("1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ"), label: "VR driving 01" },
-          { drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "VR driving 02" }
+          { drive: D("1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ"), label: "Driving 01" },
+          { drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "Driving 02" },
+          { drive: D("1YfiNn-AmFuifenn84SmFhLRVKYZ91Qot"), label: "Physics Simulation 03" }
         ],
-        description: "VR driving on a physics-based vehicle model with suspension, tires, drivetrain and aerodynamics.",
-        explain: "Vehicle dynamics: weight transfer, tire slip, suspension travel and drivetrain torque shape how the car accelerates, brakes and corners, and the driver feels it through the headset. Experiments were run on Meta Quest 2 and Meta Quest 3.",
-        features: ["Driving physics", "Customization", "Dynamic lighting", "Tire smoke", "Dust & water", "Interactive HUD"],
-        tech: ["Meta Quest 2 / 3", "Unreal Engine 5", "Chaos Physics", "C++", "OpenXR"],
+        description: "Driving on a physics-based vehicle model with suspension, tires, drivetrain and aerodynamics.",
+        explain: "Vehicle dynamics: weight transfer, tire slip, suspension travel and drivetrain torque shape how the car accelerates, brakes and corners,.",
+        features: ["Driving physics", "Customization", "Dynamic lighting", "Tire smoke", "Dust & water", "Interactive HUD", "Sensors integrated", "Reinforcement learning", "C++"],
+        tech: ["Unreal Engine 5", "Chaos Physics", "Sensor Simulation", "Reinforcement Learning", "C++"],
         badge: true, linkLabel: "Explore Plugin",
         link: "https://www.fab.com/listings/86e8e62b-caf1-4cb6-a589-7d7cf601143f"
       },
@@ -117,12 +115,11 @@ const CATEGORIES = [
         name: "Flight Dynamics",
         videos: [
           { drive: D("1gJ1XSkXRFFV7zPsfLpTJiy8rxKJ9wnwn"), label: "Plugin demo" },
-          { image: "cover.jpg", label: "Overview", alt: "Flight Dynamics plugin cover: a fighter jet taking off with afterburner on a dark runway" },
-          { slides: Array.from({ length: 15 }, (_, n) => `assets/slide-${String(n + 1).padStart(2, "0")}.jpg`), label: "Gallery" }
+          { image: "cover.jpg", label: "Overview", alt: "Flight Dynamics plugin cover: a fighter jet taking off with afterburner on a dark runway" }
         ],
         description: "A physics-based flight dynamics plugin for Unreal Engine 5.5 to 5.8, with real lift, drag and thrust simulated in the Chaos physics engine.",
         explain: "Realistic physics across the entire speed and altitude range, from runway take-off to landing. Advanced fly-by-wire keeps the aircraft inside its flight envelope while control surfaces follow the flight computer. Includes retractable landing gear, a feature-rich HUD (airspeed, Mach, G, angle of attack, altitude, vertical speed, thrust), three camera modes and an afterburner plume.",
-        tech: ["Unreal Engine 5.5 - 5.8", "Chaos Physics", "Fly-by-Wire", "C++", "Flight Dynamics"],
+        tech: ["Unreal Engine 5.5 - 5.8", "Chaos Physics", "Fly-by-Wire", "Reinforcement Learning", "C++", "Flight Dynamics"],
         badge: true, linkLabel: "View on Fab",
         link: "https://www.fab.com/listings/ab848d4b-a42d-4d9b-9f28-c72ceada449b"
       },
@@ -156,8 +153,8 @@ const CATEGORIES = [
         id: "space-station",
         name: "VR-Space Station",
         videos: [
-          { drive: D("176CmRi6BICqlwTMlddwWWMP3Aer3GsnD"), label: "Station 01" },
-          { drive: D("1PXn8u_nR9X-14hT4VJCV8brUeIqClg-Z"), label: "Station 02" }
+          { drive: D("1gDw_zs-Ax0iemvYCm1lF3abyFGUusZr8"), label: "Station 01" },
+          { drive: D("176CmRi6BICqlwTMlddwWWMP3Aer3GsnD"), label: "Station 02" }
         ],
         description: "A modular VR space station template for building immersive space simulations and VR games.",
         explain: "Optimized VR controls in a sci-fi station with emissive and metallic materials, transparent glass surfaces and Niagara-animated elements, ready to customize in Unreal Engine.",
@@ -166,8 +163,35 @@ const CATEGORIES = [
         link: "https://www.fab.com/listings/2fe19cdf-d7ae-4ebb-a93a-5735a8c1915e"
       }
     ]
+  },
+
+  /* --------------------------------------------------------------- XR / VR
+     VR projects listed again (refs point at the projects above by id). */
+  {
+    id: "xr-vr", title: "XR/VR",
+    refs: ["xr-keypad", "vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle"],
+    projects: [
+      {
+        id: "xr-hand",
+        name: "XR-Hand Interaction",
+        videos: [
+          { drive: D("1oO1HlS4X2-zaKDroDjpj-x6dZXU4AzEj"), label: "VR grab" },
+          { drive: D("1jPPjp5t2ClBpTmdOhGW_wnuh8heItwB0"), label: "Physics hand" }
+        ],
+        description: "VR grabbing looks simple until you try to make it feel real: virtual hands that behave like real hands.",
+        explain: "Moving beyond traditional grab-and-attach interactions, using Meta XR Hand Tracking so that objects respond to the hands through physics. The challenge is balancing physics accuracy, stability and real-time VR performance. Still experimenting, testing and improving.",
+        tech: ["Meta XR Hand Tracking", "Physics-Based Grabbing", "Unreal Engine 5", "Meta Quest 2 / 3", "C++"],
+        badge: true, link: null
+      }
+    ]
   }
 ];
+
+/* resolve cross-category references (same project shown in two tabs) */
+CATEGORIES.forEach(c => c.projects.forEach(p => { if (!p._home) p._home = c.id; }));
+const ALL = {};
+CATEGORIES.forEach(c => c.projects.forEach(p => { ALL[p.id] = p; }));
+CATEGORIES.forEach(c => { if (c.refs) c.projects = c.projects.concat(c.refs.map(id => ALL[id])); });
 
 /* ===================================================================== */
 
@@ -229,7 +253,7 @@ function projectHTML(p, i, total, cid) {
       ? `<span class="explore-btn disabled">${esc(p.soonLabel)}</span>`
       : `<button type="button" class="explore-btn not-hosted" aria-live="polite">View Project${ARROW}</button>`;
   return `
-  <article class="project" id="${esc(p.id)}" data-cat="${esc(cid)}">
+  <article class="project" id="${esc(p._home === cid ? p.id : cid + "-" + p.id)}" data-cat="${esc(cid)}">
     <div class="project-head">
       <h3 class="project-name"><span class="num">${pad(i + 1)}</span><span class="slash">/</span><span class="nm">${esc(p.name)}</span></h3>
       ${p.badge ? UE : ""}
@@ -252,7 +276,7 @@ function projectHTML(p, i, total, cid) {
 }
 
 const PBYID = {};
-CATEGORIES.forEach(c => c.projects.forEach(p => { PBYID[p.id] = { p, cid: c.id }; }));
+CATEGORIES.forEach(c => c.projects.forEach(p => { if (!PBYID[p.id]) PBYID[p.id] = { p, cid: c.id }; }));
 
 document.getElementById("catTabs").innerHTML =
   CATEGORIES.map((c, k) => `${k ? '<span class="sep" aria-hidden="true"></span>' : ""}<button type="button" class="cat-tab" role="tab" id="tab-${c.id}" aria-controls="panel-${c.id}" data-cat="${c.id}">${esc(c.title)}</button>`).join("")
@@ -426,3 +450,48 @@ addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
 /* pause everything when the tab is hidden */
 document.addEventListener("visibilitychange", () => { if (document.hidden) stages.forEach(pauseStage); });
+
+
+/* ---------- Unreal Engine orb: drifting neon particles ---------- */
+(function () {
+  const cv = document.getElementById("ueFx");
+  if (!cv) return;
+  const ctx = cv.getContext("2d");
+  let W = 0, H = 0, dpr = 1, raf = 0, parts = [], last = 0;
+  const COLORS = ["127,252,244", "55,224,160", "58,160,255", "255,255,255"];
+  const size = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    const r = cv.getBoundingClientRect(); W = r.width; H = r.height;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  const spawn = (fresh) => {
+    const a = Math.random() * Math.PI * 2, base = Math.min(W, H) * (0.2 + Math.random() * 0.06);
+    return { a, r: base, sp: 8 + Math.random() * 22, spin: (Math.random() - 0.5) * 0.5, s: 0.7 + Math.random() * 1.7,
+      life: fresh ? Math.random() * 3 : 0, max: 2.2 + Math.random() * 2.6, c: COLORS[(Math.random() * COLORS.length) | 0] };
+  };
+  const init = () => { size(); parts = Array.from({ length: 70 }, () => spawn(true)); };
+  const frame = t => {
+    const dt = Math.min(0.05, (t - last) / 1000 || 0.016); last = t;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i];
+      p.life += dt; p.r += p.sp * dt; p.a += p.spin * dt;
+      if (p.life > p.max) { parts[i] = spawn(false); continue; }
+      const k = p.life / p.max, alpha = Math.sin(Math.PI * k) * 0.9;
+      const x = W / 2 + Math.cos(p.a) * p.r, y = H / 2 + Math.sin(p.a) * p.r * 0.95;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, p.s * 3.2);
+      g.addColorStop(0, `rgba(${p.c},${alpha})`); g.addColorStop(1, `rgba(${p.c},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, p.s * 3.2, 0, 6.2832); ctx.fill();
+    }
+    raf = requestAnimationFrame(frame);
+  };
+  init(); addEventListener("resize", init);
+  if (reduce) { frame(0); cancelAnimationFrame(raf); return; }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+      else { cancelAnimationFrame(raf); raf = 0; }
+    })).observe(cv);
+  } else raf = requestAnimationFrame(frame);
+})();
