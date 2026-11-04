@@ -23,6 +23,7 @@ const CATEGORIES = [
   {
     id: "xr-vr", title: "XR/VR",
     refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
+    order: ["vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
     projects: [
       {
         id: "xr-hand",
@@ -161,6 +162,7 @@ const CATEGORIES = [
         id: "vr-flight-control",
         name: "VR Flight Control",
         videos: [
+          { mp4: "assets/video/xr-cockpit.mp4", poster: "assets/poster/xr-cockpit.jpg", label: "XR cockpit" },
           { drive: D("18yAsmyGg-V0Dl_wE2ex9gA__Y7m1wF_Z"), label: "VR flight" },
           { drive: D("1FySv33YDpeFj6nYDj_9p9xyYhpNBCROk"), label: "Cockpit 01" },
           { drive: D("1WKge83s7ZWFLK5QQ7wHg3SJ0yMPHQThu"), label: "Cockpit 02" }
@@ -192,6 +194,8 @@ CATEGORIES.forEach(c => c.projects.forEach(p => { if (!p._home) p._home = c.id; 
 const ALL = {};
 CATEGORIES.forEach(c => c.projects.forEach(p => { ALL[p.id] = p; }));
 CATEGORIES.forEach(c => { if (c.refs) c.projects = c.projects.concat(c.refs.map(id => ALL[id])); });
+/* optional explicit order per category (ids) */
+CATEGORIES.forEach(c => { if (c.order) c.projects.sort((a, b) => c.order.indexOf(a.id) - c.order.indexOf(b.id)); });
 
 /* ===================================================================== */
 
