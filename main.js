@@ -253,9 +253,7 @@ function projectHTML(p, i, total, cid) {
     : "";
   const btn = p.link
     ? `<a class="explore-btn" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.linkLabel || "View Project")}${ARROW}</a>`
-    : p.soonLabel
-      ? `<span class="explore-btn disabled">${esc(p.soonLabel)}</span>`
-      : `<button type="button" class="explore-btn not-hosted" aria-live="polite">View Project${ARROW}</button>`;
+    : "";
   return `
   <article class="project" id="${esc(p._home === cid ? p.id : cid + "-" + p.id)}" data-cat="${esc(cid)}">
     <div class="project-head">
