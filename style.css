@@ -293,3 +293,8 @@ footer{border-top:1px solid var(--line)}
   .hero-actions .live-link{align-self:auto;margin:0}
 }
 @media(prefers-reduced-motion:reduce){.hero-bg{display:none}.hero{background:var(--bg) url(assets/poster/hero-bg.jpg) center/cover}}
+
+/* hero title: mixed case; highlighted primary button */
+.hero-title{font-size:clamp(40px,8.6vw,120px);letter-spacing:-.05em}
+.hero-actions .explore{color:#0a0a0c;background:#fff;border-color:#fff;font-weight:600;padding:14px 28px;box-shadow:0 0 0 6px rgba(255,255,255,.1),0 14px 40px -12px rgba(255,255,255,.55);-webkit-backdrop-filter:none;backdrop-filter:none}
+.hero-actions .explore:hover{background:#e9edf1;box-shadow:0 0 0 8px rgba(255,255,255,.14),0 18px 48px -12px rgba(255,255,255,.7)}
