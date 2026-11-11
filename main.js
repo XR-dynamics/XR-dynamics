@@ -163,6 +163,7 @@ const CATEGORIES = [
         name: "VR Flight Control",
         videos: [
           { mp4: "assets/video/xr-cockpit.mp4", poster: "assets/poster/xr-cockpit-title.jpg", label: "XR cockpit" },
+          { mp4: "assets/video/vr-jet-fighter.mp4", poster: "assets/poster/vr-jet-fighter.jpg", label: "VR Jet Fighter" },
           { drive: D("18yAsmyGg-V0Dl_wE2ex9gA__Y7m1wF_Z"), label: "VR flight" },
           { drive: D("1FySv33YDpeFj6nYDj_9p9xyYhpNBCROk"), label: "Cockpit 01" },
           { drive: D("1WKge83s7ZWFLK5QQ7wHg3SJ0yMPHQThu"), label: "Cockpit 02" }
