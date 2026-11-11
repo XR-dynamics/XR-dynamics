@@ -292,7 +292,7 @@ footer{border-top:1px solid var(--line)}
   .hero .stats{grid-template-columns:1fr}
   .hero-actions .live-link{align-self:auto;margin:0}
 }
-@media(prefers-reduced-motion:reduce){.hero-bg{display:none}.hero{background:var(--bg) url(assets/poster/hero-bg.jpg) center/cover}}
+@media(prefers-reduced-motion:reduce){.hero-bg{display:none}.hero{background:var(--bg) url(assets/poster/hero-bg-2.jpg) center/cover}}
 
 /* hero title: mixed case; highlighted primary button */
 .hero-title{font-size:clamp(40px,8.6vw,120px);letter-spacing:-.05em}
