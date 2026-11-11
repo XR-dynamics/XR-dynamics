@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Cpath d='M8 9l16 14M24 9L8 23' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="style.css?v=15">
+<link rel="stylesheet" href="style.css?v=16">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -27,29 +27,28 @@
 
 <main id="top">
   <section class="hero">
-    <img class="hero-img" src="assets/hero.jpg" alt="XR Dynamics Lab: an engineer in a VR headset facing a wireframe fighter jet dissolving into particles" fetchpriority="high">
+    <video class="hero-bg" autoplay muted loop playsinline preload="auto" poster="assets/poster/hero-bg.jpg" aria-hidden="true"><source src="assets/video/hero-bg.mp4" type="video/mp4"></video>
     <div class="hero-shade"></div>
     <div class="hero-copy">
+      <h1 class="hero-title">XR DYNAMICS LAB</h1>
       <p class="tagline">Immersive Control. Physical Simulation.</p>
       <p class="lede">Physical AI applications and VR/XR interfaces.</p>
-      <a class="explore" href="#projects">Explore projects
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
+      <div class="hero-actions">
+        <a class="explore" href="#projects">Explore projects
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
+        <a class="live-link" href="https://www.fab.com/sellers/Ritzredemption" target="_blank" rel="noopener" aria-label="View live projects on Fab">
+          <span class="ue-orb"><img src="assets/ue-logo.png" alt="Unreal Engine" width="56" height="58"></span>
+          <span class="live-label">VIEW LIVE PROJECTS
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span>
+        </a>
+      </div>
+      <p class="biz">Building and engineering intelligent physical systems: available for selected B2B R&amp;D engagements.</p>
+      <div class="stats">
+        <div><b>Meta Quest 2 &amp; 3</b><span>Headsets used for every experiment</span></div>
+        <div><b>Real Humanoids</b><span>Teleoperated for warehouse operation</span></div>
+        <div><b>Physics-First</b><span>Flight, vehicle and robot dynamics</span></div>
+      </div>
     </div>
-    <a class="live-link" href="https://www.fab.com/sellers/Ritzredemption" target="_blank" rel="noopener" aria-label="View live projects on Fab">
-      <span class="ue-orb"><canvas id="ueFx" aria-hidden="true"></canvas><img src="assets/ue-logo.png" alt="Unreal Engine" width="56" height="58"></span>
-      <span class="live-label">VIEW LIVE PROJECTS
-        <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span>
-    </a>
-  </section>
-
-  <section class="live" id="live">
-    <p class="biz">Building and engineering intelligent physical systems: <span class="grad-text">available for selected B2B R&amp;D engagements.</span></p>
-  </section>
-
-  <section class="stats">
-    <div><b class="grad-text">Meta Quest 2 &amp; 3</b><span>Headsets used for every experiment</span></div>
-    <div><b class="grad-text">Real Humanoids</b><span>Teleoperated for warehouse operation</span></div>
-    <div><b class="grad-text">Physics-First</b><span>Flight, vehicle and robot dynamics</span></div>
   </section>
 
   <section class="projects" id="projects">
