@@ -338,3 +338,8 @@ footer{border-top:1px solid var(--line)}
 .req-note[data-ok="0"]{color:#ffb4a8}
 @media(max-width:1000px){.svc-grid,.svc-how{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.svc-grid,.svc-how,.req-grid{grid-template-columns:1fr}}
+
+/* book a call */
+.book{display:inline-flex;align-items:center;padding:12px 24px;font-size:14px;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.18);transition:background .25s,transform .25s,box-shadow .25s}
+.book:hover{background:rgba(255,255,255,.16);transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 14px 34px -14px rgba(255,255,255,.35)}
+.svc-book{margin:clamp(28px,4vw,48px) 0 0;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;color:#b9bec4;font-size:16px}
