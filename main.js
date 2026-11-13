@@ -49,8 +49,8 @@ const CATEGORIES = [
         name: "Physical AI Simulation",
         videos: [
           { drive: D("1cVFG8WzHtzukPZVMValO16xI6PgRUE5t"), label: "Physical AI Gym" },
-          { drive: D("15MAT5rJu8l7O7wZy522v2h_79KndFe_P"), label: "Physics Simulation 01" },
-          { drive: D("16Yu1kFCJESCnyLA3o7ElbS2UpScsxNbu"), label: "Physics Simulation 02" }
+          { drive: D("15MAT5rJu8l7O7wZy522v2h_79KndFe_P"), label: "Physics Simulation A" },
+          { drive: D("16Yu1kFCJESCnyLA3o7ElbS2UpScsxNbu"), label: "Physics Simulation B" }
         ],
         description: "Physics, sensors and reinforcement learning in Unreal Engine, for training and testing intelligent robotic systems.",
         explain: "Sensor simulation provides the perception layer, and physics-based robots learn control policies through reinforcement learning in the same environment, before they meet real hardware.",
@@ -62,8 +62,8 @@ const CATEGORIES = [
         id: "teleoperation",
         name: "XR Robot Teleoperation",
         videos: [
-          { drive: D("1auHKqmb_3pX6-CcGPUCrzURR-o_vmsER"), label: "Teleoperation 01" },
-          { drive: D("12_1O5sF2GrRqA3nxrhUArN7XnZH3z5mO"), label: "Teleoperation 02" }
+          { drive: D("1auHKqmb_3pX6-CcGPUCrzURR-o_vmsER"), label: "Teleoperation A" },
+          { drive: D("12_1O5sF2GrRqA3nxrhUArN7XnZH3z5mO"), label: "Teleoperation B" }
         ],
         description: "XR-controlled robotics: an operator drives a real humanoid robot through a headset for warehouse operation.",
         explain: "Teleoperation dynamics of real humanoid robots: head and hand motion from Meta Quest 2 and Meta Quest 3 is mapped to the robot's body and arms, so one operator can handle warehouse tasks such as picking, carrying and placing. Experiments cover control response, latency and stability on the real machine.",
@@ -75,8 +75,8 @@ const CATEGORIES = [
         name: "Dexterous Teleoperation",
         videos: [
           { drive: D("1FOTBxnNngUYJk-DSxXA9gC8yhTWqyl16"), label: "Dexterous Teleoperation" },
-          { drive: D("1vmRYNudguLOO_R8Z1Q4nknEGmol8VhfK"), label: "Dexterous 01" },
-          { drive: D("1XhelwKwoSRyTek3e2uUjMV487Ms9RCpv"), label: "Dexterous 02" }
+          { drive: D("1vmRYNudguLOO_R8Z1Q4nknEGmol8VhfK"), label: "Dexterous A" },
+          { drive: D("1XhelwKwoSRyTek3e2uUjMV487Ms9RCpv"), label: "Dexterous B" }
         ],
         description: "Hand-level XR teleoperation: the operator's hands drive a robot for precise manipulation.",
         explain: "Hand and finger motion from Meta Quest 2 and Meta Quest 3 is mapped to the robot's arms and hands, so one operator can handle fine manipulation tasks such as picking, carrying and placing on the real machine.",
@@ -105,9 +105,9 @@ const CATEGORIES = [
         name: "Vehicle Dynamics",
         videos: [
           { drive: D("1D3R4ixz7J1wrKvfpiLh5fyy_gbX7LJaa"), label: "Plugin demo" },
-          { drive: D("1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ"), label: "Driving 01" },
-          { drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "Driving 02" },
-          { drive: D("1YfiNn-AmFuifenn84SmFhLRVKYZ91Qot"), label: "Physics Simulation 03" }
+          { drive: D("1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ"), label: "Driving A" },
+          { drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "Driving B" },
+          { drive: D("1YfiNn-AmFuifenn84SmFhLRVKYZ91Qot"), label: "Physics Simulation C" }
         ],
         description: "Driving on a physics-based vehicle model with suspension, tires, drivetrain and aerodynamics.",
         explain: "Vehicle dynamics: weight transfer, tire slip, suspension travel and drivetrain torque shape how the car accelerates, brakes and corners,.",
@@ -165,8 +165,8 @@ const CATEGORIES = [
           { mp4: "assets/video/xr-cockpit.mp4", poster: "assets/poster/xr-cockpit-title.jpg", label: "XR cockpit" },
           { mp4: "assets/video/vr-jet-fighter.mp4", poster: "assets/poster/vr-jet-fighter.jpg", label: "VR Jet Fighter" },
           { drive: D("18yAsmyGg-V0Dl_wE2ex9gA__Y7m1wF_Z"), label: "VR flight" },
-          { drive: D("1FySv33YDpeFj6nYDj_9p9xyYhpNBCROk"), label: "Cockpit 01" },
-          { drive: D("1WKge83s7ZWFLK5QQ7wHg3SJ0yMPHQThu"), label: "Cockpit 02" }
+          { drive: D("1FySv33YDpeFj6nYDj_9p9xyYhpNBCROk"), label: "Cockpit A" },
+          { drive: D("1WKge83s7ZWFLK5QQ7wHg3SJ0yMPHQThu"), label: "Cockpit B" }
         ],
         description: "Immersive aircraft control in VR, where the pilot's hands drive the stick and throttle of a physically simulated cockpit.",
         explain: "Flight dynamics: a six-degree-of-freedom aircraft model combines lift, drag, thrust and control-surface moments, so pitch, roll and yaw respond to real stick and throttle input. Experiments were run on Meta Quest 2 and Meta Quest 3.",
@@ -177,8 +177,8 @@ const CATEGORIES = [
         id: "space-station",
         name: "VR-Space Station",
         videos: [
-          { drive: D("1gDw_zs-Ax0iemvYCm1lF3abyFGUusZr8"), label: "Station 01" },
-          { drive: D("176CmRi6BICqlwTMlddwWWMP3Aer3GsnD"), label: "Station 02" }
+          { drive: D("1gDw_zs-Ax0iemvYCm1lF3abyFGUusZr8"), label: "Station A" },
+          { drive: D("176CmRi6BICqlwTMlddwWWMP3Aer3GsnD"), label: "Station B" }
         ],
         description: "A modular VR space station template for building immersive space simulations and VR games.",
         explain: "Optimized VR controls in a sci-fi station with emissive and metallic materials, transparent glass surfaces and Niagara-animated elements, ready to customize in Unreal Engine.",
@@ -250,31 +250,32 @@ function projectHTML(p, i, total, cid) {
   const feats = p.features || p.tech;
   const chips = p.videos.length > 1
     ? `<div class="chips" role="tablist" aria-label="${esc(p.name)} clips">${p.videos.map((v, k) =>
-        `<button type="button" class="chip${k ? "" : " on"}" role="tab" aria-selected="${k ? "false" : "true"}" data-k="${k}"><i>${pad(k + 1)}</i>${esc(v.label || "Demo " + pad(k + 1))}</button>`).join("")}</div>`
+        `<button type="button" class="chip${k ? "" : " on"}" role="tab" aria-selected="${k ? "false" : "true"}" data-k="${k}">${esc(v.label || "Demo " + (k + 1))}</button>`).join("")}</div>`
     : "";
   const btn = p.link
     ? `<a class="explore-btn" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.linkLabel || "View Project")}${ARROW}</a>`
     : "";
+  const tags = feats.map(f => `<li>${iconFor(f)}<span>${esc(f)}</span></li>`).join("");
   return `
   <article class="project" id="${esc(p._home === cid ? p.id : cid + "-" + p.id)}" data-cat="${esc(cid)}">
     <div class="project-head">
-      <h3 class="project-name"><span class="num">${pad(i + 1)}</span><span class="slash">/</span><span class="nm">${esc(p.name)}</span></h3>
+      <h3 class="project-name"><span class="nm">${esc(p.name)}</span></h3>
       ${p.badge ? UE : ""}
     </div>
     <div class="project-grid">
       <div class="stage" data-p="${esc(p.id)}"><div class="media"></div>${CORNERS}</div>
       ${chips}
-      <aside class="features" aria-label="${esc(p.name)} key features">
-        <h4>KEY FEATURES</h4>
-        <ul>${feats.map(f => `<li>${iconFor(f)}<span>${esc(f)}</span></li>`).join("")}</ul>
-      </aside>
+      <div class="pinfo">
+        <p class="lead">${esc(p.description)}</p>
+        <p class="explain">${esc(p.explain)}</p>
+        <div class="ftags" aria-label="${esc(p.name)} key features">
+          <h4>Key features</h4>
+          <ul>${tags}</ul>
+        </div>
+        ${p.features ? `<ul class="tech">${p.tech.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+        ${btn}
+      </div>
     </div>
-    <div class="project-foot">
-      <p class="lead">${esc(p.description)}</p>
-      ${btn}
-    </div>
-    <p class="explain">${esc(p.explain)}</p>
-    ${p.features ? `<ul class="tech">${p.tech.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
   </article>`;
 }
 
@@ -301,7 +302,7 @@ function makeSlideshow(media, slides, name) {
     + `<button type="button" class="ss-btn prev" aria-label="Previous image">&#8249;</button><button type="button" class="ss-btn next" aria-label="Next image">&#8250;</button><span class="ss-count"></span>`;
   const imgs = [...media.querySelectorAll("img")], count = media.querySelector(".ss-count");
   let i = 0, timer = null;
-  const show = n => { i = (n + imgs.length) % imgs.length; imgs.forEach((s, k) => s.classList.toggle("on", k === i)); count.textContent = `${pad(i + 1)} / ${pad(imgs.length)}`; };
+  const show = n => { i = (n + imgs.length) % imgs.length; imgs.forEach((s, k) => s.classList.toggle("on", k === i)); count.textContent = `${i + 1} / ${imgs.length}`; };
   const stop = () => { clearInterval(timer); timer = null; };
   const play = () => { if (!reduce && !timer) timer = setInterval(() => show(i + 1), 3500); };
   media.querySelector(".prev").addEventListener("click", () => { show(i - 1); stop(); play(); });
