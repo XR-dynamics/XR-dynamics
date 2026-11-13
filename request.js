@@ -2,7 +2,7 @@
    FORM_ENDPOINT: a Formspree (or similar) URL, e.g. "https://formspree.io/f/xxxxxxxx"  -> sends in the background
    REQUEST_EMAIL: an address                                                           -> opens the visitor's mail app */
 const FORM_ENDPOINT = "";
-const REQUEST_EMAIL = "";
+const REQUEST_EMAIL = "techlead@iverseai.com";
 
 (() => {
   const f = document.getElementById("request");
@@ -13,8 +13,8 @@ const REQUEST_EMAIL = "";
     e.preventDefault();
     const d = Object.fromEntries(new FormData(f));
     if (d._gotcha) return;
-    if (!d.name.trim() || !/^\S+@\S+\.\S+$/.test(d.email) || !d.message.trim()) { say("Please add your name, a valid email and a short message.", false); return; }
-    const body = `Name: ${d.name}\nCompany: ${d.company}\nEmail: ${d.email}\nService: ${d.service}\nTimeline: ${d.timeline}\nBudget: ${d.budget}\n\n${d.message}`;
+    if (!d.name.trim() || !/^\S+@\S+\.\S+$/.test(d.email) || !d.message.trim() || !d.ok) { say("Please add your name, a valid email, a short message and tick the consent box.", false); return; }
+    const body = `Name: ${d.name}\nCompany: ${d.company}\nEmail: ${d.email}\nService: ${d.service}\n\n${d.message}`;
     if (FORM_ENDPOINT) {
       try {
         say("Sending…", true);
