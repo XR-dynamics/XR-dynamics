@@ -1,6 +1,8 @@
 /* Contact form: messages are delivered by FormSubmit (formsubmit.co) to the owner's inbox.
    The address is stored encoded so it is not shown on the page. */
-const TO = atob("c3Vyaml0LnNhaWtpYUBvdXRsb29rLmNvbQ==");
+/* After activating, FormSubmit gives a random form ID. Paste it here, e.g. "a1b2c3d4e5f6", and delete TO below. */
+const FORM_ID = "";
+const TO = FORM_ID || atob("c3Vyaml0LnNhaWtpYUBvdXRsb29rLmNvbQ==");
 
 (() => {
   const f = document.getElementById("request");
