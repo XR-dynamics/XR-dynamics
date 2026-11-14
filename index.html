@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Cpath d='M8 9l16 14M24 9L8 23' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="style.css?v=27">
+<link rel="stylesheet" href="style.css?v=28">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -38,7 +38,7 @@
       <div class="hero-actions">
         <a class="explore" href="#projects">Explore projects
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
-        <a class="live-link" href="https://www.fab.com/sellers/Ritzredemption" target="_blank" rel="noopener" aria-label="View live projects on Fab">
+        <a class="live-link" id="liveOpen" href="https://www.fab.com/sellers/Ritzredemption" target="_blank" rel="noopener" aria-label="View live projects on Fab">
           <span class="ue-orb"><img src="assets/ue-logo.png" alt="Unreal Engine" width="56" height="58"></span>
           <span class="live-label">VIEW LIVE PROJECTS
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span>
@@ -120,8 +120,27 @@
   <p>Immersive Control · Simulation · Robotics · Physical AI</p>
 </footer>
 
-<script src="main.js?v=14"></script>
+
+  <div class="pk-modal" id="pkModal" role="dialog" aria-modal="true" aria-labelledby="pkTitle" hidden>
+    <div class="pk-back" data-close></div>
+    <div class="pk-win">
+      <button class="pk-x" type="button" data-close aria-label="Close">&times;</button>
+      <p class="pk-eyebrow">XR Dynamics Lab</p>
+      <h2 id="pkTitle">Live Projects</h2>
+      <div class="pk-grid">
+      <a class="pk" href="https://www.fab.com/listings/c172b7cc-627b-4665-a35b-3af1f253486c" target="_blank" rel="noopener" aria-label="LiDAR Simulation on Fab"><img src="assets/picks/lidar.jpg" alt="LiDAR Simulation" loading="lazy" width="800" height="450"><span class="pk-tag">View on Fab <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span></a>
+      <a class="pk" href="https://www.fab.com/listings/ab848d4b-a42d-4d9b-9f28-c72ceada449b" target="_blank" rel="noopener" aria-label="Flight Dynamics on Fab"><img src="assets/picks/flight.jpg" alt="Flight Dynamics" loading="lazy" width="800" height="450"><span class="pk-tag">View on Fab <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span></a>
+      <a class="pk" href="https://www.fab.com/listings/86e8e62b-caf1-4cb6-a589-7d7cf601143f" target="_blank" rel="noopener" aria-label="Vehicle Dynamics on Fab"><img src="assets/picks/vehicle.jpg" alt="Vehicle Dynamics" loading="lazy" width="800" height="450"><span class="pk-tag">View on Fab <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span></a>
+      <a class="pk pk-req" href="#contact" data-close aria-label="XR-JetSimulation Cockpit F-35: available on request"><img src="assets/picks/xrjet.jpg" alt="XR-JetSimulation Cockpit F-35" loading="lazy" width="800" height="450"><span class="pk-tag">Available on request</span></a>
+      <a class="pk pk-req" href="#contact" data-close aria-label="XR-Teleoperation: available on request"><img src="assets/picks/teleop.jpg" alt="XR-Teleoperation" loading="lazy" width="800" height="450"><span class="pk-tag">Available on request</span></a>
+      <a class="pk" href="https://www.fab.com/listings/fff21d70-c83f-4411-ad23-cbed73a1895c" target="_blank" rel="noopener" aria-label="VR-DroneCockpit on Fab"><img src="assets/picks/drone.jpg" alt="VR-DroneCockpit" loading="lazy" width="800" height="450"><span class="pk-tag">View on Fab <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></span></a>
+      </div>
+      <p class="pk-foot"><a href="https://www.fab.com/sellers/Ritzredemption" target="_blank" rel="noopener">Visit my full Fab profile</a></p>
+    </div>
+  </div>
+  <script src="main.js?v=14"></script>
 <script src="request.js?v=3"></script>
+<script src="picks.js?v=1"></script>
 <script type="module" src="bg.js?v=4"></script>
 </body>
 </html>
