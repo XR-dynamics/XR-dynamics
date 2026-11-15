@@ -496,3 +496,22 @@ footer{border-top:1px solid var(--line)}
 @keyframes liveRing{0%{box-shadow:0 0 0 0 rgba(255,255,255,.3)}70%,100%{box-shadow:0 0 0 14px rgba(255,255,255,0)}}
 @keyframes liveNudge{0%,100%{transform:translate(0,0)}50%{transform:translate(3px,-3px)}}
 @media(prefers-reduced-motion:reduce){.hero-actions .live-label,.hero-actions .live-label::after,.hero-actions .live-label svg,.hero-actions .ue-orb{animation:none}}
+
+/* tiles: looping video behind glass, dimmed */
+.pk{aspect-ratio:4/3;background:#0b0b0d;border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.03),0 14px 30px -18px rgba(0,0,0,.9)}
+.pk img.pk-img,.pk .pk-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.5) saturate(.3);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .5s,opacity .6s}
+.pk .pk-vid{opacity:0}
+.pk.is-playing .pk-vid{opacity:1}
+.pk.is-playing img.pk-img{opacity:0}
+.pk::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.03) 34%,rgba(255,255,255,0) 55%,rgba(0,0,0,.28) 100%)}
+.pk:hover img.pk-img,.pk:hover .pk-vid{transform:scale(1.05);filter:brightness(.82) saturate(.5)}
+.pk:hover,.pk:focus-within{transform:scale(1.05)}
+.pk-info{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:10px 10px 10px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(12,12,14,.55));-webkit-backdrop-filter:blur(12px) saturate(1.1);backdrop-filter:blur(12px) saturate(1.1);border-top:1px solid rgba(255,255,255,.16)}
+.pk-name{margin:0;padding:0 2px;text-align:left;font-size:14px;font-weight:600;letter-spacing:-.005em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.pk-info .pk-bar{position:static;margin-top:8px}
+@media(prefers-reduced-motion:reduce){.pk .pk-vid{display:none}.pk.is-playing img.pk-img{opacity:1}}
+
+.pk:not([data-vid]) img.pk-img{inset:auto 0 0 0;height:150%;object-position:50% 100%}
+.pk-info{padding:8px 9px 9px}
+.pk-info .pk-bar{margin-top:7px}
+.pk-info .pk-demo,.pk-info .pk-link{padding:5px 10px}
