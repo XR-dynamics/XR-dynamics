@@ -286,8 +286,77 @@ document.getElementById("catTabs").innerHTML =
   CATEGORIES.map((c, k) => `${k ? '<span class="sep" aria-hidden="true"></span>' : ""}<button type="button" class="cat-tab" role="tab" id="tab-${c.id}" aria-controls="panel-${c.id}" data-cat="${c.id}">${esc(c.title)}</button>`).join("")
   + '<span class="ink" id="catInk"></span>';
 document.getElementById("panels").innerHTML = CATEGORIES.map(c =>
-  `<div class="panel" id="panel-${c.id}" role="tabpanel" aria-labelledby="tab-${c.id}" hidden>${
-    c.projects.map((p, i) => projectHTML(p, i, c.projects.length, c.id)).join("")}</div>`).join("");
+  `<div class="panel" id="panel-${c.id}" role="tabpanel" aria-labelledby="tab-${c.id}" hidden>
+    <div class="slider"><div class="track" tabindex="0" aria-label="${esc(c.title)} projects, swipe or use the arrows">${
+      c.projects.map((p, i) => projectHTML(p, i, c.projects.length, c.id)).join("")}</div></div>
+    <div class="sl-ui">
+      <button type="button" class="sl-btn prev" aria-label="Previous project">&#8249;</button>
+      <div class="sl-dots">${c.projects.map((p, i) => `<button type="button" class="sl-dot" data-i="${i}" aria-label="${esc(p.name)}" title="${esc(p.name)}"></button>`).join("")}</div>
+      <button type="button" class="sl-btn next" aria-label="Next project">&#8250;</button>
+    </div>
+  </div>`).join("");
+
+/* ---------- horizontal sliders (one per category) ---------- */
+const SLIDERS = {};
+CATEGORIES.forEach(c => {
+  const panel = document.getElementById(`panel-${c.id}`), track = panel.querySelector(".track");
+  const slides = [...track.children], dots = [...panel.querySelectorAll(".sl-dot")];
+  const prev = panel.querySelector(".sl-btn.prev"), next = panel.querySelector(".sl-btn.next");
+  let idx = 0, raf = 0;
+  const fit = () => { const h = slides[idx].offsetHeight; if (h) track.style.height = h + "px"; };
+  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => fit()); slides.forEach(s => ro.observe(s)); }
+  const paint = () => {
+    fit();
+    slides.forEach((s, k) => s.classList.toggle("active", k === idx));
+    dots.forEach((d, k) => { d.classList.toggle("on", k === idx); d.setAttribute("aria-current", k === idx ? "true" : "false"); });
+    prev.disabled = idx === 0; next.disabled = idx === slides.length - 1;
+  };
+  const go = (n, instant) => {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    track.scrollTo({ left: n * track.clientWidth, behavior: instant || reduce ? "instant" : "smooth" });
+    if (instant) { idx = n; paint(); }
+  };
+  track.addEventListener("scroll", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const n = Math.round(track.scrollLeft / (track.clientWidth || 1));
+      if (n !== idx && n >= 0 && n < slides.length) { idx = n; paint(); }
+    });
+  }, { passive: true });
+  prev.addEventListener("click", () => go(idx - 1));
+  next.addEventListener("click", () => go(idx + 1));
+  dots.forEach(d => d.addEventListener("click", () => go(Number(d.dataset.i))));
+  track.addEventListener("keydown", e => {
+    if (e.target !== track) return;
+    if (e.key === "ArrowRight") { go(idx + 1); e.preventDefault(); }
+    if (e.key === "ArrowLeft") { go(idx - 1); e.preventDefault(); }
+  });
+  /* mouse drag (touch and trackpads scroll natively) */
+  let down = null;
+  track.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("a,button,iframe,video,.stage,.chips")) return;
+    down = { x: e.clientX, left: track.scrollLeft, moved: 0 };
+  });
+  addEventListener("pointermove", e => {
+    if (!down) return;
+    const dx = e.clientX - down.x; down.moved = Math.max(down.moved, Math.abs(dx));
+    if (down.moved < 5) return;
+    track.classList.add("drag"); track.style.scrollSnapType = "none"; track.style.scrollBehavior = "auto";
+    track.scrollLeft = down.left - dx;
+  });
+  addEventListener("pointerup", e => {
+    if (!down) return;
+    const dx = e.clientX - down.x, w = track.clientWidth, was = down.moved >= 5;
+    down = null;
+    if (!was) return;
+    track.classList.remove("drag");
+    const target = Math.abs(dx) > w * 0.15 ? idx + (dx < 0 ? 1 : -1) : idx;
+    track.style.scrollSnapType = ""; track.style.scrollBehavior = "";
+    go(Math.round(track.scrollLeft / w) === idx || Math.abs(dx) > w * 0.15 ? target : Math.round(track.scrollLeft / w));
+  });
+  SLIDERS[c.id] = { go, sync: () => go(idx, true), index: () => idx, slides };
+  paint();
+});
 
 /* ---------- stages: lazy mount, pause/unload on leave ---------- */
 const stages = new Map();          // element -> state
@@ -378,7 +447,7 @@ document.documentElement.classList.add("js");
 const revealIO = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); }
 }), { threshold: 0.08 }) : null;
-document.querySelectorAll(".project,.stats,.stats div,.projects-head").forEach(i => revealIO ? revealIO.observe(i) : i.classList.add("in"));
+document.querySelectorAll(".stats,.stats div,.projects-head").forEach(i => revealIO ? revealIO.observe(i) : i.classList.add("in"));
 
 /* ---------- category tabs ---------- */
 const tabsEl = document.getElementById("catTabs"), ink = document.getElementById("catInk");
@@ -411,6 +480,7 @@ function activate(id, opts = {}) {
     next.classList.remove("in");
     void next.offsetWidth;
     next.classList.add("in");
+    SLIDERS[id].sync();
     next.querySelectorAll(".stage").forEach(el => io && (io.unobserve(el), io.observe(el)));   // re-evaluate lazy mount
     if (opts.scroll !== false) scrollToTabs(true);
   };
@@ -437,8 +507,9 @@ function fromHash(first) {
   const h = decodeURIComponent(location.hash.slice(1));
   if (panels[h]) { activate(h, { hash: false, scroll: !first }); if (!first) return; }
   else if (PBYID[h]) {
+    const sl = SLIDERS[PBYID[h].cid], n = sl.slides.findIndex(s => s.id === h || s.id.endsWith("-" + h));
     activate(PBYID[h].cid, { hash: false, scroll: false, instant: true });
-    setTimeout(() => document.getElementById(h).scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }), 260);
+    setTimeout(() => { if (n >= 0) sl.go(n, true); document.getElementById("projects").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 260);
     return;
   }
   if (first && !current) activate(CATEGORIES[0].id, { hash: false, scroll: false });
