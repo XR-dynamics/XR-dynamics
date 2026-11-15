@@ -515,3 +515,10 @@ footer{border-top:1px solid var(--line)}
 .pk-info{padding:8px 9px 9px}
 .pk-info .pk-bar{margin-top:7px}
 .pk-info .pk-demo,.pk-info .pk-link{padding:5px 10px}
+
+/* tiles: true colour video, centred in the area above the label */
+.pk{background:#0b0b0d}
+.pk .pk-vid{inset:0 0 auto 0;height:calc(100% - 72px);object-position:50% 50%;filter:brightness(.72)}
+.pk:hover .pk-vid{filter:brightness(1);transform:scale(1.05)}
+.pk::before{background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.02) 34%,rgba(255,255,255,0) 60%,rgba(0,0,0,.2) 100%)}
+.pk-info{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(18,18,22,.78))}
