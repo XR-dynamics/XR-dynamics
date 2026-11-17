@@ -553,3 +553,6 @@ footer{border-top:1px solid var(--line)}
 .pj-x:hover{background:rgba(255,255,255,.2)}
 .pj-lock{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.pcard,.pthumb img{transition:none}}
+
+.pthumb.noimg{display:grid;place-items:center;background:radial-gradient(ellipse at 70% 20%,rgba(143,170,255,.18),transparent 60%),radial-gradient(ellipse at 20% 90%,rgba(80,255,220,.10),transparent 55%),#070809}
+.ptitle{font-size:clamp(20px,2.4vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.05;color:#fff;text-align:left;padding:0 18px;text-transform:uppercase;max-width:12ch;justify-self:start}

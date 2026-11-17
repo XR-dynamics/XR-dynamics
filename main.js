@@ -22,7 +22,7 @@ const CATEGORIES = [
      VR projects listed again (refs point at the projects above by id). */
   {
     id: "xr-vr", title: "XR/VR",
-    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
+    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle"],
     order: ["vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
     projects: [
       {
@@ -36,6 +36,16 @@ const CATEGORIES = [
         explain: "Moving beyond traditional grab-and-attach interactions, using Meta XR Hand Tracking so that objects respond to the hands through physics. The challenge is balancing physics accuracy, stability and real-time VR performance. Still experimenting, testing and improving.",
         tech: ["Meta XR Hand Tracking", "Physics-Based Grabbing", "Unreal Engine 5", "Meta Quest 2 / 3", "C++"],
         badge: true, link: null
+      },
+      {
+        id: "xr-keypad",
+        name: "XR-Keypad",
+        videos: [{ image: "assets/tabs/xr-keypad.jpg", label: "Ready-to-run demo map", alt: "XR-Keypad demo map: a secure access terminal with two floating keypads" }],
+        description: "A hand-tracked XR keypad plugin for Unreal Engine 5.8, delivered with a ready-to-run demo map.",
+        explain: "Poke or pinch the keys with your hands, point with a ray, or use controllers and mouse, then grab the handle to move the keypad. The demo is a secure access terminal where you enter a code and a name, and switch layouts, themes and colors live.",
+        tech: ["Unreal Engine 5.8", "Hand Tracking", "Controllers", "Blueprint + C++", "XR Input"],
+        badge: true, linkLabel: "View on Fab",
+        link: "https://www.fab.com/listings/28274d1c-dfe2-44cf-a471-12638ffcfc6f"
       }
     ]
   },
@@ -82,16 +92,6 @@ const CATEGORIES = [
         explain: "Hand and finger motion from Meta Quest 2 and Meta Quest 3 is mapped to the robot's arms and hands, so one operator can handle fine manipulation tasks such as picking, carrying and placing on the real machine.",
         tech: ["Meta Quest 2 / 3", "Hand Tracking", "Humanoid Robots", "ROS 2", "Python"],
         link: null
-      },
-      {
-        id: "xr-keypad",
-        name: "XR-Keypad",
-        videos: [{ image: "assets/tabs/xr-keypad.jpg", label: "Ready-to-run demo map", alt: "XR-Keypad demo map: a secure access terminal with two floating keypads" }],
-        description: "A hand-tracked XR keypad plugin for Unreal Engine 5.8, delivered with a ready-to-run demo map.",
-        explain: "Poke or pinch the keys with your hands, point with a ray, or use controllers and mouse, then grab the handle to move the keypad. The demo is a secure access terminal where you enter a code and a name, and switch layouts, themes and colors live.",
-        tech: ["Unreal Engine 5.8", "Hand Tracking", "Controllers", "Blueprint + C++", "XR Input"],
-        badge: true, linkLabel: "View on Fab",
-        link: "https://www.fab.com/listings/28274d1c-dfe2-44cf-a471-12638ffcfc6f"
       }
     ]
   },
@@ -290,12 +290,12 @@ const THUMB = {
   "dexterous-teleoperation": "assets/poster/physical-ai.jpg", "xr-keypad": "assets/tabs/xr-keypad.jpg",
   "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-vehicle": "assets/xr-vehicle.jpg",
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
-  "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": "assets/poster/hero-bg-2.jpg"
+  "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
   <button type="button" class="pcard" data-pid="${esc(p.id)}" data-cat="${esc(cid)}" aria-haspopup="dialog" aria-label="${esc(p.name)}: open project">
-    <span class="pthumb"><img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360"></span>
+    <span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>
     <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
   </button>`;
 document.getElementById("panels").innerHTML = CATEGORIES.map(c =>
