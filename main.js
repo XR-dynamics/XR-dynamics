@@ -257,7 +257,7 @@ function projectHTML(p, i, total, cid) {
     : "";
   const tags = feats.map(f => `<li>${iconFor(f)}<span>${esc(f)}</span></li>`).join("");
   return `
-  <article class="project" id="${esc(p._home === cid ? p.id : cid + "-" + p.id)}" data-cat="${esc(cid)}">
+  <article class="project" id="${esc(p._home === cid ? p.id : cid + "-" + p.id)}" data-cat="${esc(cid)}" data-pid="${esc(p.id)}">
     <div class="project-head">
       <h3 class="project-name"><span class="nm">${esc(p.name)}</span></h3>
       ${p.badge ? UE : ""}
@@ -285,78 +285,106 @@ CATEGORIES.forEach(c => c.projects.forEach(p => { if (p._home === c.id) PBYID[p.
 document.getElementById("catTabs").innerHTML =
   CATEGORIES.map((c, k) => `${k ? '<span class="sep" aria-hidden="true"></span>' : ""}<button type="button" class="cat-tab" role="tab" id="tab-${c.id}" aria-controls="panel-${c.id}" data-cat="${c.id}">${esc(c.title)}</button>`).join("")
   + '<span class="ink" id="catInk"></span>';
+const THUMB = {
+  "xr-hand": "assets/picks/grab.jpg", "physical-ai": "assets/picks/rl.jpg", "teleoperation": "assets/picks/teleop.jpg",
+  "dexterous-teleoperation": "assets/poster/physical-ai.jpg", "xr-keypad": "assets/tabs/xr-keypad.jpg",
+  "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-vehicle": "assets/xr-vehicle.jpg",
+  "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
+  "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": "assets/poster/hero-bg-2.jpg"
+};
+const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
+const cardHTML = (p, cid) => `
+  <button type="button" class="pcard" data-pid="${esc(p.id)}" data-cat="${esc(cid)}" aria-haspopup="dialog" aria-label="${esc(p.name)}: open project">
+    <span class="pthumb"><img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360"></span>
+    <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
+  </button>`;
 document.getElementById("panels").innerHTML = CATEGORIES.map(c =>
   `<div class="panel" id="panel-${c.id}" role="tabpanel" aria-labelledby="tab-${c.id}" hidden>
-    <div class="slider"><div class="track" tabindex="0" aria-label="${esc(c.title)} projects, swipe or use the arrows">${
-      c.projects.map((p, i) => projectHTML(p, i, c.projects.length, c.id)).join("")}</div></div>
-    <div class="sl-ui">
-      <button type="button" class="sl-btn prev" aria-label="Previous project">&#8249;</button>
-      <div class="sl-dots">${c.projects.map((p, i) => `<button type="button" class="sl-dot" data-i="${i}" aria-label="${esc(p.name)}" title="${esc(p.name)}"></button>`).join("")}</div>
-      <button type="button" class="sl-btn next" aria-label="Next project">&#8250;</button>
-    </div>
+    <div class="pgrid">${c.projects.map(p => cardHTML(p, c.id)).join("")}</div>
+    <div class="pstore" hidden>${c.projects.map((p, i) => projectHTML(p, i, c.projects.length, c.id)).join("")}</div>
   </div>`).join("");
 
-/* ---------- horizontal sliders (one per category) ---------- */
-const SLIDERS = {};
-CATEGORIES.forEach(c => {
-  const panel = document.getElementById(`panel-${c.id}`), track = panel.querySelector(".track");
-  const slides = [...track.children], dots = [...panel.querySelectorAll(".sl-dot")];
-  const prev = panel.querySelector(".sl-btn.prev"), next = panel.querySelector(".sl-btn.next");
-  let idx = 0, raf = 0;
-  const fit = () => { const h = slides[idx].offsetHeight; if (h) track.style.height = h + "px"; };
-  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => fit()); slides.forEach(s => ro.observe(s)); }
-  const paint = () => {
-    fit();
-    slides.forEach((s, k) => s.classList.toggle("active", k === idx));
-    dots.forEach((d, k) => { d.classList.toggle("on", k === idx); d.setAttribute("aria-current", k === idx ? "true" : "false"); });
-    prev.disabled = idx === 0; next.disabled = idx === slides.length - 1;
+/* ---------- project cards: hover (or tap) grows the card into the full project view ---------- */
+const pop = document.createElement("div");
+pop.className = "pj-pop"; pop.hidden = true; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "false");
+pop.innerHTML = '<button type="button" class="pj-x" aria-label="Close project"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg></button><div class="pj-body"></div>';
+const back = document.createElement("div"); back.className = "pj-back"; back.hidden = true;
+document.body.append(back, pop);
+const popBody = pop.querySelector(".pj-body");
+let lockCard = null, openState = null, hov = { card: false, pop: false }, hoverT = 0, closeT = 0, closing = 0;
+
+function placePop(card) {
+  const vw = innerWidth, vh = innerHeight, W = Math.min(1180, vw - 24);
+  pop.style.width = W + "px"; pop.style.maxHeight = (vh - 24) + "px";
+  const H = Math.min(pop.offsetHeight, vh - 24), c = card.getBoundingClientRect();
+  const L = Math.max(12, Math.min(vw - 12 - W, c.left + c.width / 2 - W / 2));
+  const T = Math.max(12, Math.min(vh - 12 - H, c.top + c.height / 2 - H / 2));
+  pop.style.left = L + "px"; pop.style.top = T + "px";
+  return { c, L, T, W, H };
+}
+function openPop(card, pinned) {
+  clearTimeout(closeT);
+  if (openState && openState.card === card) { if (pinned) pin(true); return; }
+  if (openState) closePop(true);
+  const panel = card.closest(".panel"), art = panel.querySelector(`.pstore .project[data-pid="${card.dataset.pid}"]`);
+  if (!art) return;
+  const marker = document.createComment("project"); art.replaceWith(marker);
+  popBody.appendChild(art); art.classList.add("in");
+  pop.hidden = false; pop.style.visibility = "hidden"; pop.style.transition = "none"; pop.style.transform = "none"; pop.style.opacity = "1";
+  const g = placePop(card);
+  openState = { card, art, marker, pinned: false };
+  back.hidden = false; pop.setAttribute("aria-label", card.getAttribute("aria-label"));
+  const sc = g.c.width / g.W;
+  pop.style.transformOrigin = "0 0";
+  pop.style.transform = reduce ? "none" : `translate(${g.c.left - g.L}px,${g.c.top - g.T}px) scale(${sc})`;
+  pop.style.opacity = reduce ? "1" : "0"; pop.style.visibility = "";
+  void pop.offsetWidth;
+  pop.style.transition = reduce ? "none" : "transform .46s cubic-bezier(.2,.8,.2,1), opacity .3s ease";
+  pop.style.transform = "none"; pop.style.opacity = "1";
+  requestAnimationFrame(() => back.classList.add("on"));
+  card.classList.add("is-open");
+  io && art.querySelectorAll(".stage").forEach(el => (io.unobserve(el), io.observe(el)));
+  if (pinned) pin(true);
+}
+function pin(on) { if (!openState) return; openState.pinned = on; document.documentElement.classList.toggle("pj-lock", on); back.classList.toggle("pin", on); }
+function closePop(instant, explicit) {
+  if (!openState) return;
+  const st = openState; if (explicit) lockCard = st.card; openState = null; clearTimeout(closeT); clearTimeout(hoverT);
+  document.documentElement.classList.remove("pj-lock"); back.classList.remove("on", "pin"); st.card.classList.remove("is-open");
+  const done = () => {
+    st.art.querySelectorAll("video").forEach(v => v.pause());
+    st.marker.replaceWith(st.art);                       // back into the (hidden) store: lazy unmount follows
+    const s = stages.get(st.art.querySelector(".stage")); if (s) { pauseStage(s); unmount(s); }
+    if (!openState) { pop.hidden = true; back.hidden = true; }
   };
-  const go = (n, instant) => {
-    n = Math.max(0, Math.min(slides.length - 1, n));
-    track.scrollTo({ left: n * track.clientWidth, behavior: instant || reduce ? "instant" : "smooth" });
-    if (instant) { idx = n; paint(); }
-  };
-  track.addEventListener("scroll", () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      const n = Math.round(track.scrollLeft / (track.clientWidth || 1));
-      if (n !== idx && n >= 0 && n < slides.length) { idx = n; paint(); }
-    });
-  }, { passive: true });
-  prev.addEventListener("click", () => go(idx - 1));
-  next.addEventListener("click", () => go(idx + 1));
-  dots.forEach(d => d.addEventListener("click", () => go(Number(d.dataset.i))));
-  track.addEventListener("keydown", e => {
-    if (e.target !== track) return;
-    if (e.key === "ArrowRight") { go(idx + 1); e.preventDefault(); }
-    if (e.key === "ArrowLeft") { go(idx - 1); e.preventDefault(); }
-  });
-  /* mouse drag (touch and trackpads scroll natively) */
-  let down = null;
-  track.addEventListener("pointerdown", e => {
-    if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("a,button,iframe,video,.stage,.chips")) return;
-    down = { x: e.clientX, left: track.scrollLeft, moved: 0 };
-  });
-  addEventListener("pointermove", e => {
-    if (!down) return;
-    const dx = e.clientX - down.x; down.moved = Math.max(down.moved, Math.abs(dx));
-    if (down.moved < 5) return;
-    track.classList.add("drag"); track.style.scrollSnapType = "none"; track.style.scrollBehavior = "auto";
-    track.scrollLeft = down.left - dx;
-  });
-  addEventListener("pointerup", e => {
-    if (!down) return;
-    const dx = e.clientX - down.x, w = track.clientWidth, was = down.moved >= 5;
-    down = null;
-    if (!was) return;
-    track.classList.remove("drag");
-    const target = Math.abs(dx) > w * 0.15 ? idx + (dx < 0 ? 1 : -1) : idx;
-    track.style.scrollSnapType = ""; track.style.scrollBehavior = "";
-    go(Math.round(track.scrollLeft / w) === idx || Math.abs(dx) > w * 0.15 ? target : Math.round(track.scrollLeft / w));
-  });
-  SLIDERS[c.id] = { go, sync: () => go(idx, true), index: () => idx, slides };
-  paint();
+  if (instant || reduce) { pop.style.transition = "none"; done(); return; }
+  const g = st.card.getBoundingClientRect(), p = pop.getBoundingClientRect(), sc = g.width / p.width;
+  pop.style.transition = "transform .3s cubic-bezier(.4,0,.6,1), opacity .24s ease";
+  pop.style.transform = `translate(${g.left - p.left}px,${g.top - p.top}px) scale(${sc})`; pop.style.opacity = "0";
+  clearTimeout(closing); closing = setTimeout(done, 300);
+}
+const sched = () => { clearTimeout(closeT); closeT = setTimeout(() => { if (openState && !openState.pinned && !hov.card && !hov.pop) closePop(); }, 220); };
+const canHover = matchMedia("(hover:hover) and (pointer:fine)");
+document.getElementById("panels").addEventListener("mouseover", e => {
+  const card = e.target.closest(".pcard"); if (!card || !canHover.matches || lockCard === card) return;
+  hov.card = true; clearTimeout(closeT); clearTimeout(hoverT);
+  if (!openState || openState.card !== card) hoverT = setTimeout(() => openPop(card, false), 140);
 });
+document.getElementById("panels").addEventListener("mouseout", e => {
+  const card = e.target.closest(".pcard"); if (!card || card.contains(e.relatedTarget)) return;
+  if (lockCard === card) lockCard = null;
+  hov.card = false; clearTimeout(hoverT); sched();
+});
+pop.addEventListener("mouseenter", () => { hov.pop = true; clearTimeout(closeT); });
+pop.addEventListener("mouseleave", () => { hov.pop = false; sched(); });
+document.getElementById("panels").addEventListener("click", e => {
+  const card = e.target.closest(".pcard"); if (!card) return;
+  openPop(card, true);
+});
+pop.addEventListener("click", e => { if (e.target.closest(".pj-x")) closePop(false, true); else if (openState && !openState.pinned && e.target.closest(".project")) pin(true); });
+back.addEventListener("click", () => { if (openState && openState.pinned) closePop(false, true); });
+addEventListener("keydown", e => { if (e.key === "Escape" && openState) { const c = openState.card; closePop(false, true); c.focus({ preventScroll: true }); } });
+addEventListener("resize", () => { if (openState) closePop(true); });
 
 /* ---------- stages: lazy mount, pause/unload on leave ---------- */
 const stages = new Map();          // element -> state
@@ -470,7 +498,7 @@ function scrollToTabs(smooth) {
 function activate(id, opts = {}) {
   if (!panels[id] || id === current) return;
   const prev = current ? panels[current] : null, next = panels[id];
-  current = id;
+  current = id; closePop(true);
   tabBtns.forEach(t => { const on = t.dataset.cat === id; t.classList.toggle("on", on); t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; });
   moveInk();
   if (opts.hash !== false) history.replaceState(null, "", `#${id}`);
@@ -480,7 +508,6 @@ function activate(id, opts = {}) {
     next.classList.remove("in");
     void next.offsetWidth;
     next.classList.add("in");
-    SLIDERS[id].sync();
     next.querySelectorAll(".stage").forEach(el => io && (io.unobserve(el), io.observe(el)));   // re-evaluate lazy mount
     if (opts.scroll !== false) scrollToTabs(true);
   };
@@ -507,9 +534,12 @@ function fromHash(first) {
   const h = decodeURIComponent(location.hash.slice(1));
   if (panels[h]) { activate(h, { hash: false, scroll: !first }); if (!first) return; }
   else if (PBYID[h]) {
-    const sl = SLIDERS[PBYID[h].cid], n = sl.slides.findIndex(s => s.id === h || s.id.endsWith("-" + h));
     activate(PBYID[h].cid, { hash: false, scroll: false, instant: true });
-    setTimeout(() => { if (n >= 0) sl.go(n, true); document.getElementById("projects").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 260);
+    setTimeout(() => {
+      document.getElementById("projects").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      const card = panels[PBYID[h].cid].querySelector(`.pcard[data-pid="${h}"]`);
+      if (card) setTimeout(() => openPop(card, true), reduce ? 0 : 500);
+    }, 260);
     return;
   }
   if (first && !current) activate(CATEGORIES[0].id, { hash: false, scroll: false });
