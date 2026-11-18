@@ -22,9 +22,18 @@ const CATEGORIES = [
      VR projects listed again (refs point at the projects above by id). */
   {
     id: "xr-vr", title: "XR/VR",
-    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-drive"],
-    order: ["vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-drive", "xr-keypad"],
+    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation"],
+    order: ["xr-drive", "vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-keypad"],
     projects: [
+      {
+        id: "xr-drive",
+        name: "XR-Drive",
+        videos: [{ mp4: "assets/video/xr-drive.mp4", poster: "assets/poster/xr-drive.jpg", label: "XR-Drive" }],
+        description: "Drive a Formula 1 car in VR: hands on the wheel, paddle shifters and a live dashboard.",
+        explain: "A VR driving experience built around a Ferrari F2004 cockpit: a 3.0 L V10 with a 7-speed paddle gearbox, LED rev lights on the steering wheel and a glowing LED-kerb race loop in the XR-Drive studio. Your hands are tracked on the wheel while the car runs on a physics-based vehicle model.",
+        tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "Vehicle Physics", "C++"],
+        badge: true, link: null
+      },
       {
         id: "xr-hand",
         name: "XR-Hand Interaction",
@@ -115,15 +124,6 @@ const CATEGORIES = [
         tech: ["Unreal Engine 5", "Chaos Physics", "Sensor Simulation", "Reinforcement Learning", "C++"],
         badge: true, linkLabel: "Explore Plugin",
         link: "https://www.fab.com/listings/86e8e62b-caf1-4cb6-a589-7d7cf601143f"
-      },
-      {
-        id: "xr-drive",
-        name: "XR-Drive",
-        videos: [{ mp4: "assets/video/xr-drive.mp4", poster: "assets/poster/xr-drive.jpg", label: "XR-Drive" }],
-        description: "Drive a Formula 1 car in VR: hands on the wheel, paddle shifters and a live dashboard.",
-        explain: "A VR driving experience built around a Ferrari F2004 cockpit: a 3.0 L V10 with a 7-speed paddle gearbox, LED rev lights on the steering wheel and a glowing LED-kerb race loop in the XR-Drive studio. Your hands are tracked on the wheel while the car runs on a physics-based vehicle model.",
-        tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "Vehicle Physics", "C++"],
-        badge: true, link: null
       }
     ]
   },
