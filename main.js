@@ -109,7 +109,7 @@ const CATEGORIES = [
   {
     id: "vehicle", title: "Vehicle",
     refs: ["xr-drive"],
-    order: ["xr-drive", "vehicle-dynamics"],
+    order: ["xr-drive", "vehicle-dynamics", "sensor-simulation", "vehicle-rl"],
     projects: [
       {
         id: "vehicle-dynamics",
@@ -126,6 +126,26 @@ const CATEGORIES = [
         tech: ["Unreal Engine 5", "Chaos Physics", "Sensor Simulation", "Reinforcement Learning", "C++"],
         badge: true, linkLabel: "Explore Plugin",
         link: "https://www.fab.com/listings/86e8e62b-caf1-4cb6-a589-7d7cf601143f"
+      },
+      {
+        id: "sensor-simulation",
+        name: "Sensor Simulation",
+        videos: [{ mp4: "assets/video/lidar-weather.mp4", poster: "assets/picks/lidar.jpg", label: "LiDAR in extreme weather" }],
+        description: "Physics-based sensor simulation in Unreal Engine: LiDAR, radar and ground truth, tested against extreme weather.",
+        explain: "Simulated LiDAR and radar sensors produce point clouds and ground truth that react to rain, fog and snow, so perception for autonomous vehicles can be tested before any real drive.",
+        features: ["LiDAR + radar + GT", "Weather interaction", "Point cloud", "Sensor simulation", "Unreal Engine 5"],
+        tech: ["Unreal Engine 5", "LiDAR", "Radar", "Ground Truth", "C++"],
+        badge: true, linkLabel: "View on Fab",
+        link: "https://www.fab.com/listings/c172b7cc-627b-4665-a35b-3af1f253486c"
+      },
+      {
+        id: "vehicle-rl",
+        name: "Reinforcement Learning for Vehicle",
+        videos: [{ drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "Driving B" }],
+        description: "A driving policy learned through reinforcement learning on the physics-based vehicle model.",
+        explain: "The vehicle learns to drive by trial and error inside Unreal Engine, using the same suspension, tire and drivetrain physics as the Vehicle Dynamics plugin, so the learned behaviour is tested under realistic car dynamics.",
+        tech: ["Unreal Engine 5", "Chaos Physics", "Reinforcement Learning", "Python", "C++"],
+        badge: true, link: null
       }
     ]
   },
@@ -290,7 +310,7 @@ document.getElementById("catTabs").innerHTML =
 const THUMB = {
   "xr-hand": "assets/picks/grab.jpg", "physical-ai": "assets/picks/rl.jpg", "teleoperation": "assets/picks/teleop.jpg",
   "dexterous-teleoperation": "assets/poster/physical-ai.jpg", "xr-keypad": "assets/tabs/xr-keypad.jpg",
-  "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-drive": "assets/picks/drive.jpg",
+  "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-drive": "assets/picks/drive.jpg", "sensor-simulation": "assets/picks/lidar.jpg", "vehicle-rl": "assets/picks/vehicle.jpg",
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
