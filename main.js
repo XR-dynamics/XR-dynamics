@@ -314,10 +314,14 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
+const THUMBVID = { "vehicle-dynamics": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4" };
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
   <button type="button" class="pcard" data-pid="${esc(p.id)}" data-cat="${esc(cid)}" aria-haspopup="dialog" aria-label="${esc(p.name)}: open project">
-    <span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>
+    ${THUMBVID[p.id] && !reduceMotion
+      ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video><span class="ptitle">${esc(p.name)}</span></span>`
+      : `<span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>`}
     <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
   </button>`;
 document.getElementById("panels").innerHTML = CATEGORIES.map(c =>
