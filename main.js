@@ -108,6 +108,8 @@ const CATEGORIES = [
   /* ------------------------------------------------------------- VEHICLE */
   {
     id: "vehicle", title: "Vehicle",
+    refs: ["xr-drive"],
+    order: ["xr-drive", "vehicle-dynamics"],
     projects: [
       {
         id: "vehicle-dynamics",
