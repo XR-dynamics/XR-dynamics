@@ -22,8 +22,8 @@ const CATEGORIES = [
      VR projects listed again (refs point at the projects above by id). */
   {
     id: "xr-vr", title: "XR/VR",
-    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle"],
-    order: ["vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-vehicle", "xr-keypad"],
+    refs: ["vr-drone-cockpit", "vr-flight-control", "space-station", "teleoperation", "dexterous-teleoperation", "xr-drive"],
+    order: ["vr-flight-control", "xr-hand", "vr-drone-cockpit", "space-station", "teleoperation", "dexterous-teleoperation", "xr-drive", "xr-keypad"],
     projects: [
       {
         id: "xr-hand",
@@ -117,13 +117,13 @@ const CATEGORIES = [
         link: "https://www.fab.com/listings/86e8e62b-caf1-4cb6-a589-7d7cf601143f"
       },
       {
-        id: "xr-vehicle",
-        name: "XR-Vehicle",
-        videos: [{ image: "assets/xr-vehicle.jpg", label: "XR-Vehicle", alt: "XR-Vehicle: a black sports car rendered as a particle wireframe next to an engineer in a VR headset", soon: "Coming soon" }],
-        description: "A new XR vehicle experience, currently in development.",
-        explain: "Details, demo footage and the Fab listing will be published here once the project is ready.",
-        tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "In development"],
-        badge: true, soonLabel: "Coming soon", link: null
+        id: "xr-drive",
+        name: "XR-Drive",
+        videos: [{ mp4: "assets/video/xr-drive.mp4", poster: "assets/poster/xr-drive.jpg", label: "XR-Drive" }],
+        description: "Drive a Formula 1 car in VR: hands on the wheel, paddle shifters and a live dashboard.",
+        explain: "A VR driving experience built around a Ferrari F2004 cockpit: a 3.0 L V10 with a 7-speed paddle gearbox, LED rev lights on the steering wheel and a glowing LED-kerb race loop in the XR-Drive studio. Your hands are tracked on the wheel while the car runs on a physics-based vehicle model.",
+        tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "Vehicle Physics", "C++"],
+        badge: true, link: null
       }
     ]
   },
@@ -288,7 +288,7 @@ document.getElementById("catTabs").innerHTML =
 const THUMB = {
   "xr-hand": "assets/picks/grab.jpg", "physical-ai": "assets/picks/rl.jpg", "teleoperation": "assets/picks/teleop.jpg",
   "dexterous-teleoperation": "assets/poster/physical-ai.jpg", "xr-keypad": "assets/tabs/xr-keypad.jpg",
-  "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-vehicle": "assets/xr-vehicle.jpg",
+  "vehicle-dynamics": "assets/tabs/vehicle-dynamics.jpg", "xr-drive": "assets/picks/drive.jpg",
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
