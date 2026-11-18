@@ -314,8 +314,9 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
-const THUMBVID = { "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
-const THUMBDRIVE = { "vehicle-rl": "1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ" };
+const THUMBVID = { "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
+const THUMBDRIVE = {};
+const TITLE_IN_VIDEO = new Set();
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
@@ -323,7 +324,7 @@ const cardHTML = (p, cid) => `
     ${THUMBDRIVE[p.id]
       ? `<span class="pthumb vid"><img src="https://drive.google.com/thumbnail?id=${THUMBDRIVE[p.id]}&sz=w800" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="ptitle">${esc(p.name)}</span></span>`
       : THUMBVID[p.id] && !reduceMotion
-      ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video><span class="ptitle">${esc(p.name)}</span></span>`
+      ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video>${TITLE_IN_VIDEO.has(p.id) ? "" : `<span class="ptitle">${esc(p.name)}</span>`}</span>`
       : `<span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>`}
     <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
   </button>`;
