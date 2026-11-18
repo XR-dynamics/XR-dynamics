@@ -600,3 +600,26 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) stage
     })).observe(cv);
   } else raf = requestAnimationFrame(frame);
 })();
+
+
+/* hero background: rotate through the clips with a crossfade */
+(() => {
+  const a = document.getElementById("heroA"), b = document.getElementById("heroB");
+  if (!a || !b || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const clips = ["assets/video/hero-racing.mp4", "assets/video/hero-bg-2.mp4", "assets/video/flight-dynamics.mp4"];
+  let i = 0, cur = a, nxt = b;
+  const advance = () => {
+    i = (i + 1) % clips.length;
+    nxt.src = clips[i];
+    nxt.load();
+    const go = () => {
+      nxt.play().catch(() => {});
+      nxt.classList.add("on"); cur.classList.remove("on");
+      const old = cur; cur = nxt; nxt = old;
+      cur.onended = advance;
+      setTimeout(() => { nxt.pause(); }, 1400);
+    };
+    nxt.addEventListener("canplay", go, { once: true });
+  };
+  a.onended = advance;
+})();
