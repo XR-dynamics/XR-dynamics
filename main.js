@@ -141,7 +141,7 @@ const CATEGORIES = [
       {
         id: "vehicle-rl",
         name: "Reinforcement Learning for Vehicle",
-        videos: [{ drive: D("1XJLs-0gORGoiUDGmrtlSvhWMNVF8OM32"), label: "Driving B" }],
+        videos: [{ drive: D("1DMjUeLv4TKjiF2ibiU8_kPg_hNaOXxUJ"), label: "Driving A" }],
         description: "A driving policy learned through reinforcement learning on the physics-based vehicle model.",
         explain: "The vehicle learns to drive by trial and error inside Unreal Engine, using the same suspension, tire and drivetrain physics as the Vehicle Dynamics plugin, so the learned behaviour is tested under realistic car dynamics.",
         tech: ["Unreal Engine 5", "Chaos Physics", "Reinforcement Learning", "Python", "C++"],
@@ -314,13 +314,13 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
-const THUMBVID = { "vehicle-dynamics": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4" };
+const THUMBVID = { "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4" };
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
   <button type="button" class="pcard" data-pid="${esc(p.id)}" data-cat="${esc(cid)}" aria-haspopup="dialog" aria-label="${esc(p.name)}: open project">
     ${THUMBVID[p.id] && !reduceMotion
-      ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video><span class="ptitle">${esc(p.name)}</span></span>`
+      ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" data-start="${p.id === "vehicle-rl" ? 1.9 : 0}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video><span class="ptitle">${esc(p.name)}</span></span>`
       : `<span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>`}
     <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
   </button>`;
@@ -649,3 +649,9 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) stage
   };
   a.onended = advance;
 })();
+
+/* start offsets for card loops that reuse the same clip */
+document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
+  const t = parseFloat(v.dataset.start) || 0;
+  if (t) v.addEventListener("loadedmetadata", () => { try { v.currentTime = t; } catch (e) {} }, { once: true });
+});
