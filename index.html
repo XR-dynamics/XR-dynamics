@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Cpath d='M8 9l16 14M24 9L8 23' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="style.css?v=54">
+<link rel="stylesheet" href="style.css?v=55">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -32,12 +32,7 @@
     <div class="hero-shade"></div>
     <div class="story-copy" aria-live="off">
       <h1 class="story-title" id="storyTitle">Immersive Control.<br>Physical Simulation.</h1>
-      <ol class="story-beats" id="storyBeats">
-        <li class="on"><b>01</b>Take the wheel. Every input felt in real time.</li>
-        <li><b>02</b>Real physics in every machine.</li>
-        <li><b>03</b>One shared space. Fly it with your own hands.</li>
-        <li><b>04</b>Everything feels real. Physical AI applications and VR/XR interfaces.</li>
-      </ol>
+      <div class="story-card" id="storyCard" aria-live="off"><b id="storyNum">01</b><span id="storyText">Take the wheel. Every input felt in real time.</span></div>
       <div class="story-actions">
         <a class="explore" href="#projects">Explore projects
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
@@ -203,7 +198,7 @@
       </div>
     </div>
   </div>
-  <script src="main.js?v=36"></script>
+  <script src="main.js?v=37"></script>
 <script src="request.js?v=3"></script>
 <script src="picks.js?v=9"></script>
 <script type="module" src="bg.js?v=4"></script>

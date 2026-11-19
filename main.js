@@ -641,16 +641,28 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
 });
 
 
-/* hero story beats follow the video */
+/* hero story: one glass card at a time, appears then goes away */
 (() => {
-  const v = document.getElementById("heroA"), items = [...document.querySelectorAll("#storyBeats li")];
-  if (!v || !items.length) return;
-  const at = [0, 3.76, 11.56, 13.16];
-  let cur = 0;
-  v.addEventListener("timeupdate", () => {
-    let k = 0;
-    for (let i = 0; i < at.length; i++) if (v.currentTime >= at[i]) k = i;
+  const v = document.getElementById("heroA"), card = document.getElementById("storyCard");
+  const num = document.getElementById("storyNum"), txt = document.getElementById("storyText");
+  if (!v || !card) return;
+  const beats = [
+    [0.3, 3.4, "01", "Take the wheel. Every input felt in real time."],
+    [4.0, 11.0, "02", "Real physics in every machine."],
+    [11.7, 14.3, "03", "One shared space. Fly it with your own hands."],
+    [14.6, 18.0, "04", "Everything feels real. Physical AI applications and VR/XR interfaces."]
+  ];
+  let cur = -1;
+  const tick = () => {
+    const t = v.currentTime;
+    let k = -1;
+    for (let i = 0; i < beats.length; i++) if (t >= beats[i][0] && t < beats[i][1]) k = i;
     if (k === cur) return;
-    cur = k; items.forEach((li, n) => li.classList.toggle("on", n === k));
-  });
+    cur = k;
+    if (k < 0) { card.classList.remove("show"); return; }
+    const put = () => { num.textContent = beats[k][2]; txt.textContent = beats[k][3]; card.classList.add("show"); };
+    if (card.classList.contains("show")) { card.classList.remove("show"); setTimeout(() => { if (cur === k) put(); }, 500); } else put();
+  };
+  v.addEventListener("timeupdate", tick);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) card.classList.add("show");
 })();
