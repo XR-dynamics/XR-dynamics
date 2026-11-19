@@ -663,3 +663,9 @@ footer{border-top:1px solid var(--line)}
 @keyframes gridDrift{to{background-position:380px 380px}}
 @keyframes gridPulse{0%,100%{opacity:.22}50%{opacity:.46}}
 @media(prefers-reduced-motion:reduce){.hero-grid{animation:none}}
+
+/* heading update: longer title + small Robotics tag below it */
+.hero.story .story-title{font-size:clamp(34px,4.6vw,76px);letter-spacing:-.04em;line-height:1.05}
+.story-tag{margin:clamp(12px,1.6vw,20px) 0 0;font-size:clamp(13px,1.3vw,18px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:#fff;text-shadow:0 0 18px rgba(255,255,255,.6),0 2px 16px rgba(0,0,0,.6);animation:rise 1.2s cubic-bezier(.2,.7,.2,1) .35s both}
+.story-tag span{position:relative;display:inline-block;padding-bottom:.45em}
+.story-tag span::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:999px;background:linear-gradient(90deg,#fff,transparent);box-shadow:0 0 14px 2px rgba(255,255,255,.5)}
