@@ -64,6 +64,15 @@ const CATEGORIES = [
     id: "robotics", title: "Robotics",
     projects: [
       {
+        id: "robogym-ros2",
+        name: "RoboGym ROS2 Bridge",
+        videos: [{ mp4: "assets/video/robogym.mp4", poster: "assets/poster/robogym.jpg", label: "RoboGym" }],
+        description: "Physical AI robots in a simulated warehouse, connected to ROS 2 through a bridge to Unreal Engine.",
+        explain: "Humanoid and legged robots work in a physics-based warehouse built in Unreal Engine: picking, carrying and placing boxes. A ROS 2 bridge connects the simulation to robot software, so behaviors can be trained and tested in simulation before they reach real hardware.",
+        tech: ["Unreal Engine 5", "ROS 2", "Bridge", "Humanoid Robots", "Python"],
+        badge: true, link: null
+      },
+      {
         id: "physical-ai",
         name: "Physical AI Simulation",
         videos: [
@@ -314,9 +323,9 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
-const THUMBVID = { "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
+const THUMBVID = { "robogym-ros2": "assets/tiles/robogym-loop.mp4", "physical-ai": "assets/tiles/rl.mp4", "teleoperation": "assets/tiles/teleop.mp4",  "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
 const THUMBDRIVE = {};
-const TITLE_IN_VIDEO = new Set();
+const TITLE_IN_VIDEO = new Set(["robogym-ros2", "physical-ai", "teleoperation"]);
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
