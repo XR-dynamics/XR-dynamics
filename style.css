@@ -607,3 +607,13 @@ footer{border-top:1px solid var(--line)}
 .story-sub{animation:rise 1.2s cubic-bezier(.2,.7,.2,1) .4s both}
 .story-actions{animation:rise 1.2s cubic-bezier(.2,.7,.2,1) .6s both}
 .hero.story .hero-bg{opacity:0;transition:opacity 1.2s ease}.hero.story .hero-bg.on{opacity:.9}
+
+/* story line, glow, bluish headline */
+.story-title{background:linear-gradient(100deg,#eaf5ff 0%,#8cccff 22%,#3d8bff 45%,#7fd3ff 68%,#eaf5ff 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-bottom:.06em;animation:rise 1.2s cubic-bezier(.2,.7,.2,1) .1s both,blueFlow 7s ease-in-out infinite alternate}
+@keyframes blueFlow{from{background-position:0% 50%}to{background-position:100% 50%}}
+.story-sub{min-height:2.9em;transition:opacity .45s ease,transform .45s ease}
+.story-sub.swap{opacity:0;transform:translateY(6px)}
+.story-actions .explore{border-color:rgba(255,255,255,.55);box-shadow:0 0 22px -2px rgba(140,204,255,.55),0 0 60px -10px rgba(61,139,255,.6),inset 0 1px 0 rgba(255,255,255,.2);animation:glow 2.6s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 18px -4px rgba(140,204,255,.45),0 0 44px -12px rgba(61,139,255,.45),inset 0 1px 0 rgba(255,255,255,.18)}50%{box-shadow:0 0 30px 0 rgba(140,204,255,.8),0 0 80px -6px rgba(61,139,255,.75),inset 0 1px 0 rgba(255,255,255,.3)}}
+.story-biz{margin:clamp(18px,2.4vw,28px) 0 0;max-width:46ch;font-size:clamp(13px,1.15vw,15px);line-height:1.5;color:#9aa0a7;font-weight:300}
+@media(prefers-reduced-motion:reduce){.story-title{animation:none;background-position:30% 50%}.story-actions .explore{animation:none}}

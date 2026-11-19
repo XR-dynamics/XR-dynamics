@@ -639,3 +639,23 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
   const t = parseFloat(v.dataset.start) || 0;
   if (t) v.addEventListener("loadedmetadata", () => { try { v.currentTime = t; } catch (e) {} }, { once: true });
 });
+
+
+/* hero story line follows the video */
+(() => {
+  const v = document.getElementById("heroA"), sub = document.getElementById("storySub");
+  if (!v || !sub) return;
+  const lines = [
+    [0, "Take the wheel. Every input felt in real time."],
+    [5.8, "Real physics. Shared spaces. Your own hands."],
+    [9.87, "Physical AI applications and VR/XR interfaces. Everything feels real."]
+  ];
+  let cur = 0;
+  v.addEventListener("timeupdate", () => {
+    let k = 0;
+    for (let i = 0; i < lines.length; i++) if (v.currentTime >= lines[i][0]) k = i;
+    if (k === cur) return;
+    cur = k; sub.classList.add("swap");
+    setTimeout(() => { sub.textContent = lines[k][1]; sub.classList.remove("swap"); }, 450);
+  });
+})();
