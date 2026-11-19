@@ -632,52 +632,7 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) stage
 })();
 
 
-/* story hero: four chapters, each with its own clip(s), title and line */
-(() => {
-  const a = document.getElementById("heroA"), b = document.getElementById("heroB");
-  const T = document.getElementById("storyTitle"), S = document.getElementById("storySub");
-  const prog = [...document.querySelectorAll("#storyProg i")];
-  if (!a || !b || !T) return;
-  const V = "assets/video/hero/";
-  const chapters = [
-    { title: "Immersive Control.", sub: "Hands on the wheel. Every input felt in real time.", clips: [{ src: V + "h1.mp4" }] },
-    { title: "Collaboration.", sub: "People and avatars working on the same machine, side by side.", clips: [{ src: V + "h2.mp4", t: 5 }] },
-    { title: "Feel every control.", sub: "Your hands move the cockpit. The machine answers.", clips: [{ src: V + "h3.mp4" }] },
-    { title: "Physical Simulation.", sub: "Everything feels real. Physical AI applications and VR/XR interfaces.", clips: [{ src: V + "h4.mp4", t: 5 }, { src: V + "h5.mp4", t: 5 }] }
-  ];
-  const words = (el, text, base) => { el.classList.remove("out"); el.innerHTML = text.split(" ").map((w, k) => `<span class="w" style="animation-delay:${(base + k * 0.09).toFixed(2)}s">${w}</span>`).join(" "); };
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let ci = 0, ki = 0, cur = a, nxt = b, timer = 0;
-  const show = (c) => { words(T, c.title, 0.05); words(S, c.sub, 0.45); };
-  const mark = (i, dur) => prog.forEach((p, k) => { p.classList.toggle("done", k < i); p.classList.toggle("on", k === i); if (k === i) { p.style.setProperty("--d", dur + "s"); p.classList.remove("on"); void p.offsetWidth; p.classList.add("on"); } });
-  const chapterLen = (c) => c.clips.reduce((s, k) => s + (k.t || 7.9), 0);
-  const play = (first) => {
-    const c = chapters[ci], k = c.clips[ki];
-    const go = () => {
-      nxt.currentTime = 0; nxt.play().catch(() => {});
-      nxt.classList.add("on"); cur.classList.remove("on");
-      const old = cur; cur = nxt; nxt = old;
-      setTimeout(() => { nxt.pause(); }, 1300);
-      if (ki === 0) { show(c); mark(ci, chapterLen(c)); }
-      clearTimeout(timer);
-      const dur = (k.t || (cur.duration || 7.9)) - 0.9;
-      timer = setTimeout(() => {
-        if (ki === 0 && c.clips.length === 1 || ki === c.clips.length - 1) { T.classList.add("out"); S.classList.add("out"); }
-        advance();
-      }, Math.max(2000, dur * 1000));
-    };
-    if (first) { show(c); mark(0, chapterLen(c)); cur.play().catch(() => {}); clearTimeout(timer); timer = setTimeout(() => { T.classList.add("out"); S.classList.add("out"); advance(); }, ((k.t || 7.9) - 0.9) * 1000); return; }
-    nxt.src = k.src; nxt.load();
-    if (nxt.readyState >= 3) go(); else nxt.addEventListener("canplay", go, { once: true });
-  };
-  const advance = () => {
-    const c = chapters[ci];
-    if (ki < c.clips.length - 1) ki++; else { ki = 0; ci = (ci + 1) % chapters.length; if (ci === 0) prog.forEach(p => p.classList.remove("done", "on")); }
-    play(false);
-  };
-  if (reduce) { show(chapters[0]); return; }
-  play(true);
-})();
+
 
 /* start offsets for card loops that reuse the same clip */
 document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
