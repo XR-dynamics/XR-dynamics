@@ -657,3 +657,9 @@ footer{border-top:1px solid var(--line)}
 .hero.story.robmode .story-copy{opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.rob{display:none}}
 .rob{transition:opacity .45s ease}.rob.on{transition:opacity .9s ease}
+
+/* grid texture over the hero video */
+.hero-grid{position:absolute;inset:0;z-index:1;pointer-events:none;background:url(assets/hero-grid.png) 0 0/380px 380px repeat;opacity:.34;animation:gridDrift 40s linear infinite,gridPulse 6s ease-in-out infinite;-webkit-mask-image:radial-gradient(ellipse at 60% 45%,#000 30%,rgba(0,0,0,.55) 80%);mask-image:radial-gradient(ellipse at 60% 45%,#000 30%,rgba(0,0,0,.55) 80%)}
+@keyframes gridDrift{to{background-position:380px 380px}}
+@keyframes gridPulse{0%,100%{opacity:.22}50%{opacity:.46}}
+@media(prefers-reduced-motion:reduce){.hero-grid{animation:none}}
