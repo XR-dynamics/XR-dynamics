@@ -641,21 +641,16 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
 });
 
 
-/* hero story line follows the video */
+/* hero story beats follow the video */
 (() => {
-  const v = document.getElementById("heroA"), sub = document.getElementById("storySub");
-  if (!v || !sub) return;
-  const lines = [
-    [0, "Take the wheel. Every input felt in real time."],
-    [5.8, "Real physics. Shared spaces. Your own hands."],
-    [9.87, "Physical AI applications and VR/XR interfaces. Everything feels real."]
-  ];
+  const v = document.getElementById("heroA"), items = [...document.querySelectorAll("#storyBeats li")];
+  if (!v || !items.length) return;
+  const at = [0, 3.76, 11.56, 13.16];
   let cur = 0;
   v.addEventListener("timeupdate", () => {
     let k = 0;
-    for (let i = 0; i < lines.length; i++) if (v.currentTime >= lines[i][0]) k = i;
+    for (let i = 0; i < at.length; i++) if (v.currentTime >= at[i]) k = i;
     if (k === cur) return;
-    cur = k; sub.classList.add("swap");
-    setTimeout(() => { sub.textContent = lines[k][1]; sub.classList.remove("swap"); }, 450);
+    cur = k; items.forEach((li, n) => li.classList.toggle("on", n === k));
   });
 })();
