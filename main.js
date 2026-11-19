@@ -90,6 +90,7 @@ const CATEGORIES = [
         id: "teleoperation",
         name: "XR Robot Teleoperation",
         videos: [
+          { mp4: "assets/video/teleop.mp4", poster: "assets/poster/teleop.jpg", label: "Pick and teleoperation" },
           { drive: D("1auHKqmb_3pX6-CcGPUCrzURR-o_vmsER"), label: "Teleoperation A" },
           { drive: D("12_1O5sF2GrRqA3nxrhUArN7XnZH3z5mO"), label: "Teleoperation B" }
         ],
@@ -323,7 +324,7 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
-const THUMBVID = { "robogym-ros2": "assets/tiles/robogym-loop.mp4", "physical-ai": "assets/tiles/rl.mp4", "teleoperation": "assets/tiles/teleop.mp4",  "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
+const THUMBVID = { "robogym-ros2": "assets/tiles/robogym-loop.mp4", "physical-ai": "assets/tiles/rl.mp4", "teleoperation": "assets/tiles/teleop-loop.mp4",  "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
 const THUMBDRIVE = {};
 const TITLE_IN_VIDEO = new Set(["robogym-ros2", "physical-ai", "teleoperation"]);
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
