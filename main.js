@@ -90,6 +90,7 @@ const CATEGORIES = [
         id: "teleoperation",
         name: "XR Robot Teleoperation",
         videos: [
+          { drive: D("1FOTBxnNngUYJk-DSxXA9gC8yhTWqyl16"), label: "Teleoperation" },
           { drive: D("1auHKqmb_3pX6-CcGPUCrzURR-o_vmsER"), label: "Teleoperation A" },
           { drive: D("12_1O5sF2GrRqA3nxrhUArN7XnZH3z5mO"), label: "Teleoperation B" }
         ],
@@ -103,7 +104,6 @@ const CATEGORIES = [
         name: "Dexterous Teleoperation",
         videos: [
           { mp4: "assets/video/teleop.mp4", poster: "assets/poster/teleop.jpg", label: "Pick and teleoperation" },
-          { drive: D("1FOTBxnNngUYJk-DSxXA9gC8yhTWqyl16"), label: "Dexterous Teleoperation" },
           { drive: D("1vmRYNudguLOO_R8Z1Q4nknEGmol8VhfK"), label: "Dexterous A" },
           { drive: D("1XhelwKwoSRyTek3e2uUjMV487Ms9RCpv"), label: "Dexterous B" }
         ],
@@ -324,15 +324,15 @@ const THUMB = {
   "flight-dynamics": "assets/tabs/flight-dynamics.jpg", "vr-drone-cockpit": "assets/tabs/vr-drone-cockpit.jpg",
   "vr-flight-control": "assets/picks/xrjet.jpg", "space-station": ""
 };
-const THUMBVID = { "robogym-ros2": "assets/tiles/robogym-loop.mp4", "physical-ai": "assets/tiles/rl.mp4", "teleoperation": "assets/tiles/teleop.mp4", "dexterous-teleoperation": "assets/tiles/teleop-loop.mp4",  "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
-const THUMBDRIVE = {};
+const THUMBVID = { "robogym-ros2": "assets/tiles/robogym-loop.mp4", "physical-ai": "assets/tiles/rl.mp4", "dexterous-teleoperation": "assets/tiles/teleop-loop.mp4",  "xr-drive": "assets/tiles/xr-drive-loop.mp4",  "vehicle-dynamics": "assets/tiles/vehicle-dyn.mp4", "vehicle-rl": "assets/tiles/vehicle-xr3.mp4", "sensor-simulation": "assets/tiles/lidar.mp4" };
+const THUMBDRIVE = { "teleoperation": "1FOTBxnNngUYJk-DSxXA9gC8yhTWqyl16" };
 const TITLE_IN_VIDEO = new Set(["robogym-ros2", "physical-ai", "teleoperation", "dexterous-teleoperation"]);
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const thumbOf = p => THUMB[p.id] || (p.videos[0] && (p.videos[0].poster || p.videos[0].image || (p.videos[0].slides && p.videos[0].slides[0]))) || "";
 const cardHTML = (p, cid) => `
   <button type="button" class="pcard" data-pid="${esc(p.id)}" data-cat="${esc(cid)}" aria-haspopup="dialog" aria-label="${esc(p.name)}: open project">
     ${THUMBDRIVE[p.id]
-      ? `<span class="pthumb vid"><img src="https://drive.google.com/thumbnail?id=${THUMBDRIVE[p.id]}&sz=w800" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="ptitle">${esc(p.name)}</span></span>`
+      ? `<span class="pthumb vid"><img src="https://drive.google.com/thumbnail?id=${THUMBDRIVE[p.id]}&sz=w800" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">${TITLE_IN_VIDEO.has(p.id) ? "" : `<span class="ptitle">${esc(p.name)}</span>`}</span>`
       : THUMBVID[p.id] && !reduceMotion
       ? `<span class="pthumb vid"><video src="${esc(THUMBVID[p.id])}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video>${TITLE_IN_VIDEO.has(p.id) ? "" : `<span class="ptitle">${esc(p.name)}</span>`}</span>`
       : `<span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>`}
