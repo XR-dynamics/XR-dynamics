@@ -641,52 +641,39 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
 });
 
 
-/* hero story: one glass card at a time, appears then goes away */
+/* hero story: lines appear on the right and stay, collected in one glass panel (resets on loop) */
 (() => {
-  const v = document.getElementById("heroA"), card = document.getElementById("storyCard");
-  const num = document.getElementById("storyNum"), txt = document.getElementById("storyText");
-  if (!v || !card) return;
-  const beats = [
-    [0.3, 3.4, "01", "Take the wheel. Every input felt in real time."],
-    [13.2, 20.2, "02", "Real physics in every machine."],
-    [20.6, 23.4, "03", "One shared space. Fly it with your own hands."],
-    [23.7, 27.0, "04", "Everything feels real. Physical AI applications and VR/XR interfaces."]
+  const v = document.getElementById("heroA"), box = document.getElementById("storyStack");
+  if (!v || !box) return;
+  const items = [
+    [0.3, "Take the wheel. Every input felt in real time."],
+    [4.3, "Humanoid robots pick up cargo and carry it across a simulated shipyard."],
+    [8.6, "Every motion is trained in physics first, before it touches the real floor."],
+    [13.2, "Real physics in every machine."],
+    [20.6, "One shared space. Fly it with your own hands."],
+    [23.7, "Everything feels real. Physical AI applications and VR/XR interfaces."]
   ];
-  let cur = -1;
-  const tick = () => {
-    const t = v.currentTime;
-    let k = -1;
-    for (let i = 0; i < beats.length; i++) if (t >= beats[i][0] && t < beats[i][1]) k = i;
-    if (k === cur) return;
-    cur = k;
-    if (k < 0) { card.classList.remove("show"); return; }
-    const put = () => { num.textContent = beats[k][2]; txt.textContent = beats[k][3]; card.classList.add("show"); };
-    if (card.classList.contains("show")) { card.classList.remove("show"); setTimeout(() => { if (cur === k) put(); }, 500); } else put();
+  const keep = () => (matchMedia("(max-width: 820px)").matches ? 3 : items.length);
+  let shown = 0, last = 0;
+  const add = i => {
+    const li = document.createElement("li");
+    li.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b><span></span>";
+    li.lastChild.textContent = items[i][1];
+    box.appendChild(li);
+    requestAnimationFrame(() => requestAnimationFrame(() => li.classList.add("in")));
   };
-  v.addEventListener("timeupdate", tick);
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) card.classList.add("show");
-})();
-
-
-/* robotics scene (shipyard clip, from 18 s): centered text, replaces the left copy */
-(() => {
-  const v = document.getElementById("heroA"), hero = document.getElementById("story");
-  const rob = document.getElementById("rob"), card = document.getElementById("robCard"), txt = document.getElementById("robText");
-  if (!v || !rob) return;
-  const lines = [
-    [4.3, 8.1, "Humanoid robots pick up cargo and carry it across a simulated shipyard."],
-    [8.6, 12.3, "Every motion is trained in physics first, before it touches the real floor."]
-  ];
-  let k0 = -1, on = false;
+  const render = () => {
+    const n = keep(), kids = box.children;
+    for (let j = 0; j < kids.length; j++) kids[j].hidden = j < kids.length - n;
+    box.classList.toggle("on", kids.length > 0);
+  };
   v.addEventListener("timeupdate", () => {
-    const t = v.currentTime, now = t >= 3.9 && t < 12.6;
-    if (now !== on) { on = now; rob.classList.toggle("on", on); hero.classList.toggle("robmode", on); }
-    let k = -1;
-    for (let i = 0; i < lines.length; i++) if (t >= lines[i][0] && t < lines[i][1]) k = i;
-    if (k === k0) return;
-    k0 = k;
-    if (k < 0) { card.classList.remove("show"); return; }
-    const put = () => { txt.textContent = lines[k][2]; card.classList.add("show"); };
-    if (card.classList.contains("show")) { card.classList.remove("show"); setTimeout(() => { if (k0 === k) put(); }, 500); } else put();
+    const t = v.currentTime;
+    if (t < last - 1) { box.textContent = ""; shown = 0; }
+    last = t;
+    let target = 0;
+    for (let i = 0; i < items.length; i++) if (t >= items[i][0]) target = i + 1;
+    while (shown < target) add(shown++);
+    render();
   });
 })();

@@ -676,3 +676,14 @@ footer{border-top:1px solid var(--line)}
 .rob-card{max-width:100%}
 .story-tag{letter-spacing:.28em}
 @media(max-width:820px){.rob-mid{top:auto;bottom:clamp(150px,24vh,220px);right:16px;left:16px;transform:none;width:auto;align-items:stretch}}
+
+/* collected story lines: right-side glass panel, lines appear and stay (InspiraXR style) */
+.story-stack{position:absolute;z-index:2;right:clamp(20px,5vw,80px);top:clamp(110px,17vh,170px);width:min(400px,34vw);margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0;border-radius:24px;overflow:hidden;opacity:0;transition:opacity .6s ease;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 24px 60px -20px rgba(0,0,0,.7);pointer-events:none}
+.story-stack.on{opacity:1}
+.story-stack li{display:flex;gap:14px;align-items:baseline;padding:15px 22px;color:#fff;font-size:clamp(13px,1.15vw,16px);line-height:1.45;border-top:1px solid rgba(255,255,255,.12);opacity:0;transform:translateX(26px);filter:blur(6px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .8s ease}
+.story-stack li:first-child{border-top:0}
+.story-stack li.in{opacity:1;transform:none;filter:blur(0)}
+.story-stack li[hidden]{display:none}
+.story-stack b{flex:none;font-size:.78em;font-weight:500;letter-spacing:.18em;color:#cdd2d8}
+@media(max-width:820px){.story-stack{left:16px;right:16px;width:auto;top:auto;bottom:clamp(60px,9vh,100px)}}
+@media(prefers-reduced-motion:reduce){.story-stack li{opacity:1;transform:none;filter:none;transition:none}}
