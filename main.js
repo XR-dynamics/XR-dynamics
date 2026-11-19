@@ -666,3 +666,27 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
   v.addEventListener("timeupdate", tick);
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) card.classList.add("show");
 })();
+
+
+/* robotics scene (shipyard clip, from 18 s): centered text, replaces the left copy */
+(() => {
+  const v = document.getElementById("heroA"), hero = document.getElementById("story");
+  const rob = document.getElementById("rob"), card = document.getElementById("robCard"), txt = document.getElementById("robText");
+  if (!v || !rob) return;
+  const lines = [
+    [18.6, 22.4, "Humanoid robots pick up cargo and carry it across a simulated shipyard."],
+    [22.9, 26.7, "Every motion is trained in physics first, before it touches the real floor."]
+  ];
+  let k0 = -1, on = false;
+  v.addEventListener("timeupdate", () => {
+    const t = v.currentTime, now = t >= 18.1;
+    if (now !== on) { on = now; rob.classList.toggle("on", on); hero.classList.toggle("robmode", on); }
+    let k = -1;
+    for (let i = 0; i < lines.length; i++) if (t >= lines[i][0] && t < lines[i][1]) k = i;
+    if (k === k0) return;
+    k0 = k;
+    if (k < 0) { card.classList.remove("show"); return; }
+    const put = () => { txt.textContent = lines[k][2]; card.classList.add("show"); };
+    if (card.classList.contains("show")) { card.classList.remove("show"); setTimeout(() => { if (k0 === k) put(); }, 500); } else put();
+  });
+})();
