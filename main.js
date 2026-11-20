@@ -32,7 +32,7 @@ const CATEGORIES = [
         description: "Drive a Formula 1 car in VR: hands on the wheel, paddle shifters and a live dashboard.",
         explain: "A VR driving experience built around a Ferrari F2004 cockpit: a 3.0 L V10 with a 7-speed paddle gearbox, LED rev lights on the steering wheel and a glowing LED-kerb race loop in the XR-Drive studio. Your hands are tracked on the wheel while the car runs on a physics-based vehicle model.",
         tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "Vehicle Physics", "C++"],
-        badge: true, link: "xr-drive.html", linkLabel: "Open XR-Drive page"
+        badge: true, link: "xr-drive/", linkLabel: "Open XR-Drive page"
       },
       {
         id: "xr-hand",
