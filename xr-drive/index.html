@@ -139,6 +139,36 @@ section{padding:clamp(70px,11vw,140px) 0 0}
 .pin.l{flex-direction:row-reverse}
 @media(max-width:900px){.shots{grid-template-columns:1fr}.shot,.shot:nth-child(n){grid-column:auto;min-height:380px}.cap{max-width:none}.ax text{font-size:15px}.ax .lbl{font-size:15px}.phase-l{font-size:15px}}
 
+
+/* XR highlight */
+.xrs{position:relative}
+.xrs::before{content:"XR";position:absolute;z-index:-1;right:-1%;top:-4%;font-weight:800;font-size:clamp(200px,34vw,520px);letter-spacing:-.06em;line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.1);pointer-events:none;background:linear-gradient(180deg,rgba(255,42,15,.16),transparent 70%);-webkit-background-clip:text;background-clip:text}
+.xr-grid{display:grid;grid-template-columns:5fr 6fr;gap:clamp(28px,5vw,72px);align-items:center}
+.xr-grid h2{font-size:clamp(32px,4.4vw,64px)}
+.xr-grid h2 em{font-style:normal;background:linear-gradient(100deg,#ff2a0f,#ff8a6a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.xr-list{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+.xr-list li{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-radius:18px;font-size:15.5px;color:var(--soft)}
+.xr-list b{display:block;color:#fff;font-weight:600;font-size:16px}
+.xr-list .ico{flex:none;margin:0;width:38px;height:38px}
+.vr{position:relative;padding:clamp(14px,2vw,26px);border-radius:44px 44px 56px 56px;border:1px solid var(--edge);background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 40px 90px -30px rgba(0,0,0,.9),0 0 90px -34px rgba(255,42,15,.6)}
+.vr::before{content:"";position:absolute;left:12%;right:12%;top:-22px;height:24px;border-radius:24px 24px 0 0;border:1px solid var(--edge);border-bottom:0;background:rgba(255,255,255,.05)}
+.vr-eyes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,22px);padding:clamp(8px,1.4vw,16px);border-radius:36px 36px 48px 48px;background:#020203}
+.eye{position:relative;aspect-ratio:1/1.04;border-radius:46% 46% 50% 50% / 42% 42% 56% 56%;overflow:hidden;background:#000;box-shadow:inset 0 0 0 2px rgba(255,255,255,.1),0 0 40px -10px rgba(255,42,15,.5)}
+.eye i{position:absolute;inset:-4% -30%;background:url(../assets/xrdrive/cockpit.webp) 50% 50%/cover;animation:look 11s ease-in-out infinite}
+.eye.r i{animation-delay:-.35s;transform:translateX(-1.5%)}
+.eye::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 50% 46%,transparent 42%,rgba(0,0,0,.55) 74%,#000 100%),linear-gradient(135deg,rgba(255,255,255,.16),transparent 34%);pointer-events:none}
+@keyframes look{0%,100%{transform:translateX(7%) scale(1.04)}50%{transform:translateX(-7%) scale(1.04)}}
+.vr-hud{position:absolute;flex-wrap:nowrap;left:50%;bottom:clamp(14px,2.2vw,28px);transform:translateX(-50%);display:flex;gap:8px;z-index:2}
+.vr-hud span{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;color:#fff;border:1px solid rgba(255,255,255,.3);background:rgba(8,8,10,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.vr-look{white-space:nowrap;position:absolute;left:50%;top:clamp(18px,2.6vw,34px);transform:translateX(-50%);z-index:2;display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#fff;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(8,8,10,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.vr-look svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;animation:sway 11s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:translateX(5px)}50%{transform:translateX(-5px)}}
+.tag.xr{color:#fff;border-color:rgba(255,42,15,.7);background:rgba(255,42,15,.2);box-shadow:0 0 22px -6px rgba(255,42,15,.8)}
+.badge-xr{display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;padding:9px 18px;border-radius:999px;font-size:14px;font-weight:600;color:#fff;border:1px solid rgba(255,42,15,.65);background:linear-gradient(180deg,rgba(255,42,15,.3),rgba(255,42,15,.08));box-shadow:0 0 30px -8px rgba(255,42,15,.8),inset 0 1px 0 rgba(255,255,255,.2)}
+.badge-xr svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:900px){.xr-grid{grid-template-columns:1fr}.xrs::before{opacity:.6}}
+@media(prefers-reduced-motion:reduce){.eye i,.vr-look svg{animation:none;transform:none}}
+
 /* stages */
 .stages{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
 .stages li{counter-increment:s;padding:26px 24px;position:relative;overflow:hidden}
@@ -203,6 +233,7 @@ footer small{display:block;margin-top:34px;color:var(--mute);font-size:13px}
     <a class="back" href="../#projects"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M11 7H3M6.5 3.5L3 7l3.5 3.5"/></svg><span>All projects</span></a>
   </div>
   <nav>
+    <a href="#xr">XR</a>
     <a href="#about">About</a>
     <a href="#inside">Inside</a>
     <a href="#learning">How the AI learns</a>
@@ -216,19 +247,39 @@ footer small{display:block;margin-top:34px;color:var(--mute);font-size:13px}
 <header class="wrap hero" id="hero">
   <div>
     <span class="eyebrow">XR-Drive · by XR Dynamics</span>
+    <div><span class="badge-xr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9a3 3 0 013-3h12a3 3 0 013 3v5a3 3 0 01-3 3h-3l-1.5-2h-3L9 17H6a3 3 0 01-3-3V9z"/></svg>Wear the headset. Feel yourself in the car.</span></div>
     <h1>Race AI cars that taught themselves to drive</h1>
-    <p class="lead">XR-Drive is an immersive driving simulator. You sit in the cockpit, and the cars around you are AI drivers trained with reinforcement learning on real physics.</p>
+    <p class="lead">XR-Drive is an immersive driving simulator for VR. Put on the headset and you sit in the cockpit, with AI drivers around you that were trained with reinforcement learning on real physics.</p>
     <div class="btns">
       <button class="btn red" id="demoOpen" type="button"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>View demo</button>
       <a class="btn" href="#learning">See how the AI learns <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
       <a class="btn" href="#faq">Read the FAQ</a>
     </div>
-    <div class="tags"><span class="tag">Unreal Engine</span><span class="tag">Reinforcement learning</span><span class="tag">Real vehicle physics</span><span class="tag">Built for XR</span></div>
+    <div class="tags"><span class="tag">Unreal Engine</span><span class="tag">Reinforcement learning</span><span class="tag">Real vehicle physics</span><span class="tag xr">Built for XR · VR headset</span></div>
   </div>
   <div class="scroll" aria-hidden="true"><i></i>Scroll</div>
 </header>
 
 <div class="wrap">
+
+<section id="xr" class="xrs">
+  <div class="xr-grid">
+    <div class="rv"><span class="eyebrow">The XR experience</span>
+      <h2>Put on the headset. <em>You are in the car.</em></h2>
+      <p>XR-Drive is made for VR. With a headset on, the cockpit is around you: look left at the car beside you, down at the dashboard, ahead into the next corner. You feel the speed and the size of the track as if you were really sitting in the car, not watching it on a flat screen.</p>
+      <ul class="xr-list">
+        <li class="glass"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/></svg></div><div><b>Look around freely</b>Head tracking lets you check your mirrors, your rivals and the apex.</div></li>
+        <li class="glass"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div><div><b>Real scale, real depth</b>Two eyes, two views: distance and speed are felt in 3D.</div></li>
+        <li class="glass"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="3"/><path d="M8 17v2M16 17v2"/></svg></div><div><b>Meta Quest 2 and 3</b>Built for standalone VR headsets.</div></li>
+      </ul>
+    </div>
+    <div class="vr rv" aria-label="What you see inside the headset: the cockpit in two eyes, looking around">
+      <div class="vr-look"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>Look around</div>
+      <div class="vr-eyes"><div class="eye"><i></i></div><div class="eye r"><i></i></div></div>
+      <div class="vr-hud"><span>Stereo view</span><span>Head tracking</span></div>
+    </div>
+  </div>
+</section>
 
 <section id="about">
   <div class="two">
