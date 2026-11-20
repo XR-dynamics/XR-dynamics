@@ -32,7 +32,7 @@ const CATEGORIES = [
         description: "Drive a Formula 1 car in VR: hands on the wheel, paddle shifters and a live dashboard.",
         explain: "A VR driving experience built around a Ferrari F2004 cockpit: a 3.0 L V10 with a 7-speed paddle gearbox, LED rev lights on the steering wheel and a glowing LED-kerb race loop in the XR-Drive studio. Your hands are tracked on the wheel while the car runs on a physics-based vehicle model.",
         tech: ["Unreal Engine 5", "Meta Quest 2 / 3", "XR Driving", "Vehicle Physics", "C++"],
-        badge: true, link: null
+        badge: true, link: "xr-drive.html", linkLabel: "Open XR-Drive page"
       },
       {
         id: "xr-hand",
@@ -661,7 +661,7 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
     [8.6, "Every motion is trained in physics first, before it touches the real floor."],
     [13.2, "Real physics in every machine."],
     [20.6, "One shared space. Fly it with your own hands."],
-    [23.7, "Everything feels real. Physical AI applications and VR/XR interfaces."]
+    [24.9, "Everything feels real. Physical AI applications and VR/XR interfaces."]
   ];
   const keep = () => (matchMedia("(max-width: 820px)").matches ? 3 : items.length);
   let shown = 0, last = 0;
