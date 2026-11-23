@@ -51,3 +51,10 @@ footer{border-top:1px solid var(--line)}
 .flbtn .fldot{width:9px;height:9px;border-radius:50%;background:#6aa8e0;box-shadow:0 0 10px 2px currentColor;color:#6aa8e0;animation:fldot 3.2s ease-in-out infinite}
 @keyframes fldot{0%,100%{background:#6aa8e0;color:#6aa8e0}50%{background:#fff;color:#fff}}
 .hero-grid{display:none!important}
+/* top-right dark blend over the hero video */
+.hero-corner{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 100% 0%,rgba(5,6,8,.9) 0%,rgba(5,6,8,.55) 40%,rgba(5,6,8,0) 75%)}
+.story-stack{display:none!important}
+/* XR-Drive hero button: same calm blue glow as XR-Flight, no red/green animation */
+.story-actions .f1btn{animation:none;border:1px solid rgba(106,168,224,.55);background:rgba(8,12,18,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 22px -4px rgba(106,168,224,.6);transition:transform .25s,box-shadow .25s}
+.story-actions .f1btn:hover{box-shadow:0 0 34px -2px rgba(106,168,224,.85)}
+.f1btn .f1dot{animation:fldot 3.2s ease-in-out infinite;background:#6aa8e0;color:#6aa8e0}
