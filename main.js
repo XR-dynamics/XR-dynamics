@@ -203,7 +203,7 @@ const CATEGORIES = [
         description: "Immersive aircraft control in VR, where the pilot's hands drive the stick and throttle of a physically simulated cockpit.",
         explain: "Flight dynamics: a six-degree-of-freedom aircraft model combines lift, drag, thrust and control-surface moments, so pitch, roll and yaw respond to real stick and throttle input. Experiments were run on Meta Quest 2 and Meta Quest 3.",
         tech: ["Meta Quest 2 / 3", "Unreal Engine 5", "OpenXR", "C++", "Flight Dynamics"],
-        link: null
+        badge: true, link: "xr-flight/", linkLabel: "Open XR-Flight page"
       },
       {
         id: "space-station",
@@ -659,9 +659,9 @@ document.querySelectorAll(".pthumb.vid video[data-start]").forEach(v => {
     [0.3, "Take the wheel. Every input felt in real time."],
     [4.3, "Humanoid robots pick up cargo and carry it across a simulated shipyard."],
     [8.6, "Every motion is trained in physics first, before it touches the real floor."],
-    [13.2, "Real physics in every machine."],
-    [20.6, "One shared space. Fly it with your own hands."],
-    [24.9, "Everything feels real. Physical AI applications and VR/XR interfaces."]
+    [12.8, "Real physics in every machine."],
+    [15.4, "One shared space. Fly it with your own hands."],
+    [18.0, "Everything feels real. Physical AI applications and VR/XR interfaces."]
   ];
   const keep = () => (matchMedia("(max-width: 820px)").matches ? 3 : items.length);
   let shown = 0, last = 0;

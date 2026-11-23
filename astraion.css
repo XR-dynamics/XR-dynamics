@@ -1,0 +1,53 @@
+/* Monochrome dark theme layer (Astraion look): silver type, one cool-blue accent, pill controls */
+:root{--bg:#050608;--bg-soft:#0a0c10;--text:#f3f5f7;--muted:#7c838b;--line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
+ --blue:#6aa8e0;--green:#8fc4f2;--neon:rgba(106,168,224,.35);--grad:linear-gradient(100deg,#fff 0%,#d9dee3 45%,#8e969e 100%);
+ --silver:linear-gradient(100deg,#fff 0%,#d9dee3 45%,#8e969e 100%);--glass-b:rgba(255,255,255,.1)}
+body{background:var(--bg);font-weight:300;color:#b7bdc4}
+/* header */
+.site-header{background:linear-gradient(180deg,rgba(5,6,8,.7),transparent)}
+.site-header.solid{background:rgba(5,6,8,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.brand-logo{filter:grayscale(1) brightness(1.1);height:52px;margin:-6px 0}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font-size:13.5px;color:#aeb4ba}
+nav a:hover{color:#fff}
+nav a.book-nav,nav a.about{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line-strong);border-radius:999px;color:var(--text);transition:box-shadow .25s,border-color .25s}
+nav a.book-nav{background:#fff;color:#07090c;border-color:#fff;font-weight:500}
+nav a.book-nav:hover{box-shadow:0 0 26px rgba(255,255,255,.35);color:#07090c}
+nav a.about:hover{border-color:var(--blue);box-shadow:0 0 22px rgba(106,168,224,.35)}
+nav a.about svg{border-radius:3px}
+@media(max-width:860px){nav{gap:10px}nav a:not(.book-nav):not(.about){display:none}}
+@media(max-width:520px){nav a.about{padding:8px 11px}}
+/* type: silver headings, blue eyebrows */
+.eyebrow,.idx{color:var(--blue);letter-spacing:.32em;font-weight:500;text-transform:uppercase}
+.story-title,.svc-title,.proj-title,.projects h2,.soon h2,.contact h2{font-weight:600;letter-spacing:-.03em;background:var(--silver)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent;animation-name:rise}
+.story-title .w{background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.story-tag span{color:#d9dee3;letter-spacing:.02em}
+.svc-lead,.story-biz{color:#8e959c}
+/* home hero buttons */
+.story-actions a{border-radius:999px}
+.story-actions .explore{background:#fff;color:#07090c;border:1px solid #fff;font-weight:500}
+.story-actions .explore:hover{box-shadow:0 0 34px rgba(255,255,255,.4)}
+.story-actions .book{background:transparent;color:var(--text);border:1px solid var(--line-strong)}
+.story-actions .book:hover{border-color:var(--blue);box-shadow:0 0 28px rgba(106,168,224,.35)}
+/* category tabs */
+.cat-tab{color:#8a9199;font-weight:500}
+.cat-tab:hover{color:#fff}
+.cat-tab.on{background:none;-webkit-text-fill-color:#fff;color:#fff}
+.cat-ink,.ink{background:var(--blue-hi,#8fc4f2);box-shadow:0 0 14px rgba(106,168,224,.35)}
+/* cards, form, buttons */
+.pcard,.svc-card,.svc-how div,.req{border-color:var(--line);border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01))}
+.pcard:hover,.pcard:focus-visible,.pcard.is-open,.svc-card:hover{border-color:rgba(106,168,224,.5);box-shadow:0 0 40px rgba(106,168,224,.14);transform:translateY(-3px)}
+.svc-card:hover,.svc-how div:hover{transform:translateY(-3px)}
+.req-btn{background:#fff;color:#07090c}
+.req-btn:hover{box-shadow:0 0 34px rgba(255,255,255,.4);transform:translateY(-1px)}
+.req input,.req select,.req textarea{border-radius:8px;border-color:var(--line-strong)}
+.req input:focus,.req select:focus,.req textarea:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(106,168,224,.15)}
+/* section rules, footer */
+.services,.soon,.contact,.projects{border-top:1px solid var(--line)}
+footer{border-top:1px solid var(--line)}
+/* XR-Flight hero button: pulsing blue/white dot, same shape as the F1 button */
+.story-actions .flbtn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:12px 24px;font-size:14px;font-weight:600;color:#fff;border-radius:999px;border:1px solid rgba(106,168,224,.55);background:rgba(8,12,18,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 22px -4px rgba(106,168,224,.6);transition:transform .25s,box-shadow .25s}
+.story-actions .flbtn:hover{transform:translateY(-2px);box-shadow:0 0 34px -2px rgba(106,168,224,.85)}
+.flbtn .fldot{width:9px;height:9px;border-radius:50%;background:#6aa8e0;box-shadow:0 0 10px 2px currentColor;color:#6aa8e0;animation:fldot 3.2s ease-in-out infinite}
+@keyframes fldot{0%,100%{background:#6aa8e0;color:#6aa8e0}50%{background:#fff;color:#fff}}
+.hero-grid{display:none!important}

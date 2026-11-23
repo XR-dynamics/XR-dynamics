@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XR-Flight · VR jet cockpit on a physics-based flight model · XR Dynamics Lab</title>
+<meta name="description" content="XR-Flight: a VR jet cockpit where your hands drive the stick and throttle of a physically simulated aircraft. Built in Unreal Engine 5 for Meta Quest.">
+<link rel="icon" href="../assets/xr-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050608;--bg2:#0a0c10;--text:#f3f5f7;--body:#b7bdc4;--muted:#7c838b;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--blue:#6aa8e0;--blue-hi:#8fc4f2;--glow:rgba(106,168,224,.35);--silver:linear-gradient(100deg,#fff 0%,#d9dee3 45%,#8e969e 100%);--max:1240px;--pad:clamp(20px,4vw,56px);--hh:66px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 56px)}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+
+/* header */
+header{position:fixed;inset:0 0 auto 0;height:var(--hh);z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.s{background:rgba(5,6,8,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:34px;width:auto}
+.brand span{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text)}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font-size:13.5px;color:#aeb4ba;transition:color .2s}
+nav a:hover{color:#fff}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line2);border-radius:999px;color:var(--text);font-size:13px;transition:box-shadow .25s,border-color .25s,background .25s}
+nav a.pill{color:var(--text)}
+.pill:hover{border-color:var(--blue);box-shadow:0 0 22px var(--glow)}
+.pill.solid{background:#fff;color:#07090c;border-color:#fff;font-weight:500}
+nav a.pill.solid{color:#07090c}
+.pill.solid:hover{box-shadow:0 0 26px rgba(255,255,255,.35)}
+@media(max-width:900px){nav a:not(.pill){display:none}}
+@media(max-width:560px){.brand span{display:none}nav{gap:8px}.pill{padding:7px 12px}}
+
+/* type */
+.eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--blue);font-weight:500}
+.big{font-size:clamp(34px,5vw,64px);line-height:1.06;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.huge{font-size:clamp(52px,9vw,128px);line-height:.98;font-weight:700;letter-spacing:-.035em;color:var(--text)}
+.mid{font-size:clamp(24px,3vw,38px);line-height:1.15;font-weight:500;letter-spacing:-.015em;color:var(--text)}
+.silver{background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.dim{color:#6d747c;-webkit-text-fill-color:#6d747c}
+.lead{font-size:clamp(16px,1.5vw,19px);color:var(--body);max-width:56ch}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--text);font-family:inherit;transition:box-shadow .25s,border-color .25s,transform .25s}
+.btn:hover{transform:translateY(-1px);border-color:var(--blue);box-shadow:0 0 28px var(--glow)}
+.btn.primary{background:#fff;color:#07090c;border-color:#fff}
+.btn.primary:hover{box-shadow:0 0 34px rgba(255,255,255,.4)}
+section{position:relative}
+.pad{padding:clamp(80px,12vw,150px) 0}
+
+/* hero */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero video,.hero .shade{position:absolute;inset:0;width:100%;height:100%}
+.hero video{object-fit:cover;filter:grayscale(.85) contrast(1.05) brightness(.8)}
+.hero .shade{background:linear-gradient(90deg,rgba(5,6,8,.92) 0%,rgba(5,6,8,.55) 45%,rgba(5,6,8,.1) 100%),linear-gradient(0deg,#050608 0%,rgba(5,6,8,0) 38%)}
+.hero-in{position:relative;z-index:2;width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--pad) clamp(90px,12vh,130px)}
+.hero .r{opacity:0;transform:translateY(22px);animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards}
+.r1{animation-delay:.1s!important}.r2{animation-delay:.25s!important}.r3{animation-delay:.42s!important}.r4{animation-delay:.58s!important}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero h1{margin:18px 0 22px}
+.hero .lead{margin-bottom:34px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.hero-meta{position:absolute;z-index:2;left:0;right:0;bottom:0;border-top:1px solid var(--line);background:linear-gradient(0deg,rgba(5,6,8,.85),rgba(5,6,8,.2))}
+.hero-meta .wrap{display:flex;gap:clamp(16px,3vw,44px);flex-wrap:wrap;align-items:center;padding-top:16px;padding-bottom:16px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 var(--glow);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(106,168,224,0)}100%{box-shadow:0 0 0 0 rgba(106,168,224,0)}}
+@media(max-width:700px){.hero-meta .wrap span:nth-child(n+4){display:none}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* intro */
+.intro{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,90px);align-items:end}
+.intro .big{margin-top:16px}
+@media(max-width:860px){.intro{grid-template-columns:1fr}}
+
+/* moments */
+.moments{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(50px,7vw,90px)}
+.moment{padding:26px 26px 6px 0;border-top:1px solid var(--line2);position:relative}
+.moment+.moment{padding-left:26px;border-left:1px solid var(--line)}
+.moment .n{font-size:12px;letter-spacing:.2em;color:var(--blue);font-weight:500}
+.moment h3{font-size:22px;font-weight:500;color:var(--text);margin:12px 0 10px;letter-spacing:-.01em}
+.moment p{font-size:15px}
+@media(max-width:900px){.moments{grid-template-columns:1fr 1fr}.moment:nth-child(3){border-left:0;padding-left:0}.moment{padding-bottom:26px}}
+@media(max-width:540px){.moments{grid-template-columns:1fr}.moment+.moment{border-left:0;padding-left:0}}
+
+/* tabs */
+.explore{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.explore-head{margin-bottom:34px}
+.tabbar{position:sticky;top:var(--hh);z-index:20;background:rgba(10,12,16,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:6px;position:relative;overflow-x:auto;scrollbar-width:none;padding:0 var(--pad);max-width:var(--max);margin:0 auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;color:#8a9199;font:500 14px Inter,sans-serif;padding:20px 18px;cursor:pointer;white-space:nowrap;transition:color .2s}
+.tab:hover{color:#fff}
+.tab.on{color:#fff}
+.ink{position:absolute;bottom:0;height:2px;background:var(--blue-hi);box-shadow:0 0 14px var(--glow);transition:left .35s cubic-bezier(.2,.7,.2,1),width .35s cubic-bezier(.2,.7,.2,1)}
+.panel{display:none;padding:clamp(36px,5vw,64px) 0 clamp(60px,8vw,100px)}
+.panel.on{display:block;animation:fade .6s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stage{position:relative;aspect-ratio:16/9;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#000;transition:box-shadow .35s,border-color .35s}
+.stage:hover{border-color:rgba(106,168,224,.5);box-shadow:0 0 50px rgba(106,168,224,.18)}
+.stage video{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.04)}
+.stage::before,.stage::after{content:"";position:absolute;width:22px;height:22px;border:1px solid rgba(255,255,255,.35);pointer-events:none;z-index:2}
+.stage::before{top:14px;left:14px;border-right:0;border-bottom:0}
+.stage::after{bottom:14px;right:14px;border-left:0;border-top:0}
+.stage .tag{position:absolute;left:30px;bottom:24px;z-index:2;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#d9dee3;display:flex;align-items:center;gap:10px;text-shadow:0 1px 8px #000}
+.p-name{font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-.02em;color:var(--text);margin:34px 0 10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.p-domain{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--blue);border:1px solid rgba(106,168,224,.4);border-radius:999px;padding:5px 12px}
+.p-oneline{font-size:clamp(16px,1.6vw,20px);color:var(--body);max-width:70ch;padding-left:22px;position:relative}
+.p-oneline::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:var(--blue)}
+.p-body{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px);margin-top:38px;padding-top:30px;border-top:1px solid var(--line)}
+.p-body h4{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:12px}
+.p-body p{font-size:15px}
+@media(max-width:800px){.p-body{grid-template-columns:1fr;gap:26px}}
+
+
+.stage.cv{margin:0;aspect-ratio:auto}
+.stage.cv img{width:100%;height:auto;filter:grayscale(.2) contrast(1.03)}
+.hs{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;pointer-events:none;z-index:3}
+.hs i{width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.2),0 0 14px rgba(106,168,224,.8);flex:none}
+.hs b{font-weight:500;font-size:12px;letter-spacing:.04em;white-space:nowrap;color:#fff;padding:4px 10px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(5,6,8,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media(max-width:700px){.hs b{display:none}.hs i{width:9px;height:9px}}
+/* stack */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px)}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.fit{list-style:none;margin-top:30px;border-top:1px solid var(--line2)}
+.fit li{display:flex;gap:20px;justify-content:space-between;padding:17px 0;border-bottom:1px solid var(--line);font-size:15px}
+.fit li b{font-weight:500;color:var(--text)}
+.fit li span{color:var(--muted);text-align:right}
+.steps{display:grid;grid-template-columns:1fr;gap:0;margin-top:30px;counter-reset:s}
+.steps div{padding:20px 0 20px 56px;border-top:1px solid var(--line);position:relative;counter-increment:s}
+.steps div:last-child{border-bottom:1px solid var(--line)}
+.steps div::before{content:"0" counter(s);position:absolute;left:0;top:22px;font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:500}
+.steps b{display:block;color:var(--text);font-weight:500;font-size:17px;margin-bottom:4px}
+
+/* final */
+.final{text-align:center;overflow:hidden;border-top:1px solid var(--line)}
+.final .bgimg{position:absolute;inset:0;background:url("../assets/poster/flight/hero.jpg") center/cover;filter:grayscale(1) brightness(.42)}
+.final .shade{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(5,6,8,.35),rgba(5,6,8,.95) 75%),linear-gradient(180deg,var(--bg),transparent 25%,transparent 75%,var(--bg))}
+.final .in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:26px}
+.final .big{max-width:18ch}
+.final .cta-row{justify-content:center}
+
+footer{border-top:1px solid var(--line);padding:34px 0 44px;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer a:hover{color:#fff}
+
+/* demo modal */
+.dm{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:4vh 4vw}
+.dm.open{display:flex}
+.dm-back{position:absolute;inset:0;background:rgba(3,4,6,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:fade .35s}
+.dm-box{position:relative;width:min(1100px,72vw);border:1px solid var(--line2);border-radius:14px;background:rgba(14,17,22,.55);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);padding:14px;box-shadow:0 30px 120px rgba(0,0,0,.6),0 0 60px rgba(106,168,224,.12);animation:fade .45s}
+.dm-box video{width:100%;aspect-ratio:16/9;border-radius:8px;background:#000}
+.dm-head{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#aeb4ba}
+.dm-x{background:none;border:1px solid var(--line2);border-radius:50%;width:34px;height:34px;color:#fff;font-size:20px;line-height:1;cursor:pointer}
+.dm-x:hover{border-color:var(--blue);box-shadow:0 0 18px var(--glow)}
+@media(max-width:800px){.dm-box{width:94vw}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.hero .r{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header id="hd">
+  <a class="brand" href="../" aria-label="XR Dynamics Lab"><img src="../assets/xr-mark.png" alt="" width="64" height="34"><span>XR-Flight</span></a>
+  <nav>
+    <a href="../#projects">Projects</a>
+    <a href="#dynamics">Flight dynamics</a>
+    <a href="#cockpit-view">Cockpit</a>
+    <a href="#explore">In flight</a>
+    <a href="../#contact">Contact</a>
+    <a class="pill solid book" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
+    <a class="pill" href="https://www.linkedin.com/in/surajit-saikia-phd-55b717101/" target="_blank" rel="noopener" aria-label="About me on LinkedIn">About me</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <video autoplay muted loop playsinline preload="auto" poster="../assets/poster/flight/hero.jpg" aria-hidden="true"><source src="../assets/video/flight/hero.mp4" type="video/mp4"></video>
+  <div class="shade"></div>
+  <div class="hero-in">
+    <p class="eyebrow r r1">XR Dynamics Lab · Aerospace</p>
+    <h1 class="huge r r2"><span class="silver">XR-Flight</span></h1>
+    <p class="mid r r3" style="max-width:20ch;margin-bottom:18px">Put on the headset. <span class="dim">Take the stick.</span></p>
+    <p class="lead r r3">A VR jet cockpit on a physics-based flight model. Your hands drive the stick and throttle of a physically simulated aircraft.</p>
+    <div class="cta-row r r4">
+      <button class="btn primary" type="button" id="demoBtn">&#9654;&nbsp; Watch the demo</button>
+      <a class="btn" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
+    </div>
+  </div>
+  <div class="hero-meta"><div class="wrap"><span class="dot"></span><span>Meta Quest 2 / 3</span><span>Unreal Engine 5</span><span>Chaos physics</span><span>OpenXR</span></div></div>
+</section>
+
+<section class="pad" id="dynamics">
+  <div class="wrap">
+    <div class="intro">
+      <div class="reveal"><p class="eyebrow">Flight dynamics</p><h2 class="big">Real forces, <span class="silver">not an animation.</span></h2></div>
+      <p class="lead reveal">The aircraft is flown by a physics-based flight dynamics model running in Chaos. Lift, drag and thrust act on the airframe every frame, so what you feel in the headset comes from the simulation, not from a scripted path.</p>
+    </div>
+    <div class="moments">
+      <div class="moment reveal"><span class="n">01</span><h3>Lift</h3><p>Airflow over the wings produces the force that carries the aircraft.</p></div>
+      <div class="moment reveal"><span class="n">02</span><h3>Drag</h3><p>Resistance builds with speed and attitude, and you feel it in how the jet responds.</p></div>
+      <div class="moment reveal"><span class="n">03</span><h3>Thrust</h3><p>The throttle in your hand sets the engine thrust that drives the jet forward.</p></div>
+      <div class="moment reveal"><span class="n">04</span><h3>Fly-by-wire</h3><p>Stick and throttle inputs pass through a control layer, as in a modern jet.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pad cockpit-view" id="cockpit-view">
+  <div class="wrap">
+    <div class="intro" style="margin-bottom:clamp(30px,5vw,56px)">
+      <div class="reveal"><p class="eyebrow">The cockpit</p><h2 class="big">What you see <span class="silver">when you sit down.</span></h2></div>
+      <p class="lead reveal">A night runway ahead, three multifunction displays in front of you, and your hands on the throttle and the joystick.</p>
+    </div>
+    <figure class="stage cv reveal">
+      <img src="../assets/poster/flight/cockpit-view.jpg" alt="XR-Flight cockpit at night: runway ahead, flight displays, throttle on the left and joystick on the right" width="1672" height="941" loading="lazy">
+      <span class="hs" style="left:37%;top:70%"><i></i><b>Flight display</b></span>
+      <span class="hs" style="left:51%;top:66%"><i></i><b>Radar display</b></span>
+      <span class="hs" style="left:64%;top:70%"><i></i><b>Aircraft status</b></span>
+      <span class="hs" style="left:51%;top:57%"><i></i><b>FMS · LNAV · VNAV · A/P</b></span>
+      <span class="hs" style="left:17%;top:86%"><i></i><b>Throttle</b></span>
+      <span class="hs" style="left:84%;top:80%"><i></i><b>Joystick</b></span>
+    </figure>
+  </div>
+</section>
+
+<section class="explore" id="explore">
+  <div class="wrap explore-head" style="padding-top:clamp(70px,10vw,120px)">
+    <p class="eyebrow reveal">Inside XR-Flight</p>
+    <h2 class="big reveal" style="margin-top:14px">Moments <span class="silver">from the flight.</span></h2>
+  </div>
+  <div class="tabbar"><div class="tabs" id="tabs" role="tablist">
+    <button class="tab on" role="tab" data-t="cockpit">The cockpit</button>
+    <button class="tab" role="tab" data-t="flight">The flight model</button>
+    <button class="tab" role="tab" data-t="climb">Climb and attitude</button>
+    <button class="tab" role="tab" data-t="wind">Against the wind</button>
+    <button class="tab" role="tab" data-t="plugin">Flight Dynamics plugin</button>
+    <span class="ink" id="ink"></span>
+  </div></div>
+  <div class="wrap">
+    <article class="panel on" id="p-cockpit">
+      <div class="stage"><video muted loop playsinline preload="metadata" poster="../assets/poster/flight/cockpit.jpg"><source data-src="../assets/video/flight/cockpit.mp4" type="video/mp4"></video><span class="tag"><i class="dot"></i>Cockpit · hand tracking</span></div>
+      <h3 class="p-name">The cockpit <span class="p-domain">Immersive XR</span></h3>
+      <p class="p-oneline">You see your own hands on the panel and reach for the controls, as you would in the real aircraft.</p>
+      <div class="p-body">
+        <div><h4>What you see</h4><p>A full cockpit around you, with the flight display, panels and your hands in the scene.</p></div>
+        <div><h4>How it works</h4><p>Your hands are tracked by the headset and drive the stick and throttle directly. There is no gamepad in between.</p></div>
+        <div><h4>Why it matters</h4><p>Reaching for a control instead of pressing a button makes the cockpit feel like a place you are in.</p></div>
+      </div>
+    </article>
+    <article class="panel" id="p-flight">
+      <div class="stage"><video muted loop playsinline preload="none" poster="../assets/poster/flight/flight.jpg"><source data-src="../assets/video/flight/flight.mp4" type="video/mp4"></video><span class="tag"><i class="dot"></i>Chase view · live telemetry</span></div>
+      <h3 class="p-name">The flight model <span class="p-domain">Physics</span></h3>
+      <p class="p-oneline">The jet flies on simulated lift, drag and thrust, with speed and altitude readouts on screen.</p>
+      <div class="p-body">
+        <div><h4>What you see</h4><p>The aircraft banking over terrain, with airspeed and altitude values shown at the edges of the frame.</p></div>
+        <div><h4>How it works</h4><p>A flight dynamics model in Unreal Engine 5 with Chaos physics computes the forces on the airframe each frame.</p></div>
+        <div><h4>Why it matters</h4><p>Because the motion is simulated, the same model can be tested, tuned and reused in other aerospace scenarios.</p></div>
+      </div>
+    </article>
+    <article class="panel" id="p-climb">
+      <div class="stage"><video muted loop playsinline preload="none" poster="../assets/poster/flight/climb.jpg"><source data-src="../assets/video/flight/climb.mp4" type="video/mp4"></video><span class="tag"><i class="dot"></i>Attitude · control response</span></div>
+      <h3 class="p-name">Climb and attitude <span class="p-domain">Control</span></h3>
+      <p class="p-oneline">Pitch, roll and throttle changes show up in the aircraft as you make them.</p>
+      <div class="p-body">
+        <div><h4>What you see</h4><p>The jet changing attitude against the clouds and ground below, with the readouts updating as it moves.</p></div>
+        <div><h4>How it works</h4><p>Your stick and throttle inputs go through a fly-by-wire control layer before they reach the flight model.</p></div>
+        <div><h4>Why it matters</h4><p>It is the loop a pilot trains: input, response, correction. In VR you do it with your hands.</p></div>
+      </div>
+    </article>
+    <article class="panel" id="p-wind">
+      <div class="stage"><video muted loop playsinline preload="none" poster="../assets/poster/flight/wind.jpg"><source data-src="../assets/video/flight/wind.mp4" type="video/mp4"></video><span class="tag"><i class="dot"></i>Runway · wind and weather</span></div>
+      <h3 class="p-name">Against the wind <span class="p-domain">Environment</span></h3>
+      <p class="p-oneline">Fly against the wind: the aircraft starts on a wet runway and the environment pushes back.</p>
+      <div class="p-body">
+        <div><h4>What you see</h4><p>The F-35 lined up on a rain-soaked runway, seen from above, before the takeoff run.</p></div>
+        <div><h4>How it works</h4><p>Weather is part of the scene, and the flight model is built so that conditions can act on the aircraft.</p></div>
+        <div><h4>Why it matters</h4><p>Testing in difficult conditions is where simulation pays off, because you can repeat them on demand.</p></div>
+      </div>
+    </article>
+    <article class="panel" id="p-plugin">
+      <div class="stage" style="aspect-ratio:1280/476"><video muted loop playsinline preload="none" poster="../assets/poster/flight/plugin.jpg"><source data-src="../assets/video/flight/plugin.mp4" type="video/mp4"></video><span class="tag"><i class="dot"></i>Flight Dynamics plugin · Unreal Engine</span></div>
+      <h3 class="p-name">Flight Dynamics plugin <span class="p-domain">Aerospace</span></h3>
+      <p class="p-oneline">The physics-based flight model behind XR-Flight, for Unreal Engine 5.5 to 5.8: real lift, drag and thrust simulated in Chaos.</p>
+      <div class="p-body">
+        <div><h4>Across the envelope</h4><p>Realistic physics across the whole speed and altitude range, from runway take-off to landing, with retractable landing gear and an afterburner plume.</p></div>
+        <div><h4>Fly-by-wire</h4><p>A fly-by-wire layer keeps the aircraft inside its flight envelope while the control surfaces follow the flight computer.</p></div>
+        <div><h4>Instruments</h4><p>A HUD with airspeed, Mach, G, angle of attack, altitude, vertical speed and thrust, plus three camera modes.</p></div>
+      </div>
+      <p style="margin-top:34px"><a class="btn" href="https://www.fab.com/listings/ab848d4b-a42d-4d9b-9f28-c72ceada449b" target="_blank" rel="noopener">View on Fab &nearr;</a></p>
+    </article>
+  </div>
+</section>
+
+<section class="pad" id="stack">
+  <div class="wrap cols">
+    <div class="reveal">
+      <p class="eyebrow">Built with</p>
+      <h2 class="big" style="margin:14px 0 0">The <span class="silver">stack.</span></h2>
+      <ul class="fit">
+        <li><b>Engine</b><span>Unreal Engine 5 · C++</span></li>
+        <li><b>Physics</b><span>Chaos flight dynamics</span></li>
+        <li><b>Headset</b><span>Meta Quest 2 / 3 · OpenXR</span></li>
+        <li><b>Input</b><span>Hand tracking on stick and throttle</span></li>
+        <li><b>Control</b><span>Fly-by-wire layer</span></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <p class="eyebrow">Work with me</p>
+      <h2 class="big" style="margin:14px 0 0">Where it <span class="silver">fits.</span></h2>
+      <div class="steps">
+        <div><b>Training and demos</b>Let people experience a cockpit before they step into one.</div>
+        <div><b>Flight model testing</b>Try control laws and aircraft behaviour inside a headset-ready simulation.</div>
+        <div><b>Custom aircraft</b>Adapt the cockpit and flight model to your own platform.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final pad">
+  <div class="bgimg"></div><div class="shade"></div>
+  <div class="wrap in">
+    <p class="eyebrow">XR-Flight</p>
+    <h2 class="big reveal">Step inside <span class="silver">the cockpit.</span></h2>
+    <p class="lead">Tell me about the aircraft or the training problem and I will show you how it could fly in VR.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
+      <button class="btn" type="button" id="demoBtn2">&#9654;&nbsp; Watch the demo</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>XR Dynamics Lab · Immersive control · Simulation · Robotics · Physical AI</span><a href="../">Back to all projects</a></div></footer>
+
+<div class="dm" id="dm" role="dialog" aria-modal="true" aria-label="XR-Flight demo">
+  <div class="dm-back" data-close></div>
+  <div class="dm-box">
+    <div class="dm-head"><span>XR-Flight · demo</span><button class="dm-x" type="button" data-close aria-label="Close demo">&times;</button></div>
+    <video id="dmv" controls playsinline preload="none" poster="../assets/poster/flight/hero.jpg"></video>
+  </div>
+</div>
+
+<script>
+(function(){
+  var hd=document.getElementById('hd');
+  function sc(){hd.classList.toggle('s',scrollY>30)}sc();addEventListener('scroll',sc,{passive:true});
+
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+
+  // tabs
+  var tabs=[].slice.call(document.querySelectorAll('.tab')),ink=document.getElementById('ink');
+  function setInk(t){ink.style.left=t.offsetLeft+'px';ink.style.width=t.offsetWidth+'px'}
+  function play(panel){
+    document.querySelectorAll('.panel video').forEach(function(v){v.pause()});
+    var v=panel.querySelector('video'),s=v.querySelector('source');
+    if(s&&!v.dataset.ld){v.src=s.dataset.src;v.dataset.ld=1;v.load()}
+    var p=v.play();if(p&&p.catch)p.catch(function(){});
+  }
+  function pick(t){
+    tabs.forEach(function(b){b.classList.toggle('on',b===t)});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('on',p.id==='p-'+t.dataset.t)});
+    setInk(t);play(document.getElementById('p-'+t.dataset.t));
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){pick(t)})});
+  var first=document.querySelector('.tab.on');setInk(first);addEventListener('resize',function(){setInk(document.querySelector('.tab.on'))});
+  var ex=document.getElementById('explore');
+  new IntersectionObserver(function(es){es.forEach(function(e){var p=document.querySelector('.panel.on');if(!p)return;var v=p.querySelector('video');if(e.isIntersecting)play(p);else v.pause()})},{threshold:.15}).observe(ex);
+
+  // demo modal
+  var dm=document.getElementById('dm'),dmv=document.getElementById('dmv');
+  function open(){dm.classList.add('open');dmv.src='../assets/video/flight/demo.mp4';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
+  function close(){dm.classList.remove('open');dmv.pause();dmv.removeAttribute('src');dmv.load();document.body.style.overflow=''}
+  ['demoBtn','demoBtn2'].forEach(function(id){document.getElementById(id).addEventListener('click',open)});
+  dm.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',close)});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&dm.classList.contains('open'))close()});
+})();
+</script>
+</body>
+</html>

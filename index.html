@@ -8,8 +8,10 @@
 <meta property="og:image" content="assets/hero.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Cpath d='M8 9l16 14M24 9L8 23' stroke='%23fff' stroke-width='2.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css?v=70">
+<link rel="stylesheet" href="astraion.css?v=2">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -21,6 +23,7 @@
     <a href="#services">Services</a>
     <a href="#plugins">Plugins</a>
     <a href="#contact">Contact</a>
+    <a class="book-nav" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
     <a class="about" href="https://www.linkedin.com/in/surajit-saikia-phd-55b717101/" target="_blank" rel="noopener" aria-label="About me on LinkedIn">
       <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>About Me</a>
   </nav>
@@ -28,8 +31,7 @@
 
 <main id="top">
   <section class="hero story" id="story">
-    <video class="hero-bg on" id="heroA" autoplay muted loop playsinline preload="auto" poster="assets/poster/hero-bg-2.jpg" aria-hidden="true"><source src="assets/video/hero-main.mp4?v=5" type="video/mp4"></video>
-    <div class="hero-grid" aria-hidden="true"></div>
+    <video class="hero-bg on" id="heroA" autoplay muted loop playsinline preload="auto" poster="assets/poster/hero-bg-2.jpg" aria-hidden="true"><source src="assets/video/hero-main.mp4?v=6" type="video/mp4"></video>
     <div class="hero-shade"></div>
     <div class="story-copy" aria-live="off">
       <h1 class="story-title" id="storyTitle">Physical AI simulation<br>and Immersive control</h1>
@@ -37,8 +39,8 @@
       <div class="story-actions">
         <a class="explore" href="#projects">Explore projects
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
-        <a class="book" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
         <a class="f1btn" href="xr-drive/"><i class="f1dot" aria-hidden="true"></i>Explore XR-F1 Drive<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6"/></svg></a>
+        <a class="flbtn" href="xr-flight/"><i class="fldot" aria-hidden="true"></i>Explore XR-Flight<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6"/></svg></a>
       </div>
       <p class="story-biz">Building and engineering intelligent physical systems: available for selected B2B R&amp;D engagements.</p>
     </div>
@@ -201,7 +203,7 @@
       </div>
     </div>
   </div>
-  <script src="main.js?v=49"></script>
+  <script src="main.js?v=50"></script>
 <script src="request.js?v=3"></script>
 <script src="picks.js?v=9"></script>
 <script type="module" src="bg.js?v=4"></script>
