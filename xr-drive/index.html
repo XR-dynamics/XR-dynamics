@@ -253,7 +253,7 @@ h1,h2,h3{font-weight:600}
 </head>
 <body>
 
-<video class="bgv" id="bgv" autoplay muted loop playsinline preload="auto" poster="../assets/poster/xr-drive-final.jpg" aria-hidden="true"><source src="../assets/video/xr-drive-final.mp4?v=2" type="video/mp4"></video>
+<video class="bgv" id="bgv" autoplay muted loop playsinline preload="auto" poster="../assets/poster/xr-drive-final.jpg" aria-hidden="true"><source src="../assets/video/xr-drive-final.mp4?v=3" type="video/mp4"></video>
 <div class="veil" aria-hidden="true"></div>
 
 <header class="top" id="top">
@@ -451,7 +451,7 @@ h1,h2,h3{font-weight:600}
   const demo = $("#demo"), dv = $("#demoV"); let opener = null, bgWasPlaying = false;
   function openDemo() {
     opener = document.activeElement; bgWasPlaying = !v.paused; v.pause();
-    if (!dv.src) dv.src = "../assets/video/xr-drive-final.mp4?v=2";
+    if (!dv.src) dv.src = "../assets/video/xr-drive-final.mp4?v=3";
     demo.hidden = false; document.body.style.overflow = "hidden";
     dv.currentTime = 0; dv.muted = false; dv.play().catch(() => { dv.muted = true; dv.play().catch(() => {}); });
     $(".demo-x").focus({ preventScroll: true });
