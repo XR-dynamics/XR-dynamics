@@ -338,11 +338,73 @@ const cardHTML = (p, cid) => `
       : `<span class="pthumb${thumbOf(p) ? "" : " noimg"}">${thumbOf(p) ? `<img src="${esc(thumbOf(p))}" alt="" loading="lazy" width="640" height="360">` : `<span class="ptitle">${esc(p.name)}</span>`}</span>`}
     <span class="pmeta"><span class="pname">${esc(p.name)}</span><span class="psub">${esc(p.description)}</span></span>
   </button>`;
+/* ---------- project rows: video and text side by side, alternating, revealed on scroll ---------- */
+function rowMedia(p, k) {
+  const c = p.videos[k || 0] || {};
+  if (c.mp4) return { kind: "video", src: c.mp4, poster: c.poster || thumbOf(p) };
+  if (c.drive) {
+    const id = (String(c.drive).match(/\/d\/([\w-]+)/) || [])[1];
+    const vid = THUMBVID[p.id];
+    if (vid && !reduceMotion) return { kind: "video", src: vid, poster: THUMB[p.id] || "", drive: c.drive };
+    const img = THUMB[p.id] || (id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1280` : "");
+    return { kind: "img", src: img, drive: c.drive };
+  }
+  if (THUMBVID[p.id] && !reduceMotion) return { kind: "video", src: THUMBVID[p.id], poster: thumbOf(p) };
+  return { kind: "img", src: thumbOf(p) };
+}
+function mediaTag(md, p) {
+  if (md.kind === "video") return `<video class="pm" muted loop playsinline preload="none" poster="${esc(md.poster || "")}" data-src="${esc(md.src)}" ${md.drive ? `data-drive="${esc(md.drive)}"` : ""} aria-label="${esc(p.name)} demo"></video>`;
+  if (md.src) return `<img class="pm" src="${esc(md.src)}" alt="${esc(p.name)}" loading="lazy" referrerpolicy="no-referrer" ${md.drive ? `data-drive="${esc(md.drive)}"` : ""}>`;
+  return `<div class="pm pm-empty"><span>${esc(p.name)}</span></div>`;
+}
+function rowHTML(p, cid, i) {
+  const feats = (p.features || p.tech || []).slice(0, 5);
+  const md = rowMedia(p, 0);
+  const chips = p.videos.length > 1 ? `<div class="pchips" role="tablist">${p.videos.map((v, k) => `<button type="button" class="pchip${k ? "" : " on"}" data-k="${k}">${esc(v.label || "Demo " + (k + 1))}</button>`).join("")}</div>` : "";
+  const btn = p.link ? `<a class="explore-btn" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.linkLabel || "View Project")}${ARROW}</a>` : "";
+  return `<article class="prow${i % 2 ? " alt" : ""}" data-pid="${esc(p.id)}">
+    <div class="pamb"></div>
+    <figure class="pvid"><div class="pframe" data-pid="${esc(p.id)}">${mediaTag(md, p)}<i class="pk tl"></i><i class="pk br"></i>${md.drive || md.kind === "video" ? '<span class="pplay" aria-hidden="true"></span>' : ""}</div>${chips}<div class="pnum" aria-hidden="true">${pad(i + 1)}</div></figure>
+    <div class="ptxt"><p class="peyebrow pc1">${pad(i + 1)} / ${pad(CATEGORIES.find(c => c.id === cid).projects.length)} \u00b7 ${esc(CATEGORIES.find(c => c.id === cid).title)}</p>
+      <h3 class="pc2"><span class="silver">${esc(p.name)}</span>${p.badge ? " " + UE : ""}</h3>
+      <p class="pone pc3">${esc(p.description)}</p><p class="pbody pc4">${esc(p.explain)}</p>
+      <div class="ptags pc5">${feats.map(f => `<span>${esc(f)}</span>`).join("")}</div><div class="pc6">${btn}</div></div>
+  </article>`;
+}
 document.getElementById("panels").innerHTML = CATEGORIES.map(c =>
   `<div class="panel" id="panel-${c.id}" role="tabpanel" aria-labelledby="tab-${c.id}" hidden>
-    <div class="pgrid">${c.projects.map(p => cardHTML(p, c.id)).join("")}</div>
+    <div class="prows">${c.projects.map((p, i) => rowHTML(p, c.id, i)).join("")}</div>
     <div class="pstore" hidden>${c.projects.map((p, i) => projectHTML(p, i, c.projects.length, c.id)).join("")}</div>
   </div>`).join("");
+
+(function () {
+  const rows = [...document.querySelectorAll(".prow")];
+  const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); rv.unobserve(e.target); } }), { threshold: 0.25 });
+  rows.forEach(r => rv.observe(r));
+  const play = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target;
+    if (e.isIntersecting) { if (!v.getAttribute("src") && v.dataset.src) { v.src = v.dataset.src; v.load(); } const pr = v.play(); if (pr && pr.catch) pr.catch(() => {}); }
+    else v.pause();
+  }), { rootMargin: "30% 0px" });
+  document.querySelectorAll(".prow video.pm").forEach(v => play.observe(v));
+  document.addEventListener("click", e => {
+    const chip = e.target.closest(".pchip");
+    if (chip) {
+      const row = chip.closest(".prow"), p = ALL[row.dataset.pid], k = Number(chip.dataset.k), md = rowMedia(p, k);
+      row.querySelectorAll(".pchip").forEach(c => c.classList.toggle("on", c === chip));
+      const fr = row.querySelector(".pframe"), old = fr.querySelector(".pm, iframe");
+      const tmp = document.createElement("div"); tmp.innerHTML = mediaTag(md, p); const el = tmp.firstElementChild; old.replaceWith(el);
+      if (el.tagName === "VIDEO") { el.src = el.dataset.src; el.load(); el.play().catch(() => {}); play.observe(el); }
+      return;
+    }
+    const fr = e.target.closest(".pframe"); if (!fr) return;
+    const pm = fr.querySelector(".pm"); if (!pm) return;
+    const row = fr.closest(".prow"), p = ALL[row.dataset.pid];
+    const drive = pm.dataset.drive;
+    if (drive) { const src = driveEmbed(drive); if (src) { fr.querySelector(".pplay")?.remove(); pm.replaceWith(Object.assign(document.createElement("iframe"), { src, allow: "autoplay; fullscreen", allowFullscreen: true, title: p.name + " demo", className: "pm" })); } return; }
+    if (pm.tagName === "VIDEO") { pm.controls = true; pm.muted = false; fr.querySelector(".pplay")?.remove(); pm.play().catch(() => {}); }
+  });
+})();
 
 /* ---------- project cards: hover (or tap) grows the card into the full project view ---------- */
 const pop = document.createElement("div");
