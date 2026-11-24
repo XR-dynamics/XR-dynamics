@@ -58,3 +58,13 @@ footer{border-top:1px solid var(--line)}
 .story-actions .f1btn{animation:none;border:1px solid rgba(106,168,224,.55);background:rgba(8,12,18,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 22px -4px rgba(106,168,224,.6);transition:transform .25s,box-shadow .25s}
 .story-actions .f1btn:hover{box-shadow:0 0 34px -2px rgba(106,168,224,.85)}
 .f1btn .f1dot{animation:fldot 3.2s ease-in-out infinite;background:#6aa8e0;color:#6aa8e0}
+/* hero tagline: light weight, no glow, no underline */
+.story-tag{font-weight:300!important;text-shadow:none!important;font-size:clamp(14px,1.4vw,19px)!important;letter-spacing:.04em!important;color:#c9ced4!important}
+.story-tag span{padding-bottom:0!important}
+.story-tag span::after{display:none!important}
+/* facts: slim strip like the XR pages */
+.facts{padding:0!important;margin:0!important;background:var(--bg)!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts .stats{display:flex!important;gap:clamp(16px,3vw,44px)!important;flex-wrap:wrap;align-items:center;justify-content:flex-start;max-width:1240px;margin:0 auto!important;padding:16px clamp(20px,4vw,56px)!important;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);grid-template-columns:none!important;border:0!important;background:none!important}
+.facts .stats>span{color:var(--muted);font-weight:400;font-size:12px;border:0;padding:0}
+.facts .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:fdot 2s infinite}
+@keyframes fdot{70%{box-shadow:0 0 0 9px rgba(106,168,224,0)}0%{box-shadow:0 0 0 0 rgba(106,168,224,.35)}}
