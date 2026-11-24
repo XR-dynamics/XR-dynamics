@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XR-Projects · VR projects built to be worn · XR Dynamics Lab</title>
+<meta name="description" content="VR projects by XR Dynamics Lab: XR-Drive, XR-Flight, hand interaction, drone cockpit, robot teleoperation and more, built in Unreal Engine 5 for Meta Quest.">
+<link rel="icon" href="../assets/xr-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050608;--text:#f3f5f7;--body:#b7bdc4;--muted:#7c838b;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--blue:#6aa8e0;--glow:rgba(106,168,224,.35);--silver:linear-gradient(100deg,#fff 0%,#d9dee3 45%,#8e969e 100%);--max:1240px;--pad:clamp(20px,4vw,56px);--hh:66px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}img,video{display:block;max-width:100%}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.silver{background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.dim{color:#6d747c;-webkit-text-fill-color:#6d747c}
+.eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--blue);font-weight:500}
+.big{font-size:clamp(34px,5vw,64px);line-height:1.06;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.huge{font-size:clamp(52px,9vw,128px);line-height:.98;font-weight:700;letter-spacing:-.035em;color:var(--text)}
+.lead{font-size:clamp(16px,1.5vw,19px);max-width:52ch}
+header{position:fixed;inset:0 0 auto 0;height:var(--hh);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+header.s{background:rgba(5,6,8,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.brand{display:flex;align-items:center;gap:12px}.brand img{height:34px;width:auto}
+.brand span{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text)}
+nav{display:flex;align-items:center;gap:26px}nav a{font-size:13.5px;color:#aeb4ba;transition:color .2s}nav a:hover{color:#fff}
+.pill{display:inline-flex;align-items:center;padding:8px 16px;border:1px solid var(--line2);border-radius:999px;color:var(--text);font-size:13px;transition:box-shadow .25s,border-color .25s}
+nav a.pill{color:var(--text)}.pill:hover{border-color:var(--blue);box-shadow:0 0 22px var(--glow)}
+.pill.solid{background:#fff;border-color:#fff;font-weight:500}nav a.pill.solid{color:#07090c}.pill.solid:hover{box-shadow:0 0 26px rgba(255,255,255,.35)}
+@media(max-width:900px){nav a:not(.pill){display:none}}@media(max-width:560px){.brand span{display:none}nav{gap:8px}.pill{padding:7px 12px}}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--text);font-family:inherit;transition:box-shadow .25s,border-color .25s,transform .25s}
+.btn:hover{transform:translateY(-1px);border-color:var(--blue);box-shadow:0 0 28px var(--glow)}.btn.primary{background:#fff;color:#07090c;border-color:#fff}.btn.primary:hover{box-shadow:0 0 34px rgba(255,255,255,.4)}
+.bar{position:fixed;top:0;left:0;height:2px;width:0;z-index:70;background:linear-gradient(90deg,#8e969e,#fff)}
+/* hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero video,.hero .shade{position:absolute;inset:0;width:100%;height:100%}.hero video{object-fit:cover;filter:grayscale(.3) contrast(1.05) brightness(.85)}
+.hero .shade{background:linear-gradient(90deg,rgba(5,6,8,.9) 0%,rgba(5,6,8,.45) 45%,rgba(5,6,8,.05) 100%),linear-gradient(0deg,#050608 0%,rgba(5,6,8,0) 40%),radial-gradient(ellipse 55% 65% at 100% 0%,rgba(5,6,8,.85),transparent 70%)}
+.hero-in{position:relative;z-index:2;width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--pad) clamp(100px,14vh,150px)}
+.hero .r{opacity:0;transform:translateY(22px);animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards}.r1{animation-delay:.1s!important}.r2{animation-delay:.25s!important}.r3{animation-delay:.42s!important}.r4{animation-delay:.58s!important}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero h1{margin:18px 0 20px}.hero .lead{margin-bottom:32px}.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.snd{position:absolute;z-index:3;right:var(--pad);bottom:72px;background:rgba(5,6,8,.55);border:1px solid var(--line2);color:#fff;border-radius:999px;padding:8px 16px;font:500 12px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.snd:hover{border-color:var(--blue);box-shadow:0 0 20px var(--glow)}
+.meta{position:absolute;z-index:2;left:0;right:0;bottom:0;border-top:1px solid var(--line);background:linear-gradient(0deg,rgba(5,6,8,.85),rgba(5,6,8,.2))}
+.meta .wrap{display:flex;gap:clamp(16px,3vw,44px);flex-wrap:wrap;align-items:center;padding-top:16px;padding-bottom:16px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(106,168,224,0)}0%{box-shadow:0 0 0 0 var(--glow)}}
+.cue{position:absolute;z-index:2;left:50%;bottom:64px;width:1px;height:46px;background:linear-gradient(#fff,transparent);transform-origin:top;animation:cue 2s ease-in-out infinite}@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+/* projects */
+.p{height:170vh;position:relative}
+.stick{position:sticky;top:0;height:100vh;overflow:hidden;background:#000}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.45) contrast(1.05) brightness(.82);will-change:transform}
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,6,8,.15),rgba(5,6,8,.55) 100%),linear-gradient(0deg,rgba(5,6,8,.85),transparent 40%),radial-gradient(ellipse 60% 70% at 100% 0%,rgba(5,6,8,.85),transparent 70%)}
+.num{position:absolute;left:3vw;bottom:-2vh;font-size:clamp(140px,26vw,380px);font-weight:700;letter-spacing:-.06em;color:rgba(255,255,255,.07);line-height:1;pointer-events:none;will-change:transform}
+.card{position:absolute;right:clamp(70px,8vw,130px);top:50%;width:min(480px,88vw);padding:clamp(24px,3vw,38px);border:1px solid var(--line2);border-radius:16px;background:rgba(14,17,22,.45);backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);box-shadow:0 30px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);opacity:0;transform:translateY(-35%);will-change:transform,opacity}
+.card h2{font-size:clamp(30px,3.6vw,46px);line-height:1.05;font-weight:600;letter-spacing:-.025em;margin:12px 0 10px}
+.card .one{font-size:17px;color:var(--text);font-weight:400;margin-bottom:10px}.card .body{font-size:14.5px}
+.card .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.card .tags span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 11px;color:#d9dee3}
+.card .c6{margin-top:22px}.card .c6:empty{display:none}
+.card [class^=c]{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.card.in .c1{transition-delay:.05s}.card.in .c2{transition-delay:.15s}.card.in .c3{transition-delay:.25s}.card.in .c4{transition-delay:.35s}.card.in .c5{transition-delay:.45s}.card.in .c6{transition-delay:.55s}
+.card.in [class^=c]{opacity:1;transform:none}
+.zoom{animation:kb 18s ease-in-out infinite alternate}@keyframes kb{from{transform:scale(1.22)}to{transform:scale(1.3)}}
+.rail{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:14px;opacity:0;pointer-events:none;transition:opacity .4s}.rail.on{opacity:1;pointer-events:auto}
+.rail a{display:flex;justify-content:flex-end;align-items:center;gap:10px;font-size:11px;letter-spacing:.16em;color:#6d747c;transition:color .3s}
+.rail b{font-weight:500;max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:max-width .4s,opacity .4s;text-transform:uppercase}.rail a:hover b{max-width:200px;opacity:1;background:rgba(5,6,8,.7);padding:3px 10px;border-radius:999px}
+.rail i{font-style:normal}.rail a.on,.rail a:hover{color:#fff}
+@media(max-width:900px){.rail{display:none}.card{right:16px;left:16px;width:auto;top:auto;bottom:32px;transform:translateY(40px)}.num{opacity:.6}}
+.final{position:relative;text-align:center;overflow:hidden;border-top:1px solid var(--line);padding:clamp(90px,13vw,170px) 0}
+.final .bgimg{position:absolute;inset:0;background:url("../assets/poster/xrp/hero.jpg") center/cover;filter:grayscale(1) brightness(.4)}
+.final .shade2{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(5,6,8,.35),rgba(5,6,8,.95) 75%),linear-gradient(180deg,var(--bg),transparent 25%,transparent 75%,var(--bg))}
+.final .in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:26px}.final .big{max-width:18ch}.final .cta-row{justify-content:center}
+footer{border-top:1px solid var(--line);padding:34px 0 44px;font-size:13px;color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}footer a:hover{color:#fff}
+@media(max-width:700px){.snd{bottom:auto;top:78px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero .r{opacity:1;transform:none}.card,.card [class^=c]{opacity:1!important;transform:none!important}}
+</style></head>
+<body>
+<div class="bar" id="bar"></div>
+<header id="hd"><a class="brand" href="../" aria-label="XR Dynamics Lab"><img src="../assets/xr-mark.png" alt="" width="64" height="34"><span>XR-Projects</span></a>
+<nav><a href="../">Home</a><a href="../xr-drive/">XR-Drive</a><a href="../xr-flight/">XR-Flight</a><a href="../#contact">Contact</a>
+<a class="pill solid" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
+<a class="pill" href="https://www.linkedin.com/in/surajit-saikia-phd-55b717101/" target="_blank" rel="noopener" aria-label="About me on LinkedIn">About me</a></nav></header>
+<nav class="rail" id="rail" aria-label="Projects"><a href="#p0"><i>01</i><b>XR-Drive</b></a><a href="#p1"><i>02</i><b>XR-Flight</b></a><a href="#p2"><i>03</i><b>XR-Hand Interaction</b></a><a href="#p3"><i>04</i><b>VR-Drone Cockpit</b></a><a href="#p4"><i>05</i><b>XR Robot Teleoperation</b></a><a href="#p5"><i>06</i><b>Dexterous Teleoperation</b></a><a href="#p6"><i>07</i><b>XR-Keypad</b></a></nav>
+<main>
+<section class="hero" id="top">
+  <video id="hv" autoplay muted loop playsinline preload="auto" poster="../assets/poster/xrp/hero.jpg"><source src="../assets/video/xrp/hero.mp4" type="video/mp4"></video><div class="shade"></div>
+  <div class="hero-in"><p class="eyebrow r r1">XR Dynamics Lab · Immersive XR</p>
+    <h1 class="huge r r2"><span class="silver">XR-Projects</span></h1>
+    <p class="lead r r3">Every project here is built to be worn. Put on the headset and step inside the car, the cockpit, the robot's hands.</p>
+    <div class="cta-row r r4"><a class="btn primary" href="#p0">Explore the projects &darr;</a><a class="btn" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a></div></div>
+  <button class="snd" id="snd" type="button" aria-pressed="false">Sound off</button><div class="cue" aria-hidden="true"></div>
+  <div class="meta"><div class="wrap"><span class="dot"></span><span>7 VR projects</span><span>Meta Quest 2 / 3</span><span>Unreal Engine 5</span><span>OpenXR</span></div></div>
+</section>
+<section class="p" id="p0" data-name="XR-Drive">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/drive.jpg" data-src="../assets/video/xrp/drive.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">01</div>
+    <div class="card"><p class="eyebrow c1">01 / 07 · VR project</p><h2 class="c2"><span class="silver">XR-Drive</span></h2><p class="one c3">Drive a Formula 1 car in VR</p><p class="body c4">Hands on the wheel, paddle shifters and a live dashboard. A Ferrari F2004 cockpit with a 3.0 L V10 and 7-speed paddle gearbox, running on a physics-based vehicle model in a glowing LED-kerb race loop.</p><div class="tags c5"><span>Unreal Engine 5</span><span>Meta Quest 2 / 3</span><span>Vehicle physics</span><span>C++</span></div><div class="c6"><a class="btn" href="../xr-drive/">Open XR-Drive page &nearr;</a></div></div>
+  </div></section>
+<section class="p" id="p1" data-name="XR-Flight">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/flight.jpg" data-src="../assets/video/xrp/flight.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">02</div>
+    <div class="card"><p class="eyebrow c1">02 / 07 · VR project</p><h2 class="c2"><span class="silver">XR-Flight</span></h2><p class="one c3">Put on the headset. Take the stick.</p><p class="body c4">Immersive aircraft control in VR, where your hands drive the stick and throttle of a physically simulated cockpit. A six-degree-of-freedom model combines lift, drag, thrust and control-surface moments.</p><div class="tags c5"><span>Meta Quest 2 / 3</span><span>OpenXR</span><span>Flight dynamics</span><span>C++</span></div><div class="c6"><a class="btn" href="../xr-flight/">Open XR-Flight page &nearr;</a></div></div>
+  </div></section>
+<section class="p" id="p2" data-name="XR-Hand Interaction">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/hand.jpg" data-src="../assets/video/xrp/hand.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">03</div>
+    <div class="card"><p class="eyebrow c1">03 / 07 · VR project</p><h2 class="c2"><span class="silver">XR-Hand Interaction</span></h2><p class="one c3">Virtual hands that behave like real hands</p><p class="body c4">Moving beyond grab-and-attach: objects respond to your hands through physics, using Meta XR Hand Tracking. The challenge is balancing physics accuracy, stability and real-time VR performance.</p><div class="tags c5"><span>Hand tracking</span><span>Physics-based grabbing</span><span>Unreal Engine 5</span><span>C++</span></div><div class="c6"></div></div>
+  </div></section>
+<section class="p" id="p3" data-name="VR-Drone Cockpit">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/drone.jpg" data-src="../assets/video/xrp/drone.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">04</div>
+    <div class="card"><p class="eyebrow c1">04 / 07 · VR project</p><h2 class="c2"><span class="silver">VR-Drone Cockpit</span></h2><p class="one c3">Fly a VTOL drone with your hands</p><p class="body c4">A glass cockpit with an attitude indicator and live telemetry: altitude, ground speed, vertical speed, pitch, roll, thrust-to-weight, load and per-rotor output.</p><div class="tags c5"><span>Unreal Engine 5.8</span><span>VTOL</span><span>Telemetry HUD</span><span>Hand interaction</span></div><div class="c6"><a class="btn" href="https://www.fab.com/listings/fff21d70-c83f-4411-ad23-cbed73a1895c" target="_blank" rel="noopener">View on Fab &nearr;</a></div></div>
+  </div></section>
+<section class="p" id="p4" data-name="XR Robot Teleoperation">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/teleop.jpg" data-src="../assets/video/xrp/teleop.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">05</div>
+    <div class="card"><p class="eyebrow c1">05 / 07 · VR project</p><h2 class="c2"><span class="silver">XR Robot Teleoperation</span></h2><p class="one c3">An operator drives a humanoid through a headset</p><p class="body c4">Head and hand motion from Meta Quest 2 and 3 is mapped to the robot's body and arms, so one operator can handle warehouse picking, carrying and placing. Experiments cover control response, latency and stability on the real machine.</p><div class="tags c5"><span>Meta Quest 2 / 3</span><span>Humanoid robots</span><span>ROS 2</span><span>Python</span></div><div class="c6"></div></div>
+  </div></section>
+<section class="p" id="p5" data-name="Dexterous Teleoperation">
+  <div class="stick"><video class="bg" muted loop playsinline preload="none" poster="../assets/poster/xrp/dexterous.jpg" data-src="../assets/video/xrp/dexterous.mp4"></video><div class="shade"></div><div class="num" aria-hidden="true">06</div>
+    <div class="card"><p class="eyebrow c1">06 / 07 · VR project</p><h2 class="c2"><span class="silver">Dexterous Teleoperation</span></h2><p class="one c3">The operator's hands drive the robot</p><p class="body c4">Hand and finger motion from Meta Quest 2 and 3 is mapped to the robot's arms and hands for precise manipulation: picking, carrying and placing on the real machine.</p><div class="tags c5"><span>Hand tracking</span><span>Humanoid robots</span><span>ROS 2</span><span>Python</span></div><div class="c6"></div></div>
+  </div></section>
+<section class="p" id="p6" data-name="XR-Keypad">
+  <div class="stick"><img class="bg" src="../assets/poster/xrp/keypad.jpg" alt="XR-Keypad" loading="lazy"><div class="shade"></div><div class="num" aria-hidden="true">07</div>
+    <div class="card"><p class="eyebrow c1">07 / 07 · VR project</p><h2 class="c2"><span class="silver">XR-Keypad</span></h2><p class="one c3">A hand-tracked keypad for Unreal Engine 5.8</p><p class="body c4">Poke or pinch the keys, point with a ray, or use controllers and mouse, then grab the handle to move it. Ships with a secure-access-terminal demo map where layouts, themes and colors switch live.</p><div class="tags c5"><span>Unreal Engine 5.8</span><span>Hand tracking</span><span>Blueprint + C++</span><span>XR input</span></div><div class="c6"><a class="btn" href="https://www.fab.com/listings/28274d1c-dfe2-44cf-a471-12638ffcfc6f" target="_blank" rel="noopener">View on Fab &nearr;</a></div></div>
+  </div></section>
+
+<section class="final"><div class="bgimg"></div><div class="shade2"></div><div class="wrap in"><p class="eyebrow">XR Dynamics Lab</p><h2 class="big">Have a project <span class="silver">to put in VR?</span></h2>
+<p class="lead">Tell me what you want people to experience and I will show you how it could run in a headset.</p>
+<div class="cta-row"><a class="btn primary" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a><a class="btn" href="../">Back to all projects</a></div></div></section>
+</main>
+<footer><div class="wrap"><span>XR Dynamics Lab · Immersive control · Simulation · Robotics · Physical AI</span><a href="../">Back to home</a></div></footer>
+<script>
+(function(){
+var hd=document.getElementById('hd'),bar=document.getElementById('bar'),rail=document.getElementById('rail'),links=[].slice.call(rail.children);
+var ps=[].slice.call(document.querySelectorAll('.p')),hero=document.getElementById('top');
+var cl=function(x,a,b){return Math.min(b===undefined?1:b,Math.max(a===undefined?0:a,x))};
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+document.querySelectorAll('img.bg').forEach(function(i){i.classList.add('zoom')});
+function frame(){
+  var H=innerHeight,cur=-1;
+  hd.classList.toggle('s',scrollY>30);
+  bar.style.width=(scrollY/(document.documentElement.scrollHeight-H)*100)+'%';
+  ps.forEach(function(p,i){
+    var r=p.getBoundingClientRect(),q=cl(-r.top/(r.height-H)),enter=cl(1+r.top/H);
+    var st=p.firstElementChild,card=st.querySelector('.card'),bg=st.querySelector('.bg'),num=st.querySelector('.num');
+    var a=cl(q*2.4)*(1-cl((q-.86)*7));
+    var mob=innerWidth<=900;
+    st.style.opacity=reduce?1:cl(enter*1.7);
+    if(!reduce){card.style.opacity=a;card.style.transform=mob?'translateY('+((1-cl(q*2.4))*60)+'px)':'translateY(calc(-50% + '+((1-cl(q*2.4))*90)+'px))';
+      if(!bg.classList.contains('zoom'))bg.style.transform='scale('+(1.12-.12*q)+')';
+      num.style.transform='translateY('+(q*-6)+'vh)'}
+    card.classList.toggle('in',q>.12&&q<.92||reduce);
+    if(r.top<H*.5&&r.bottom>H*.5)cur=i;
+  });
+  links.forEach(function(l,k){l.classList.toggle('on',k===cur)});
+  var hb=hero.getBoundingClientRect();rail.classList.toggle('on',hb.bottom<H*.4&&document.querySelector('.final').getBoundingClientRect().top>H*.5);
+}
+var t=0;addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(function(){t=0;frame()})},{passive:true});addEventListener('resize',frame);frame();
+// lazy play
+var vids=[].slice.call(document.querySelectorAll('video.bg'));
+var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;
+  if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src;v.load()}var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}else v.pause()})},{rootMargin:'40% 0px 40% 0px'});
+vids.forEach(function(v){io.observe(v)});
+var hv=document.getElementById('hv');
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=hv.play();if(p&&p.catch)p.catch(function(){})}else hv.pause()})},{threshold:.1}).observe(hero);
+// sound
+var snd=document.getElementById('snd');
+snd.addEventListener('click',function(){hv.muted=!hv.muted;snd.textContent=hv.muted?'Sound off':'Sound on';snd.setAttribute('aria-pressed',String(!hv.muted))});
+})();
+</script></body></html>
