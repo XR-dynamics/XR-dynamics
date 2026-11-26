@@ -330,7 +330,7 @@ footer a:hover{color:#fff}
     <div class="reel">
       <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/hero.jpg" data-src="../assets/video/xrh/hero.mp4"></video><b>Hand interaction</b></figure>
       <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/dexterous.jpg" data-src="../assets/video/xrh/dexterous.mp4"></video><b>Dexterous teleoperation</b></figure>
-      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/rl.jpg" data-src="../assets/video/xrh/rl.mp4"></video><b>Reinforcement learning</b></figure>
+      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/teleop.jpg" data-src="../assets/video/xrh/teleop.mp4?v=2"></video><b>Reinforcement learning</b></figure>
     </div>
   </div>
 </section>
@@ -391,7 +391,7 @@ footer a:hover{color:#fff}
   document.querySelectorAll('.tile video').forEach(function(v){vio.observe(v)});
   // demo modal
   var dm=document.getElementById('dm'),dmv=document.getElementById('dmv');
-  function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4?v=2';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
+  function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4?v=3';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
   function close(){dm.classList.remove('open');dmv.pause();dmv.removeAttribute('src');dmv.load();document.body.style.overflow=''}
   ['demoBtn','demoBtn2'].forEach(function(id){document.getElementById(id).addEventListener('click',open)});
   dm.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',close)});
