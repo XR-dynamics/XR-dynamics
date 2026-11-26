@@ -146,3 +146,7 @@ section.projects[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){.feat .ct>*,.feat .cm,.feat .allp>*{opacity:1!important;transform:none!important;filter:none!important}}
 .feat .fbtn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:999px;background:#fff;color:#07090c;font-size:14px;font-weight:500;border:1px solid #fff;transition:box-shadow .25s,transform .25s}
 .feat .fbtn:hover{transform:translateY(-1px);box-shadow:0 0 34px rgba(255,255,255,.4)}
+
+.feat .trow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.feat .trow img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.16);filter:grayscale(.5) brightness(.7);transition:filter .5s,transform .5s}
+.feat .trow img:hover{filter:none;transform:translateY(-3px)}
