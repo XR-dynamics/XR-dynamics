@@ -295,16 +295,6 @@ footer a:hover{color:#fff}
   </div>
 </section>
 
-<section class="pad show" id="showcase">
-  <div class="wrap">
-    <div class="strips" id="strips">
-      <figure class="sc reveal"><img src="../assets/poster/xrh/strip-top.jpg" alt="Operator with a headset holds a cube while a robotic hand mirrors the grasp" width="1672" height="313" loading="lazy"><div class="wipe"></div><div class="edge"></div><span class="cap-tag">Operator · Robot</span></figure>
-      <figure class="sc reveal" style="--d:.25s"><img src="../assets/poster/xrh/strip-mid.jpg" alt="Close-up of tracked hands: precision grasp and contact tracking" width="1672" height="318" loading="lazy"><div class="wipe"></div><div class="edge"></div></figure>
-      <figure class="sc reveal" style="--d:.5s"><img src="../assets/poster/xrh/strip-bot.jpg" alt="Robotic hand placing a cube while the operator guides it" width="1672" height="299" loading="lazy"><div class="wipe"></div><div class="edge"></div><span class="cap-tag">Robot teleoperation · Concept visual</span></figure>
-    </div>
-  </div>
-</section>
-
 <section class="pad flow" id="flow">
   <div class="wrap">
     <div class="intro">
@@ -334,13 +324,13 @@ footer a:hover{color:#fff}
 <section class="pad" id="reel">
   <div class="wrap">
     <div class="intro">
-      <div class="reveal"><p class="eyebrow">In action</p><h2 class="big">Built and <span class="silver">running in VR.</span></h2></div>
-      <p class="lead reveal">Footage from the hand interaction and teleoperation work. Hover to bring it to full colour.</p>
+      <div class="reveal"><p class="eyebrow">In action</p><h2 class="big">Built and <span class="silver">running.</span></h2></div>
+      <p class="lead reveal">Footage from the hand interaction, dexterous teleoperation and reinforcement learning work. Hover to bring it to full colour.</p>
     </div>
     <div class="reel">
       <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/hero.jpg" data-src="../assets/video/xrh/hero.mp4"></video><b>Hand interaction</b></figure>
       <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/dexterous.jpg" data-src="../assets/video/xrh/dexterous.mp4"></video><b>Dexterous teleoperation</b></figure>
-      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/teleop.jpg" data-src="../assets/video/xrh/teleop.mp4"></video><b>Robot teleoperation</b></figure>
+      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/rl.jpg" data-src="../assets/video/xrh/rl.mp4"></video><b>Reinforcement learning</b></figure>
     </div>
   </div>
 </section>
@@ -401,7 +391,7 @@ footer a:hover{color:#fff}
   document.querySelectorAll('.tile video').forEach(function(v){vio.observe(v)});
   // demo modal
   var dm=document.getElementById('dm'),dmv=document.getElementById('dmv');
-  function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
+  function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4?v=2';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
   function close(){dm.classList.remove('open');dmv.pause();dmv.removeAttribute('src');dmv.load();document.body.style.overflow=''}
   ['demoBtn','demoBtn2'].forEach(function(id){document.getElementById(id).addEventListener('click',open)});
   dm.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',close)});
