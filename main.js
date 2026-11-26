@@ -44,7 +44,7 @@ const CATEGORIES = [
         description: "VR grabbing looks simple until you try to make it feel real: virtual hands that behave like real hands.",
         explain: "Moving beyond traditional grab-and-attach interactions, using Meta XR Hand Tracking so that objects respond to the hands through physics. The challenge is balancing physics accuracy, stability and real-time VR performance. Still experimenting, testing and improving.",
         tech: ["Meta XR Hand Tracking", "Physics-Based Grabbing", "Unreal Engine 5", "Meta Quest 2 / 3", "C++"],
-        badge: true, link: null
+        badge: true, link: "xr-hands/", linkLabel: "Open XR-Hands page"
       },
       {
         id: "xr-keypad",

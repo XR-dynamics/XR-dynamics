@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XR-Hands · Human precision, robotic reach · XR Dynamics Lab</title>
+<meta name="description" content="XR Hands and Robotics: natural hand interaction for virtual objects, extended to precise robot teleoperation through an immersive Unreal Engine environment.">
+<link rel="icon" href="../assets/xr-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050608;--bg2:#0a0c10;--text:#f3f5f7;--body:#b7bdc4;--muted:#7c838b;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--blue:#6aa8e0;--blue-hi:#8fc4f2;--glow:rgba(106,168,224,.35);--silver:linear-gradient(100deg,#fff 0%,#d9dee3 45%,#8e969e 100%);--max:1240px;--pad:clamp(20px,4vw,56px);--hh:66px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 56px)}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+
+/* header */
+header{position:fixed;inset:0 0 auto 0;height:var(--hh);z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.s{background:rgba(5,6,8,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:34px;width:auto}
+.brand span{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--text)}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font-size:13.5px;color:#aeb4ba;transition:color .2s}
+nav a:hover{color:#fff}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line2);border-radius:999px;color:var(--text);font-size:13px;transition:box-shadow .25s,border-color .25s,background .25s}
+nav a.pill{color:var(--text)}
+.pill:hover{border-color:var(--blue);box-shadow:0 0 22px var(--glow)}
+.pill.solid{background:#fff;color:#07090c;border-color:#fff;font-weight:500}
+nav a.pill.solid{color:#07090c}
+.pill.solid:hover{box-shadow:0 0 26px rgba(255,255,255,.35)}
+@media(max-width:900px){nav a:not(.pill){display:none}}
+@media(max-width:560px){.brand span{display:none}nav{gap:8px}.pill{padding:7px 12px}}
+
+/* type */
+.eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--blue);font-weight:500}
+.big{font-size:clamp(34px,5vw,64px);line-height:1.06;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.huge{font-size:clamp(52px,9vw,128px);line-height:.98;font-weight:700;letter-spacing:-.035em;color:var(--text)}
+.mid{font-size:clamp(24px,3vw,38px);line-height:1.15;font-weight:500;letter-spacing:-.015em;color:var(--text)}
+.silver{background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.dim{color:#6d747c;-webkit-text-fill-color:#6d747c}
+.lead{font-size:clamp(16px,1.5vw,19px);color:var(--body);max-width:56ch}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--text);font-family:inherit;transition:box-shadow .25s,border-color .25s,transform .25s}
+.btn:hover{transform:translateY(-1px);border-color:var(--blue);box-shadow:0 0 28px var(--glow)}
+.btn.primary{background:#fff;color:#07090c;border-color:#fff}
+.btn.primary:hover{box-shadow:0 0 34px rgba(255,255,255,.4)}
+section{position:relative}
+.pad{padding:clamp(80px,12vw,150px) 0}
+
+/* hero */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero video,.hero .shade{position:absolute;inset:0;width:100%;height:100%}
+.hero video{object-fit:cover;filter:grayscale(.85) contrast(1.05) brightness(.8)}
+.hero .shade{background:linear-gradient(90deg,rgba(5,6,8,.92) 0%,rgba(5,6,8,.55) 45%,rgba(5,6,8,.1) 100%),linear-gradient(0deg,#050608 0%,rgba(5,6,8,0) 38%)}
+.hero-in{position:relative;z-index:2;width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--pad) clamp(90px,12vh,130px)}
+.hero .r{opacity:0;transform:translateY(22px);animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards}
+.r1{animation-delay:.1s!important}.r2{animation-delay:.25s!important}.r3{animation-delay:.42s!important}.r4{animation-delay:.58s!important}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero h1{margin:18px 0 22px}
+.hero .lead{margin-bottom:34px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.hero-meta{position:absolute;z-index:2;left:0;right:0;bottom:0;border-top:1px solid var(--line);background:linear-gradient(0deg,rgba(5,6,8,.85),rgba(5,6,8,.2))}
+.hero-meta .wrap{display:flex;gap:clamp(16px,3vw,44px);flex-wrap:wrap;align-items:center;padding-top:16px;padding-bottom:16px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 var(--glow);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(106,168,224,0)}100%{box-shadow:0 0 0 0 rgba(106,168,224,0)}}
+@media(max-width:700px){.hero-meta .wrap span:nth-child(n+4){display:none}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* intro */
+.intro{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,90px);align-items:end}
+.intro .big{margin-top:16px}
+@media(max-width:860px){.intro{grid-template-columns:1fr}}
+
+/* moments */
+.moments{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(50px,7vw,90px)}
+.moment{padding:26px 26px 6px 0;border-top:1px solid var(--line2);position:relative}
+.moment+.moment{padding-left:26px;border-left:1px solid var(--line)}
+.moment .n{font-size:12px;letter-spacing:.2em;color:var(--blue);font-weight:500}
+.moment h3{font-size:22px;font-weight:500;color:var(--text);margin:12px 0 10px;letter-spacing:-.01em}
+.moment p{font-size:15px}
+@media(max-width:900px){.moments{grid-template-columns:1fr 1fr}.moment:nth-child(3){border-left:0;padding-left:0}.moment{padding-bottom:26px}}
+@media(max-width:540px){.moments{grid-template-columns:1fr}.moment+.moment{border-left:0;padding-left:0}}
+
+/* tabs */
+.explore{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.explore-head{margin-bottom:34px}
+.tabbar{position:sticky;top:var(--hh);z-index:20;background:rgba(10,12,16,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:6px;position:relative;overflow-x:auto;scrollbar-width:none;padding:0 var(--pad);max-width:var(--max);margin:0 auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;color:#8a9199;font:500 14px Inter,sans-serif;padding:20px 18px;cursor:pointer;white-space:nowrap;transition:color .2s}
+.tab:hover{color:#fff}
+.tab.on{color:#fff}
+.ink{position:absolute;bottom:0;height:2px;background:var(--blue-hi);box-shadow:0 0 14px var(--glow);transition:left .35s cubic-bezier(.2,.7,.2,1),width .35s cubic-bezier(.2,.7,.2,1)}
+.panel{display:none;padding:clamp(36px,5vw,64px) 0 clamp(60px,8vw,100px)}
+.panel.on{display:block;animation:fade .6s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stage{position:relative;aspect-ratio:16/9;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#000;transition:box-shadow .35s,border-color .35s}
+.stage:hover{border-color:rgba(106,168,224,.5);box-shadow:0 0 50px rgba(106,168,224,.18)}
+.stage video{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.04)}
+.stage::before,.stage::after{content:"";position:absolute;width:22px;height:22px;border:1px solid rgba(255,255,255,.35);pointer-events:none;z-index:2}
+.stage::before{top:14px;left:14px;border-right:0;border-bottom:0}
+.stage::after{bottom:14px;right:14px;border-left:0;border-top:0}
+.stage .tag{position:absolute;left:30px;bottom:24px;z-index:2;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#d9dee3;display:flex;align-items:center;gap:10px;text-shadow:0 1px 8px #000}
+.p-name{font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-.02em;color:var(--text);margin:34px 0 10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.p-domain{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--blue);border:1px solid rgba(106,168,224,.4);border-radius:999px;padding:5px 12px}
+.p-oneline{font-size:clamp(16px,1.6vw,20px);color:var(--body);max-width:70ch;padding-left:22px;position:relative}
+.p-oneline::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:var(--blue)}
+.p-body{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px);margin-top:38px;padding-top:30px;border-top:1px solid var(--line)}
+.p-body h4{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:12px}
+.p-body p{font-size:15px}
+@media(max-width:800px){.p-body{grid-template-columns:1fr;gap:26px}}
+
+
+.stage.cv{margin:0;aspect-ratio:auto}
+.stage.cv img{width:100%;height:auto;filter:grayscale(.2) contrast(1.03)}
+.hs{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;pointer-events:none;z-index:3}
+.hs i{width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.2),0 0 14px rgba(106,168,224,.8);flex:none}
+.hs b{font-weight:500;font-size:12px;letter-spacing:.04em;white-space:nowrap;color:#fff;padding:4px 10px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(5,6,8,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media(max-width:700px){.hs b{display:none}.hs i{width:9px;height:9px}}
+/* stack */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px)}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.fit{list-style:none;margin-top:30px;border-top:1px solid var(--line2)}
+.fit li{display:flex;gap:20px;justify-content:space-between;padding:17px 0;border-bottom:1px solid var(--line);font-size:15px}
+.fit li b{font-weight:500;color:var(--text)}
+.fit li span{color:var(--muted);text-align:right}
+.steps{display:grid;grid-template-columns:1fr;gap:0;margin-top:30px;counter-reset:s}
+.steps div{padding:20px 0 20px 56px;border-top:1px solid var(--line);position:relative;counter-increment:s}
+.steps div:last-child{border-bottom:1px solid var(--line)}
+.steps div::before{content:"0" counter(s);position:absolute;left:0;top:22px;font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:500}
+.steps b{display:block;color:var(--text);font-weight:500;font-size:17px;margin-bottom:4px}
+
+/* final */
+.final{text-align:center;overflow:hidden;border-top:1px solid var(--line)}
+.final .bgimg{position:absolute;inset:0;background:url("../assets/poster/flight/hero.jpg") center/cover;filter:grayscale(1) brightness(.42)}
+.final .shade{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(5,6,8,.35),rgba(5,6,8,.95) 75%),linear-gradient(180deg,var(--bg),transparent 25%,transparent 75%,var(--bg))}
+.final .in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:26px}
+.final .big{max-width:18ch}
+.final .cta-row{justify-content:center}
+
+footer{border-top:1px solid var(--line);padding:34px 0 44px;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer a:hover{color:#fff}
+
+/* demo modal */
+.dm{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:4vh 4vw}
+.dm.open{display:flex}
+.dm-back{position:absolute;inset:0;background:rgba(3,4,6,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:fade .35s}
+.dm-box{position:relative;width:min(1100px,72vw);border:1px solid var(--line2);border-radius:14px;background:rgba(14,17,22,.55);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);padding:14px;box-shadow:0 30px 120px rgba(0,0,0,.6),0 0 60px rgba(106,168,224,.12);animation:fade .45s}
+.dm-box video{width:100%;aspect-ratio:16/9;border-radius:8px;background:#000}
+.dm-head{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#aeb4ba}
+.dm-x{background:none;border:1px solid var(--line2);border-radius:50%;width:34px;height:34px;color:#fff;font-size:20px;line-height:1;cursor:pointer}
+.dm-x:hover{border-color:var(--blue);box-shadow:0 0 18px var(--glow)}
+@media(max-width:800px){.dm-box{width:94vw}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.hero .r{opacity:1;transform:none}}
+
+/* ---- XR Hands ---- */
+.hero video{filter:grayscale(.9) contrast(1.08) brightness(.7)}
+.hero .shade{background:linear-gradient(90deg,rgba(5,6,8,.94) 0%,rgba(5,6,8,.6) 48%,rgba(5,6,8,.15) 100%),linear-gradient(0deg,#050608 0%,rgba(5,6,8,0) 38%)}
+.hero h1.huge{font-size:clamp(44px,7.4vw,108px);max-width:11ch}
+.hero .scan{position:absolute;z-index:1;left:0;right:0;height:2px;top:0;background:linear-gradient(90deg,transparent,rgba(143,196,242,.9),transparent);box-shadow:0 0 30px 6px rgba(106,168,224,.35);animation:scan 6s linear infinite;opacity:.7;pointer-events:none}
+@keyframes scan{0%{top:-2%}100%{top:102%}}
+.hero .spot{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(520px circle at var(--mx,70%) var(--my,40%),rgba(106,168,224,.16),transparent 60%);mix-blend-mode:screen}
+.hero-in .eyebrow{display:flex;align-items:center;gap:12px}
+.hero-in .eyebrow::before{content:"";width:34px;height:1px;background:var(--blue)}
+.hero .tech{margin-top:30px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+@media(max-width:700px){.hero-meta .wrap span:nth-child(n+3){display:none}.hero-in{padding-bottom:110px}}
+/* capability cards */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(44px,6vw,76px)}
+.cap{position:relative;padding:34px 30px 38px;border:1px solid var(--line2);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));overflow:hidden;transition:border-color .35s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.cap::before{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--cx,50%) var(--cy,0%),rgba(106,168,224,.2),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.cap:hover{border-color:rgba(106,168,224,.55);transform:translateY(-4px)}
+.cap:hover::before{opacity:1}
+.cap .n{font-size:12px;letter-spacing:.22em;color:var(--blue);font-weight:500}
+.cap .ico{width:46px;height:46px;margin:22px 0 20px;color:var(--blue-hi)}
+.cap h3{font-size:22px;font-weight:500;color:var(--text);letter-spacing:-.01em;margin-bottom:12px}
+.cap p{font-size:15.5px}
+@media(max-width:900px){.caps{grid-template-columns:1fr}}
+
+/* showcase */
+.show{padding-top:0}
+.sc{position:relative;border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:#000}
+.sc img{width:100%;height:auto;display:block}
+.sc .wipe{position:absolute;inset:0;background:var(--bg);transform-origin:right;transition:transform 1.5s cubic-bezier(.7,0,.2,1)}
+.sc.in .wipe{transform:scaleX(0)}
+.sc .edge{position:absolute;top:0;bottom:0;width:2px;background:var(--blue-hi);box-shadow:0 0 24px 4px var(--glow);left:0;opacity:0}
+.sc.in .edge{animation:edge 1.5s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes edge{0%{left:0;opacity:1}95%{opacity:1}100%{left:100%;opacity:0}}
+.sc .cap-tag{position:absolute;left:22px;bottom:18px;z-index:3;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#d9dee3;text-shadow:0 1px 8px #000}
+.sc::before,.sc::after{content:"";position:absolute;width:22px;height:22px;border:1px solid rgba(255,255,255,.4);pointer-events:none;z-index:4}
+.sc::before{top:14px;left:14px;border-right:0;border-bottom:0}.sc::after{bottom:14px;right:14px;border-left:0;border-top:0}
+
+/* signal flow */
+.flow{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.flowgrid{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:clamp(16px,3vw,40px);align-items:center;margin-top:clamp(36px,5vw,64px)}
+.fnode{text-align:center}
+.fnode b{display:block;color:var(--text);font-weight:500;font-size:17px;margin-top:14px}
+.fnode span{font-size:13px;color:var(--muted)}
+.fnode svg{width:100%;max-width:150px;height:auto;color:var(--blue-hi)}
+.flowsvg{width:100%;height:auto}
+.flowsvg .ln{stroke:rgba(143,196,242,.35);stroke-width:1.2;fill:none}
+.flowsvg .pulse{fill:#fff;filter:drop-shadow(0 0 6px #8fc4f2)}
+@media(max-width:800px){.flowgrid{grid-template-columns:1fr}.flowsvg{transform:rotate(90deg);max-width:300px;margin:0 auto}}
+
+/* reel */
+.reel{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(36px,5vw,60px)}
+.tile{position:relative;aspect-ratio:16/10;border:1px solid var(--line2);border-radius:12px;overflow:hidden;background:#000;transition:border-color .35s,box-shadow .35s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.tile:hover{border-color:rgba(106,168,224,.55);box-shadow:0 0 44px rgba(106,168,224,.2);transform:translateY(-4px)}
+.tile video{width:100%;height:100%;object-fit:cover;filter:grayscale(.45) contrast(1.05);transition:filter .5s}
+.tile:hover video{filter:none}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,6,8,.85),transparent 50%);pointer-events:none}
+.tile b{position:absolute;left:18px;bottom:14px;z-index:2;font-weight:500;color:#fff;font-size:14px;letter-spacing:.04em}
+@media(max-width:900px){.reel{grid-template-columns:1fr}}
+
+/* applications */
+.apps{position:relative;overflow:hidden}
+.apps .bg{position:absolute;inset:0;background:url("../assets/poster/xrh/inspect.jpg") center/cover;filter:grayscale(.3) brightness(.55)}
+.apps .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,8,.96) 0%,rgba(5,6,8,.8) 38%,rgba(5,6,8,.1) 85%),linear-gradient(180deg,var(--bg),transparent 18%,transparent 82%,var(--bg))}
+.apps .in{position:relative;z-index:2;max-width:560px}
+.applist{list-style:none;margin-top:30px;border-top:1px solid var(--line2)}
+.applist li{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:17px;font-weight:400;transition:padding-left .3s,color .3s}
+.applist li:hover{padding-left:12px;color:var(--blue-hi)}
+.applist li i{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--glow);flex:none}
+.note{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:18px}
+
+/* final with image */
+.final .bgimg{background:url("../assets/poster/xrh/robohand.jpg") left center/auto 100% no-repeat;filter:brightness(1.25);opacity:1}
+.final .shade{background:linear-gradient(90deg,rgba(5,6,8,.1) 0%,rgba(5,6,8,.75) 42%,var(--bg) 70%),linear-gradient(180deg,var(--bg),transparent 22%,transparent 78%,var(--bg))}
+.final.pad{text-align:left}
+.final .in{align-items:flex-start;margin-left:auto;max-width:620px;padding-right:var(--pad)}
+.final .cta-row{justify-content:flex-start}
+.final .tech{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:800px){.final .bgimg{opacity:.35}.final .in{margin:0}}
+</style>
+</head>
+<body>
+<header id="hd">
+  <a class="brand" href="../" aria-label="XR Dynamics Lab"><img src="../assets/xr-mark.png" alt="" width="64" height="34"><span>XR-Hands</span></a>
+  <nav>
+    <a href="../#projects">Projects</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#reel">In action</a>
+    <a href="#applications">Applications</a>
+    <a href="../xr-projects/">XR-Projects</a>
+    <a class="pill solid book" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
+    <a class="pill" href="https://www.linkedin.com/in/surajit-saikia-phd-55b717101/" target="_blank" rel="noopener" aria-label="About me on LinkedIn">About me</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <video autoplay muted loop playsinline preload="auto" poster="../assets/poster/xrh/hero.jpg" aria-hidden="true"><source src="../assets/video/xrh/hero.mp4" type="video/mp4"></video>
+  <div class="shade"></div><div class="spot" id="spot"></div><div class="scan"></div>
+  <div class="hero-in">
+    <p class="eyebrow r r1">XR Hands &amp; Robotics</p>
+    <h1 class="huge r r2"><span class="silver">Human Precision.</span><br><span class="dim">Robotic Reach.</span></h1>
+    <p class="lead r r3">Grab, move, and manipulate virtual objects with natural hand interactions. Extend that control to robots, enabling operators to guide precise tasks remotely through an immersive Unreal Engine environment.</p>
+    <div class="cta-row r r4">
+      <button class="btn primary" type="button" id="demoBtn">&#9654;&nbsp; Watch the Demo</button>
+      <a class="btn" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Discuss Your Application</a>
+    </div>
+  </div>
+  <div class="hero-meta"><div class="wrap"><span class="dot"></span><span>Built with Unreal Engine</span><span>Meta XR Hand Tracking</span><span>Custom Interaction Plugins</span></div></div>
+</section>
+
+<section class="pad" id="capabilities">
+  <div class="wrap">
+    <div class="intro">
+      <div class="reveal"><p class="eyebrow">What it does</p><h2 class="big">From your fingertips <span class="silver">to the robot's.</span></h2></div>
+      <p class="lead reveal">One interaction layer, three jobs: handle virtual objects naturally, control a robot with the same hands, and use the simulation to practise before anything moves in the real world.</p>
+    </div>
+    <div class="caps">
+      <article class="cap reveal"><span class="n">01</span>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 26V12a3 3 0 016 0v10M23 22V9a3 3 0 016 0v13M29 22V12a3 3 0 016 0v14M17 26l-4-4a3 3 0 00-4.5 4L17 38c3 4 6 5 10 5 6 0 10-4 10-10V26"/></svg>
+        <h3>Natural Object Interaction</h3><p>Our XR grab plugin lets users pick up, hold, rotate, and position virtual objects with tracked hands.</p></article>
+      <article class="cap reveal"><span class="n">02</span>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="36" r="4"/><circle cx="26" cy="22" r="4"/><path d="M15 33l8-8M29 19l8-9M37 10l4 4M37 10l-4-1"/><path d="M8 44h20"/></svg>
+        <h3>Precision Robot Control</h3><p>We’re developing a robotics plugin that translates operator input into controlled robot movements for remote manipulation and operations.</p></article>
+      <article class="cap reveal"><span class="n">03</span>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 6l16 9v18L24 42 8 33V15z"/><path d="M8 15l16 9 16-9M24 24v18"/></svg>
+        <h3>Simulation &amp; Training</h3><p>Use the virtual environment to rehearse tasks, develop interaction workflows, and explore how human demonstrations can support robot learning.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="pad show" id="showcase">
+  <div class="wrap">
+    <figure class="sc reveal" id="sc">
+      <img src="../assets/poster/xrh/triptych.jpg" alt="XR Hands: an operator with a headset holds a small cube between tracked fingers while a robotic hand mirrors the grasp; precision grasp and contact tracking shown close up" width="1672" height="941" loading="lazy">
+      <div class="wipe"></div><div class="edge"></div>
+      <span class="cap-tag">Concept visual · Operator hands to robot hand</span>
+    </figure>
+  </div>
+</section>
+
+<section class="pad flow" id="flow">
+  <div class="wrap">
+    <div class="intro">
+      <div class="reveal"><p class="eyebrow">Human to robot</p><h2 class="big">Your hands in. <span class="silver">Robot motion out.</span></h2></div>
+      <p class="lead reveal">Tracked hand input from the headset is turned into controlled robot movement inside the Unreal Engine environment, so an operator can guide a precise task from wherever they are.</p>
+    </div>
+    <div class="flowgrid reveal">
+      <div class="fnode">
+        <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M30 70V34M46 66V20M62 66V24M78 70V38M30 70c-8-2-14 4-8 12l14 22M78 70c6 6 8 14 8 22H44"/><g fill="currentColor" stroke="none"><circle cx="30" cy="34" r="3"/><circle cx="46" cy="20" r="3"/><circle cx="62" cy="24" r="3"/><circle cx="78" cy="38" r="3"/></g></svg>
+        <b>Operator</b><span>Tracked hands in the headset</span>
+      </div>
+      <svg class="flowsvg" viewBox="0 0 400 160" aria-hidden="true">
+        <path id="f1" class="ln" d="M0 30 C140 30 260 50 400 50"/><path id="f2" class="ln" d="M0 62 C140 62 260 70 400 70"/><path id="f3" class="ln" d="M0 94 C140 94 260 90 400 90"/><path id="f4" class="ln" d="M0 126 C140 126 260 110 400 110"/>
+        <circle class="pulse" r="3.2"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#f1"/></animateMotion></circle>
+        <circle class="pulse" r="3.2"><animateMotion dur="2.6s" begin="-.65s" repeatCount="indefinite"><mpath href="#f2"/></animateMotion></circle>
+        <circle class="pulse" r="3.2"><animateMotion dur="2.6s" begin="-1.3s" repeatCount="indefinite"><mpath href="#f3"/></animateMotion></circle>
+        <circle class="pulse" r="3.2"><animateMotion dur="2.6s" begin="-1.95s" repeatCount="indefinite"><mpath href="#f4"/></animateMotion></circle>
+      </svg>
+      <div class="fnode">
+        <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 104h60M50 104V76l-14-22 22-14 18 10"/><path d="M76 50l16-6 10 8-8 10-10-4"/><path d="M96 56l8 14M90 62l4 14"/><circle cx="50" cy="76" r="4"/><circle cx="36" cy="54" r="4"/></svg>
+        <b>Robot</b><span>Controlled movement, remote task</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="reel">
+  <div class="wrap">
+    <div class="intro">
+      <div class="reveal"><p class="eyebrow">In action</p><h2 class="big">Built and <span class="silver">running in VR.</span></h2></div>
+      <p class="lead reveal">Footage from the hand interaction and teleoperation work. Hover to bring it to full colour.</p>
+    </div>
+    <div class="reel">
+      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/hero.jpg" data-src="../assets/video/xrh/hero.mp4"></video><b>Hand interaction</b></figure>
+      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/dexterous.jpg" data-src="../assets/video/xrh/dexterous.mp4"></video><b>Dexterous teleoperation</b></figure>
+      <figure class="tile reveal"><video muted loop playsinline preload="none" poster="../assets/poster/xrh/teleop.jpg" data-src="../assets/video/xrh/teleop.mp4"></video><b>Robot teleoperation</b></figure>
+    </div>
+  </div>
+</section>
+
+<section class="pad apps" id="applications">
+  <div class="bg"></div><div class="shade"></div>
+  <div class="wrap"><div class="in reveal">
+    <p class="eyebrow">Potential applications</p>
+    <h2 class="big" style="margin-top:14px">Where precision <span class="silver">matters.</span></h2>
+    <ul class="applist">
+      <li><i></i>Precision assembly</li>
+      <li><i></i>Remote inspection and maintenance</li>
+      <li><i></i>Hazardous-environment operations</li>
+      <li><i></i>Robot training</li>
+    </ul>
+    <p class="note">Concept visual · XR inspection of a vehicle</p>
+  </div></div>
+</section>
+
+<section class="final pad">
+  <div class="bgimg"></div><div class="shade"></div>
+  <div class="wrap"><div class="in">
+    <p class="eyebrow">XR Hands &amp; Robotics</p>
+    <h2 class="big reveal">Tell me the task. <span class="silver">We will build the reach.</span></h2>
+    <p class="lead">Describe the object, the robot and the environment, and I will show you how it could be controlled from a headset.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Discuss Your Application</a>
+      <button class="btn" type="button" id="demoBtn2">&#9654;&nbsp; Watch the Demo</button>
+    </div>
+    <p class="tech">Built with Unreal Engine · Meta XR Hand Tracking · Custom Interaction Plugins</p>
+  </div></div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>XR Dynamics Lab · Immersive control · Simulation · Robotics · Physical AI</span><a href="../">Back to all projects</a></div></footer>
+
+<div class="dm" id="dm" role="dialog" aria-modal="true" aria-label="XR Hands demo">
+  <div class="dm-back" data-close></div>
+  <div class="dm-box">
+    <div class="dm-head"><span>XR Hands · demo</span><button class="dm-x" type="button" data-close aria-label="Close demo">&times;</button></div>
+    <video id="dmv" controls playsinline preload="none" poster="../assets/poster/xrh/hero.jpg"></video>
+  </div>
+</div>
+
+<script>
+(function(){
+  var hd=document.getElementById('hd');
+  function sc(){hd.classList.toggle('s',scrollY>30)}sc();addEventListener('scroll',sc,{passive:true});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  // hero spotlight follows pointer
+  var hero=document.getElementById('top'),spot=document.getElementById('spot');
+  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();spot.style.setProperty('--mx',(e.clientX-r.left)+'px');spot.style.setProperty('--my',(e.clientY-r.top)+'px')});
+  // card glow follows pointer
+  document.querySelectorAll('.cap').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--cx',(e.clientX-r.left)+'px');c.style.setProperty('--cy',(e.clientY-r.top)+'px')})});
+  // reel: play when visible
+  var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.dataset.ld){v.src=v.dataset.src;v.dataset.ld=1}var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.3});
+  document.querySelectorAll('.tile video').forEach(function(v){vio.observe(v)});
+  // demo modal
+  var dm=document.getElementById('dm'),dmv=document.getElementById('dmv');
+  function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
+  function close(){dm.classList.remove('open');dmv.pause();dmv.removeAttribute('src');dmv.load();document.body.style.overflow=''}
+  ['demoBtn','demoBtn2'].forEach(function(id){document.getElementById(id).addEventListener('click',open)});
+  dm.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',close)});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&dm.classList.contains('open'))close()});
+})();
+</script>
+</body>
+</html>
