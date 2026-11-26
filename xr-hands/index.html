@@ -243,6 +243,30 @@ footer a:hover{color:#fff}
 .sc img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}.sc:hover img{transform:scale(1.03)}
 .cap .ct{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:10px;border:1px solid var(--line2);margin:20px 0 22px;filter:grayscale(.2) brightness(.9);transition:filter .4s,transform .6s}
 .cap:hover .ct{filter:none;transform:scale(1.02)}
+
+/* hands-on inspection */
+.insp{background:var(--bg2);border-top:1px solid var(--line)}
+.insp-top{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(30px,5vw,80px);align-items:center}
+.insp h2.big{margin:16px 0 22px}
+.ivid{position:relative;border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:#000;aspect-ratio:16/9;box-shadow:0 50px 110px -45px rgba(106,168,224,.3)}
+.ivid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ivid .k{position:absolute;width:22px;height:22px;border:1px solid rgba(255,255,255,.45);z-index:3;pointer-events:none}.ivid .k.tl{top:14px;left:14px;border-right:0;border-bottom:0}.ivid .k.br{bottom:14px;right:14px;border-left:0;border-top:0}
+.insp-what{margin-top:clamp(60px,8vw,110px)}
+.ifeat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.ifeat article{position:relative;padding:28px 26px 30px;border:1px solid var(--line2);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transition:border-color .35s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.ifeat article:hover{border-color:rgba(106,168,224,.55);transform:translateY(-4px)}
+.ifeat span{font-size:12px;letter-spacing:.22em;color:var(--blue);font-weight:500}
+.ifeat h3{font-size:20px;font-weight:500;color:var(--text);margin:14px 0 8px;letter-spacing:-.01em}
+.ifeat p{font-size:15.5px}
+.insp-fit{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(30px,5vw,80px);margin-top:clamp(50px,7vw,90px);padding-top:clamp(40px,5vw,60px);border-top:1px solid var(--line)}
+.chips{list-style:none;margin-top:20px;border-top:1px solid var(--line2)}
+.chips li{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--line);color:var(--text);font-size:17px;font-weight:400;transition:padding-left .3s,color .3s}
+.chips li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--glow);flex:none}
+.chips li:hover{padding-left:12px;color:var(--blue-hi)}
+.next{padding:28px 30px;border:1px solid var(--line2);border-radius:14px;background:radial-gradient(420px circle at 0 0,rgba(106,168,224,.14),transparent 60%);align-self:start}
+.next p:last-child{margin-top:14px;font-size:18px;color:var(--text);font-weight:300}
+@media(max-width:900px){.insp-top,.insp-fit{grid-template-columns:1fr}.ifeat{grid-template-columns:1fr}}
+@media(min-width:601px) and (max-width:900px){.ifeat{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -252,6 +276,7 @@ footer a:hover{color:#fff}
     <a href="../#projects">Projects</a>
     <a href="#capabilities">Capabilities</a>
     <a href="#reel">In action</a>
+    <a href="#inspection">Inspection</a>
     <a href="#applications">Applications</a>
     <a href="../xr-projects/">XR-Projects</a>
     <a class="pill solid book" href="https://calendly.com/xrdynamics/30min" target="_blank" rel="noopener">Book a call</a>
@@ -335,6 +360,47 @@ footer a:hover{color:#fff}
   </div>
 </section>
 
+<section class="pad insp" id="inspection">
+  <div class="wrap">
+    <div class="insp-top">
+      <div class="reveal">
+        <p class="eyebrow">HANDS-ON INSPECTION</p>
+        <h2 class="big">Pick it up. Take it apart. <span class="silver">Understand it.</span></h2>
+        <p class="lead">A VR tool where you work with 3D objects using physics-based hands. Separate any model into its parts, hold each part, look at it closely and put it back together. No controllers, just your hands.</p>
+      </div>
+      <figure class="ivid reveal"><video muted loop playsinline preload="none" autoplay poster="../assets/poster/xrh/inspect-vid.jpg" data-src="../assets/video/xrh/inspect.mp4" aria-label="Hands-on inspection of an F1 car in VR"></video><i class="k tl"></i><i class="k br"></i></figure>
+    </div>
+
+    <div class="insp-what">
+      <p class="eyebrow reveal">What it does</p>
+      <div class="ifeat">
+        <article class="reveal"><span>01</span><h3>Physics hands</h3><p>Your fingers push, grip and lift with real forces.</p></article>
+        <article class="reveal"><span>02</span><h3>Separate and regroup</h3><p>Split a model into its parts and rebuild it in one step.</p></article>
+        <article class="reveal"><span>03</span><h3>Labels</h3><p>Name every part while it's apart.</p></article>
+        <article class="reveal"><span>04</span><h3>Live changes</h3><p>Switch colours, materials and lighting with a touch.</p></article>
+        <article class="reveal"><span>05</span><h3>Spatial panel</h3><p>Tap it with a fingertip and pinch it to move it.</p></article>
+        <article class="reveal"><span>06</span><h3>Virtual keyboard</h3><p>Type commands when tapping isn't enough.</p></article>
+      </div>
+    </div>
+
+    <div class="insp-fit">
+      <div class="reveal">
+        <p class="eyebrow">Where it fits</p>
+        <ul class="chips">
+          <li>Training and maintenance in warehouses and industry</li>
+          <li>Design and product reviews</li>
+          <li>Showrooms and trade fairs</li>
+          <li>Education</li>
+        </ul>
+      </div>
+      <div class="next reveal">
+        <p class="eyebrow">What's next</p>
+        <p>Multi-user sessions, so several people can inspect the same object together from different places.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pad apps" id="applications">
   <div class="bg"></div><div class="shade"></div>
   <div class="wrap"><div class="in reveal">
@@ -388,7 +454,7 @@ footer a:hover{color:#fff}
   document.querySelectorAll('.cap').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--cx',(e.clientX-r.left)+'px');c.style.setProperty('--cy',(e.clientY-r.top)+'px')})});
   // reel: play when visible
   var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.dataset.ld){v.src=v.dataset.src;v.dataset.ld=1}var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.3});
-  document.querySelectorAll('.tile video').forEach(function(v){vio.observe(v)});
+  document.querySelectorAll('.tile video,.ivid video').forEach(function(v){vio.observe(v)});
   // demo modal
   var dm=document.getElementById('dm'),dmv=document.getElementById('dmv');
   function open(){dm.classList.add('open');dmv.src='../assets/video/xrh/demo.mp4?v=3';var p=dmv.play();if(p&&p.catch)p.catch(function(){});document.body.style.overflow='hidden'}
