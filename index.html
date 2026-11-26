@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css?v=70">
-<link rel="stylesheet" href="astraion.css?v=8">
+<link rel="stylesheet" href="astraion.css?v=10">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -19,7 +19,7 @@
 <header class="site-header" id="siteHeader">
   <a class="brand" href="#top" aria-label="XR Dynamics Lab"><img class="brand-logo" src="assets/xr-mark.png" alt="XR Dynamics Lab" width="120" height="63"></a>
   <nav>
-    <a href="#projects">Projects</a>
+    <a href="#featured">Projects</a>
     <a href="#services">Services</a>
     <a href="#plugins">Plugins</a>
     <a href="#contact">Contact</a>
@@ -39,7 +39,7 @@
       <h1 class="story-title" id="storyTitle">Physical AI simulation<br>and Immersive control</h1>
       <p class="story-tag"><span>Robotics, Automotive and XR</span></p>
       <div class="story-actions">
-        <a class="explore" href="#projects">Explore projects
+        <a class="explore" href="#featured">Explore projects
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg></a>
         <a class="flbtn" href="xr-projects/"><i class="fldot" aria-hidden="true"></i>Explore XR<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 11L11 3M5 3h6v6"/></svg></a>
       </div>
@@ -57,7 +57,45 @@
       <div class="stats"><span class="dot" aria-hidden="true"></span><span>Meta Quest 2 &amp; 3</span><span>Real humanoids</span><span>Physics-first</span><span>Unreal Engine 5</span></div>
   </section>
 
-  <section class="projects" id="projects">
+  <section class="feat" id="featured">
+    <article class="ch" data-n="01">
+      <div class="ct">
+        <p class="ey">Vehicle · AI race · XR-Drive</p>
+        <h2><span class="sv">The AI that</span><br><span class="dimt">learns to race.</span></h2>
+        <p class="cl">Sit in the car in VR, then race an opponent that taught itself to drive through reinforcement learning on real vehicle physics.</p>
+        <ul><li><i></i>VR driving simulator</li><li><i></i>Reinforcement-learning opponent</li><li><i></i>Real vehicle physics</li></ul>
+        <div class="cb"><a class="fbtn" href="xr-drive/">Open XR-Drive page &nearr;</a></div>
+      </div>
+      <div class="cm two"><a class="fr" href="xr-drive/" aria-label="XR-Drive"><video muted loop playsinline preload="none" poster="assets/poster/xrp/drive.jpg" data-src="assets/video/xrp/drive.mp4"></video><i class="k tl"></i><i class="k br"></i><span class="tg">XR-Drive</span></a>
+        <a class="fr" href="xr-drive/#learning" aria-label="AI learns to drive"><video muted loop playsinline preload="none" poster="assets/poster/feat-race.jpg" data-src="assets/video/feat-race.mp4"></video><i class="k tl"></i><i class="k br"></i><span class="tg">AI learns to drive</span></a></div>
+    </article>
+
+    <article class="ch rev" data-n="02">
+      <div class="ct">
+        <p class="ey">Flight dynamics + XR-Flight</p>
+        <h2><span class="sv">Real forces,</span><br><span class="dimt">not an animation.</span></h2>
+        <p class="cl">A VR jet cockpit on a physics-based flight model. Lift, drag and thrust act every frame, and your hands drive the stick and throttle.</p>
+        <ul><li><i></i>Lift, drag, thrust and fly-by-wire</li><li><i></i>Hand-tracked stick and throttle</li><li><i></i>Flight Dynamics plugin on Fab</li></ul>
+        <div class="cb"><a class="fbtn" href="xr-flight/">Open XR-Flight page &nearr;</a></div>
+      </div>
+      <a class="cm" href="xr-flight/" aria-label="XR-Flight"><div class="fr"><video muted loop playsinline preload="none" poster="assets/poster/feat-flight.jpg" data-src="assets/video/feat-flight.mp4"></video><i class="k tl"></i><i class="k br"></i></div></a>
+    </article>
+
+    <article class="ch" data-n="03">
+      <div class="ct">
+        <p class="ey">XR Hands &amp; Robotics</p>
+        <h2><span class="sv">Human Precision.</span><br><span class="dimt">Robotic Reach.</span></h2>
+        <p class="cl">Grab, move and manipulate virtual objects with natural hands, then extend that control to robots through an immersive Unreal Engine environment.</p>
+        <ul><li><i></i>Natural object interaction</li><li><i></i>Precision robot control</li><li><i></i>Simulation &amp; training</li></ul>
+        <div class="cb"><a class="fbtn" href="xr-hands/">Open XR-Hands page &nearr;</a></div>
+      </div>
+      <a class="cm" href="xr-hands/" aria-label="XR-Hands"><div class="fr"><video muted loop playsinline preload="none" poster="assets/poster/xrh/hero.jpg" data-src="assets/video/xrh/demo.mp4"></video><i class="k tl"></i><i class="k br"></i></div></a>
+    </article>
+
+    <div class="allp"><p class="ey">All work</p><h2 class="sv">Explore all projects.</h2><a class="fbtn" href="xr-projects/">Open XR-Projects &nearr;</a></div>
+  </section>
+
+  <section class="projects" id="projects" hidden>
     <div class="projects-head">
       <span class="eyebrow">XR DYNAMICS LAB</span>
       <h2 class="projects-title">Explore My <span class="grad-text">Projects</span></h2>
@@ -203,5 +241,7 @@
 <script src="request.js?v=3"></script>
 <script src="picks.js?v=9"></script>
 <script type="module" src="bg.js?v=4"></script>
+<script>(function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.2});document.querySelectorAll(".feat .ch,.feat .allp").forEach(function(el){io.observe(el)});
+var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.dataset.ld){v.src=v.dataset.src;v.dataset.ld=1}var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.3});document.querySelectorAll(".feat video").forEach(function(v){vio.observe(v)})})();</script>
 </body>
 </html>
