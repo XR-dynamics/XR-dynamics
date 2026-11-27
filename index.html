@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css?v=70">
-<link rel="stylesheet" href="astraion.css?v=12">
+<link rel="stylesheet" href="astraion.css?v=13">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js">
 </head>
 <body>
@@ -169,6 +169,24 @@
       <p class="pk-eyebrow">XR Dynamics Lab</p>
       <h2 id="pkTitle">Projects Delivered</h2>
       <div class="pk-grid">
+      <article class="pk" data-title="AI Learns to Race" data-desc="A race car driven by a reinforcement-learning agent that taught itself to drive, on a physics-based vehicle model in Unreal Engine." data-feat="Reinforcement learning|Physics-based vehicle model|Unreal Engine 5|VR driving with XR-Drive" data-src="assets/video/feat-race.mp4" data-poster="assets/picks/race-ai.jpg" data-vid="assets/video/feat-race.mp4">
+        <img class="pk-img" src="assets/picks/race-ai.jpg" alt="AI Learns to Race" loading="lazy" width="960" height="540">
+        <video class="pk-vid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+        <div class="pk-info"><h3 class="pk-name">AI Learns to Race</h3>
+        <div class="pk-bar"><button class="pk-demo" type="button" aria-label="View demo: AI Learns to Race"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg> View demo</button><a class="pk-link" href="xr-drive/" aria-label="Open the AI Learns to Race page">Open page <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></a></div></div>
+      </article>
+      <article class="pk" data-title="XR-Flight" data-desc="A VR jet cockpit on a physics-based flight model: lift, drag and thrust every frame, with your hands on the stick and throttle." data-feat="Lift, drag and thrust|Fly-by-wire control|Hand-tracked stick and throttle|Meta Quest 2 and 3" data-src="assets/video/feat-flight.mp4" data-poster="assets/picks/xr-flight.jpg" data-vid="assets/video/feat-flight.mp4">
+        <img class="pk-img" src="assets/picks/xr-flight.jpg" alt="XR-Flight" loading="lazy" width="960" height="540">
+        <video class="pk-vid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+        <div class="pk-info"><h3 class="pk-name">XR-Flight</h3>
+        <div class="pk-bar"><button class="pk-demo" type="button" aria-label="View demo: XR-Flight"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg> View demo</button><a class="pk-link" href="xr-flight/" aria-label="Open the XR-Flight page">Open page <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></a></div></div>
+      </article>
+      <article class="pk" data-title="XR-Hands" data-desc="Natural hand interaction for virtual objects, extended to precise robot control and hands-on inspection of 3D models." data-feat="Physics-based hands|Separate and regroup parts|Spatial panel and virtual keyboard|Robot teleoperation" data-src="assets/video/xrh/demo.mp4" data-poster="assets/picks/xr-hands.jpg" data-vid="assets/video/xrh/demo.mp4">
+        <img class="pk-img" src="assets/picks/xr-hands.jpg" alt="XR-Hands" loading="lazy" width="960" height="540">
+        <video class="pk-vid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+        <div class="pk-info"><h3 class="pk-name">XR-Hands</h3>
+        <div class="pk-bar"><button class="pk-demo" type="button" aria-label="View demo: XR-Hands"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg> View demo</button><a class="pk-link" href="xr-hands/" aria-label="Open the XR-Hands page">Open page <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12L12 2M5 2h7v7"/></svg></a></div></div>
+      </article>
       <article class="pk" data-title="Vehicle Dynamics" data-desc="Driving on a physics-based vehicle model with suspension, tires, drivetrain and aerodynamics." data-feat="Driving physics|Customization|Dynamic lighting|Tire smoke|Interactive HUD|Sensors integrated|Reinforcement learning" data-src="drive:1D3R4ixz7J1wrKvfpiLh5fyy_gbX7LJaa" data-poster="assets/picks/vehicle.jpg" data-vid="assets/tiles/vehicle-xr3.mp4">
         <img class="pk-img" src="assets/picks/vehicle.jpg" alt="Vehicle Dynamics" loading="lazy" width="960" height="540">
         <video class="pk-vid" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
@@ -239,7 +257,7 @@
   </div>
   <script src="main.js?v=52"></script>
 <script src="request.js?v=3"></script>
-<script src="picks.js?v=9"></script>
+<script src="picks.js?v=10"></script>
 <script type="module" src="bg.js?v=4"></script>
 <script>(function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.2});document.querySelectorAll(".feat .ch,.feat .allp").forEach(function(el){io.observe(el)});
 var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.dataset.ld){v.src=v.dataset.src;v.dataset.ld=1}var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.3});document.querySelectorAll(".feat video").forEach(function(v){vio.observe(v)})})();</script>

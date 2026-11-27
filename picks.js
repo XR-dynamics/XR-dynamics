@@ -25,7 +25,8 @@
     }
     tiles(false);dlast=document.activeElement;dt.textContent=title;st.innerHTML=html;
     var feats=(tile.dataset.feat||'').split('|').filter(Boolean),a=tile.querySelector('.pk-link'),href=a&&a.getAttribute('href'),cta='';
-    if(href&&href.charAt(0)!=='#')cta='<a class="dm-cta" href="'+esc(href)+'" target="_blank" rel="noopener">View on Fab</a>';
+    if(href&&/^https?:/.test(href))cta='<a class="dm-cta" href="'+esc(href)+'" target="_blank" rel="noopener">View on Fab</a>';
+    else if(href&&href.charAt(0)!=='#')cta='<a class="dm-cta" href="'+esc(href)+'">Open project page</a>';
     else cta='<a class="dm-cta dm-req" href="#contact" data-dclose data-close>Request this project</a>';
     cd.innerHTML='<span class="dm-tag">Project delivered</span><p class="dm-desc">'+esc(tile.dataset.desc||'')+'</p><h4>Key features</h4><ul>'+
       feats.map(function(f,i){return '<li style="--i:'+i+'">'+esc(f)+'</li>'}).join('')+'</ul>'+cta;
